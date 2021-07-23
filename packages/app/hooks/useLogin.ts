@@ -46,7 +46,7 @@ export default function useLogin(
   const nav = useNavigation();
   const [users, setUsers] = useUserBookmarks();
 
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [loading, setLoading] = React.useState<boolean>(Platform.OS === "android");
   const [shouldUseAlternative, setShouldUseAlternative] = React.useState<boolean>(Platform.OS === "android");
   const [redirect, setRedirect] = React.useState<string | null>(null);
 
