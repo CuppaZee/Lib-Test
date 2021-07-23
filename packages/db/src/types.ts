@@ -225,6 +225,8 @@ export interface TypeInterface {
   id: string;
   // Munzee ID
   munzee_id?: number;
+  // Group
+  group?: string;
   // State - `physical`/`virtual`/`bouncer`/`locationless`
   state: TypeState;
   // Category ID
@@ -273,6 +275,10 @@ export class Type {
 
   get munzee_id() {
     return this.i.munzee_id;
+  }
+
+  get group() {
+    return this.i.group;
   }
 
   get state() {

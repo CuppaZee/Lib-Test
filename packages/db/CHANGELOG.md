@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.0.8 - 23/07/2021
+- Added Type Grouping
 ## 0.0.7 - 26/06/2021
 - Added Clan Requirements Data
 ## 0.0.6 - 21/06/2021

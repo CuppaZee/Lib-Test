@@ -1,4 +1,5 @@
 import { CuppaZeeDB } from ".";
+import { Type } from "./types";
 
 export enum CategoryAccessoryType {
   Button = 0x01,
@@ -24,7 +25,6 @@ export interface CategoryInterface {
     start?: number;
     end?: number;
   };
-  // section?: boolean;
   accessories?: CategoryAccessory[];
 }
 
@@ -79,17 +79,20 @@ export class Category {
     return this.i.seasonal;
   }
 
+  get groups() {
+    const d: { [group: string]: { types: Type[], title?: string } } = {};
+    const types = this.types;
+    for (const type of types) {
+      const g = type.group ?? "";
+      if (!d[g]) d[g] = { types: [], title: g || undefined }
+      d[g].types.push(type);
+    }
+    return Object.keys(d).map(i=>d[i]);
+  }
+
   get types() {
     return this.d.getChildTypes(this);
   }
-
-  // get childSections(): Category[] {
-  //   return [...this.d.getChildren(this).filter(i => i.section), this];
-  // }
-
-  // get childCategories() {
-  //   return this.d.getChildren(this).filter(i => !i.section);
-  // }
 
   get children() {
     return this.d.getChildren(this);
