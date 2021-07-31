@@ -25,6 +25,9 @@ import {
   MunzeeSpecialsPouchCreatures,
   MunzeeSpecialsRetired,
 } from "./munzee/specials";
+import {
+  MunzeeBouncers,
+} from "./munzee/bouncers";
 import { MapBoundingboxV4 } from "./map/v4";
 import { AssetsNews } from "./assets/news";
 import { Endpoint } from "./common";
@@ -45,6 +48,7 @@ export type Endpoints = {
   munzee: Munzee;
   "munzee/hascaptured": MunzeeHascaptured;
   "munzee/specials": MunzeeSpecials;
+  "munzee/bouncers": MunzeeBouncers;
   "munzee/specials/bouncers": MunzeeSpecialsBouncers;
   "munzee/specials/flat": MunzeeSpecialsFlat;
   "munzee/specials/mythological": MunzeeSpecialsMythological;
