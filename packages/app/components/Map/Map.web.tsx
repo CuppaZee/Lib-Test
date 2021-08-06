@@ -101,6 +101,7 @@ export function AutoMap({
   children,
   onPress,
   controls,
+  onSearchSelect,
   onPositionChange,
   onPositionFinishChange,
   defaultViewport,
@@ -145,6 +146,7 @@ export function AutoMap({
         onBackdropPress={() => setSearchModal(false)}>
         <MapSearchModal
           select={data => {
+            let newViewport;
             if (data.bbox) {
               const { longitude, latitude, zoom } = new WebMercatorViewport(
                 viewport as any
@@ -157,24 +159,27 @@ export function AutoMap({
                   padding: 0,
                 }
               );
-              setViewport({
+              newViewport = {
                 ...viewport,
                 longitude,
                 latitude,
                 zoom,
                 transitionDuration: 500,
                 transitionInterpolator: new FlyToInterpolator(),
-              } as any);
+              } as any;
+              setViewport(newViewport);
             } else {
-              setViewport({
+              newViewport = {
                 ...viewport,
                 longitude: data.longitude,
                 latitude: data.latitude,
                 zoom: 16,
                 transitionDuration: 500,
                 transitionInterpolator: new FlyToInterpolator(),
-              } as any);
+              } as any;
+              setViewport(newViewport);
             }
+            onSearchSelect?.(newViewport);
             setSearchModal(false);
           }}
         />

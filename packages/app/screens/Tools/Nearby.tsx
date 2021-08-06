@@ -146,14 +146,17 @@ export default function NearbyScreen() {
               }}>
               <Text category="h6" style={{ textAlign: "center", maxWidth: "100%" }}>
                 {settings.accuracy === null || settings.accuracy < 5000000
-                  ? `CuppaZee couldn't get a very accurate location. You can drag the location marker or use the "Search" tool along with the "Move Location Here" button to pick a better location.`
-                  : `CuppaZee was unable to get your location. You can drag the location marker or use the "Search" tool along with the "Move Location Here" button to pick a location.`}
+                  ? `CuppaZee couldn't get a very accurate location. You can drag the location marker, use the "Search" tool, or the "Move Location Here" button to pick a better location.`
+                  : `CuppaZee was unable to get your location. You can drag the location marker, use the "Search" tool, or the "Move Location Here" button to pick a location.`}
               </Text>
             </Layout>
           </Layout>
         )}
         <Layout style={{ height: 400, margin: 4, borderRadius: 8 }}>
           <AutoMap
+            onSearchSelect={ev => {
+              setSettings({ ...settings, latitude: ev.latitude, longitude: ev.longitude });
+            }}
             onPositionChange={ev => {
               locationRef.current = {
                 latitude: ev.latitude,
