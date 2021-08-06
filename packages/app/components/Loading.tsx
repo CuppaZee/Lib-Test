@@ -1,5 +1,5 @@
 import { useLinkBuilder, useRoute } from "@react-navigation/native";
-import { Button, Layout, Spinner, Text, useTheme } from "@ui-kitten/components";
+import { Button, Layout, Text, useTheme } from "@ui-kitten/components";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Image, View } from "react-native";

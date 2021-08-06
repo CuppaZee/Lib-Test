@@ -1,4 +1,4 @@
-import { Layout, Text, useTheme } from "@ui-kitten/components";
+import { Button, Layout, Text, useTheme } from "@ui-kitten/components";
 import * as React from "react";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "../../components/Common/Icon";
-import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
+import { AutoMap, Icons, Layer, Marker, Source } from "../../components/Map/Map";
 import useDB from "../../hooks/useDB";
 
 type Bouncer = (MunzeeSpecialBouncer | MunzeeSpecial) & {
@@ -37,11 +37,13 @@ interface NearbySettings {
   token?: string;
   latitude: number;
   longitude: number;
+  accuracy: number | null;
 }
 
 export default function NearbyScreen() {
   const { t } = useTranslation();
   const nav = useNavigation();
+  const locationRef = React.useRef<{ latitude: number; longitude: number } | null>(null);
   const [size, onLayout] = useComponentSize();
   const theme = useTheme();
   const [settings, setSettings] = React.useState<NearbySettings>();
@@ -55,15 +57,25 @@ export default function NearbyScreen() {
 
   React.useEffect(() => {
     (async () => {
+      let perm;
       try {
-        const perm = await Location.requestForegroundPermissionsAsync();
-        if (!perm.granted) {
+        perm = await Location.requestForegroundPermissionsAsync();
+        console.log(perm);
+        if (perm.status === Location.PermissionStatus.DENIED) {
           setPermissionError(true);
         }
       } catch (e) {
         setPermissionError(true);
       }
-      const loc = await Location.getCurrentPositionAsync();
+      const loc = perm?.granted
+        ? await Location.getCurrentPositionAsync()
+        : {
+            coords: {
+              latitude: 0,
+              longitude: 0,
+              accuracy: 6378000,
+            },
+          };
       let token;
       if (Platform.OS !== "web") {
         try {
@@ -77,6 +89,7 @@ export default function NearbyScreen() {
       setSettings({
         latitude: loc.coords.latitude,
         longitude: loc.coords.longitude,
+        accuracy: loc.coords.accuracy,
         token,
       });
     })();
@@ -85,7 +98,7 @@ export default function NearbyScreen() {
   if (permissionError) {
     return (
       <Layout style={{ flex: 1 }} onLayout={onLayout}>
-        <Text category="h6">CuppaZee couldn't get your location.</Text>
+        <Text category="h6">You must accept location permissions to use this page.</Text>
       </Layout>
     );
   }
@@ -120,8 +133,42 @@ export default function NearbyScreen() {
               </Layout>
             </Layout>
           ))}
+        {(settings.accuracy === null || settings.accuracy > 50) && (
+          <Layout style={{ margin: 4, width: "100%" }}>
+            <Layout
+              level="2"
+              style={{
+                padding: 4,
+                borderRadius: 8,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Text category="h6" style={{ textAlign: "center", maxWidth: "100%" }}>
+                {settings.accuracy === null || settings.accuracy < 5000000
+                  ? `CuppaZee couldn't get a very accurate location. You can drag the location marker or use the "Search" tool along with the "Move Location Here" button to pick a better location.`
+                  : `CuppaZee was unable to get your location. You can drag the location marker or use the "Search" tool along with the "Move Location Here" button to pick a location.`}
+              </Text>
+            </Layout>
+          </Layout>
+        )}
         <Layout style={{ height: 400, margin: 4, borderRadius: 8 }}>
           <AutoMap
+            onPositionChange={ev => {
+              locationRef.current = {
+                latitude: ev.latitude,
+                longitude: ev.longitude,
+              };
+            }}
+            controls={
+              <Button
+                onPress={() => setSettings({ ...settings, ...(locationRef.current ?? {}) })}
+                style={{ margin: 4 }}
+                size="small"
+                appearance="outline">
+                Move Location Here
+              </Button>
+            }
             defaultViewport={{
               latitude: settings.latitude,
               longitude: settings.longitude,
@@ -177,6 +224,32 @@ export default function NearbyScreen() {
                 }}
               />
             </Source>
+            <Marker
+              offsetLeft={-16}
+              offsetTop={-16}
+              id="location"
+              latitude={settings.latitude}
+              longitude={settings.longitude}
+              draggable
+              onDragEnd={ev => {
+                setSettings({
+                  ...settings,
+                  latitude: ev.lngLat[1],
+                  longitude: ev.lngLat[0],
+                });
+              }}>
+              <View
+                style={{
+                  height: 32,
+                  width: 32,
+                  borderRadius: 16,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#00aaff",
+                }}>
+                <Icon style={{ height: 24, width: 24, color: "black" }} name="crosshairs-gps" />
+              </View>
+            </Marker>
           </AutoMap>
         </Layout>
         <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
