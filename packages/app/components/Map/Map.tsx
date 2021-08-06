@@ -101,6 +101,7 @@ export function AutoMap({
   controls,
   onPositionChange,
   onPositionFinishChange,
+  onSearchSelect,
   defaultViewport,
 }: AutoMapProps) {
   const viewportRef = React.useRef<MapViewport>(
@@ -155,6 +156,7 @@ export function AutoMap({
                 animationDuration: 300,
               });
             }
+            onSearchSelect?.(viewportRef.current);
             setSearchModal(false);
           }}
         />

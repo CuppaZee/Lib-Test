@@ -35,6 +35,7 @@ export interface LocationPickerMapProps {
 export interface AutoMapProps {
   onPositionChange?(viewport: MapViewport): void;
   onPositionFinishChange?(viewport: MapViewport): void;
+  onSearchSelect?(viewport: MapViewport): void;
   defaultViewport?: MapViewport;
   children?: any;
   controls?: any;
