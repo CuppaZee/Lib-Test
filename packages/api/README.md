@@ -39,6 +39,7 @@ This library provides TypeScript typings for the Munzee API.
 
 ### Specials
 - `munzee/specials`
+- `munzee/bouncers`
 - `munzee/specials/mythological`
 - `munzee/specials/pouchcreatures`
 - `munzee/specials/retired`
