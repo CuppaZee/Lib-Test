@@ -1175,8 +1175,16 @@ const builds: (db: CuppaZeeDB) => Build[] = db => [
     date: "2021-07-06",
     improvements: [
       {
-        description:
-          "Added a notice on bouncer pages which shows when API Endpoints are down",
+        description: "Added a notice on bouncer pages which shows when API Endpoints are down",
+      },
+    ],
+  },
+  {
+    build: 73,
+    date: "2021-07-23",
+    improvements: [
+      {
+        description: "Added sub-category grouping for some categories on the Player Captures page",
       },
     ],
   },

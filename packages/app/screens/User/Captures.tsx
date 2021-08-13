@@ -112,14 +112,22 @@ export default function UserCapturesScreen() {
                 <Text category="h5" style={{ textAlign: "center" }}>
                   {i.name}
                 </Text>
-                <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
-                  {i.types
-                    .filter(i => !i.hidden(TypeHidden.Capture))
-                    .filter(i=> !unavailable.has(i.icon))
-                    .map(t => (
-                      <CapturesIcon count={d[t.strippedIcon] || 0} type={t} />
-                    ))}
-                </View>
+                {i.groups.map(g => (
+                  <>
+                    {!!g.title && <Text category="h6" style={{ textAlign: "center" }}>
+                      {g.title}
+                    </Text>}
+                    <View
+                      style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
+                      {g.types
+                        .filter(i => !i.hidden(TypeHidden.Capture))
+                        .filter(i => !unavailable.has(i.icon))
+                        .map(t => (
+                          <CapturesIcon count={d[t.strippedIcon] || 0} type={t} />
+                        ))}
+                    </View>
+                  </>
+                ))}
               </Layout>
             </View>
           ))}
