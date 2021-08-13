@@ -1,8 +1,8 @@
 import React from "react";
 import { loadAsync } from "expo-font";
 import { ImageStyle, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
-import { Text } from "@ui-kitten/components";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Text, Icon as NativeBaseIcon } from "native-base";
 
 async function loadIconFont() {
   for (let i = 0; i < 5; i++) {
@@ -24,7 +24,7 @@ export default React.memo(function Icon({
   name?: IconName;
   style?: StyleProp<Partial<ImageStyle> & Partial<TextStyle> & Partial<ViewStyle>>;
   }) {
-  const { height, tintColor, color, marginHorizontal, ...iconStyle } = StyleSheet.flatten(style);
+  const { height, marginHorizontal, ...iconStyle } = StyleSheet.flatten(style);
   const [loaded, setLoaded] = React.useState(iconLoadedRef.iconLoaded);
   React.useEffect(() => {
     const unloadedRef = { value: false };
@@ -57,18 +57,22 @@ export default React.memo(function Icon({
           ?
         </Text>
       ) : loaded === 1 ? (
-        <MaterialCommunityIcons
-          name={name}
-          size={Number(height)}
-          color={color ?? tintColor}
-          style={[
-            iconStyle,
-            {
-              marginHorizontal:
-                marginHorizontal === 10 ? 2 : marginHorizontal,
-            },
-          ]}
-        />
+        <Text>
+          <NativeBaseIcon
+            as={
+              <MaterialCommunityIcons
+                name={name}
+                size={Number(height)}
+                style={[
+                  iconStyle,
+                  {
+                    marginHorizontal: marginHorizontal === 10 ? 2 : marginHorizontal,
+                  },
+                ]}
+              />
+            }
+          />
+        </Text>
       ) : (
         <View style={{ width: Number(height) + 16, height }} />
       )}

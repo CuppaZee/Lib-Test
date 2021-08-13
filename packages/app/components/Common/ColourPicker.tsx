@@ -1,9 +1,8 @@
 import React from "react";
 import Color from "color";
-// import { LinearGradient } from "expo-linear-gradient";
 import { PanResponder, View, ViewStyle } from "react-native";
 import { Svg, LinearGradient, Circle, Stop, Defs, Rect } from "react-native-svg";
-import { Input, Layout } from "@ui-kitten/components";
+import { Box, Heading, Input } from "native-base";
 
 interface HueSquareStyle extends ViewStyle {
   height: number;
@@ -197,7 +196,7 @@ function getColour(color: string, alpha: number) {
 
 export default function ColourPicker({colour, alpha, setColour, setAlpha}: ColourPickerProps) {
   return (
-    <Layout level="2">
+    <Box>
       <HueSquare
         style={{ height: 150, width: 300 }}
         colour={getColour(colour, alpha ?? 1)}
@@ -226,23 +225,26 @@ export default function ColourPicker({colour, alpha, setColour, setAlpha}: Colou
             }}
           />
 
-          {alpha !== undefined && <OpacitySlider
-            style={{ height: 16, width: 300 - 16 - 40, margin: 4 }}
-            colour={getColour(colour, alpha ?? 1)}
-            setColour={c => {
-              setColour(c.hex());
-              setAlpha?.(c.alpha());
-            }}
-          />}
+          {alpha !== undefined && (
+            <OpacitySlider
+              style={{ height: 16, width: 300 - 16 - 40, margin: 4 }}
+              colour={getColour(colour, alpha ?? 1)}
+              setColour={c => {
+                setColour(c.hex());
+                setAlpha?.(c.alpha());
+              }}
+            />
+          )}
         </View>
       </View>
       <View style={{ flexDirection: "row", width: 300, padding: 4 }}>
-        <Input
-          label="Hex"
-          style={{ flex: 1, margin: 4 }}
-          value={colour}
-          onChangeText={value => setColour(value)}
-        />
+        <Box flex={1} p={4}>
+          <Heading fontSize="sm">Hex</Heading>
+          <Input
+            value={colour}
+            onChangeText={value => setColour(value)}
+          />
+        </Box>
         {/* <Input
           label="Red"
           style={{ flex: 1, margin: 4 }}
@@ -261,13 +263,16 @@ export default function ColourPicker({colour, alpha, setColour, setAlpha}: Colou
           value={Math.round(colour.blue()).toString()}
           onChangeText={value => setColour(colour.blue(Number(value)))}
         /> */}
-        {alpha !== undefined && <Input
-          label="Alpha"
-          style={{ flex: 1, margin: 4 }}
-          value={alpha.toString()}
-          onChangeText={value => setAlpha?.(Number(value))}
-        />}
+        {alpha !== undefined && (
+        <Box flex={1} p={4}>
+            <Heading fontSize="sm">Alpha</Heading>
+            <Input
+              value={alpha.toString()}
+              onChangeText={value => setAlpha?.(Number(value))}
+            />
+          </Box>
+        )}
       </View>
-    </Layout>
+    </Box>
   );
 }

@@ -1,9 +1,9 @@
-import { Layout, Text } from "@ui-kitten/components";
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { Type } from "@cuppazee/db";
 import TypeImage from "../Common/TypeImage";
 import { useNavigation } from "@react-navigation/native";
+import { Box, Heading, Text } from "native-base";
 
 export type BouncerIconProps = {
   type?: Type;
@@ -20,13 +20,13 @@ export function BouncerIcon({ type, count, icon }: BouncerIconProps) {
         type: type.icon
       }
     })) : null}>
-      <Layout level="3" style={[styles.card, { opacity: count > 0 ? 1 : 0.2 }]}>
+      <Box bg="coolGray.200" _dark={{bg: "coolGray.800"}} style={[styles.card, { opacity: count > 0 ? 1 : 0.2 }]}>
         <TypeImage icon={type?.icon ?? icon ?? ""} style={{ size: 32 }} />
-        <Text numberOfLines={1} ellipsizeMode="tail" category="s2">
+        <Heading numberOfLines={1} ellipsizeMode="tail" fontSize="sm">
           {type?.name ?? icon ?? ""}
-        </Text>
-        <Text category="s1">{count}</Text>
-      </Layout>
+        </Heading>
+        <Text fontSize="md">{count}</Text>
+      </Box>
     </Pressable>
   );
 }

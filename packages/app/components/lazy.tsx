@@ -1,7 +1,7 @@
 import * as React from "react";
 import loadable, { DefaultComponent, OptionsWithResolver } from "@loadable/component";
-import { Layout, useTheme } from "@ui-kitten/components";
 import { ActivityIndicator, Platform } from "react-native";
+import { Box } from "native-base";
 
 export default function lazy(
   loadFn: (props: unknown) => Promise<DefaultComponent<unknown>>,
@@ -16,17 +16,27 @@ export default function lazy(
           location.reload();
         }
         return () => (
-          <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Box
+            bg="coolGray.100"
+            _dark={{ bg: "coolGray.900" }}
+            flex={1}
+            justifyContent="center"
+            alignItems="center">
             <ActivityIndicator size={24} />
-          </Layout>
+          </Box>
         );
       }
     },
     {
       fallback: (
-        <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Box
+          bg="coolGray.100"
+          _dark={{ bg: "coolGray.900" }}
+          flex={1}
+          justifyContent="center"
+          alignItems="center">
           <ActivityIndicator size={24} />
-        </Layout>
+        </Box>
       ),
       ...(options ?? {}),
     }

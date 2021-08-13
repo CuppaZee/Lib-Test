@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Box, Heading } from "native-base";
+import { Box, Heading, HStack, Link } from "native-base";
 import dayjs from "dayjs";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,6 @@ import { UserPagesNow } from "../User/Profile";
 import Icon from "../../components/Common/Icon";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useDB from "../../hooks/useDB";
-import { DrawerGroup, DrawerItem } from "@ui-kitten/components";
 
 export default React.memo(function UserDashCard({
   item,
@@ -63,150 +62,95 @@ export default React.memo(function UserDashCard({
             </>
           ) : null}
           <View style={{ padding: 4 }}>
-            <DrawerItem
-              style={{ backgroundColor: "transparent" }}
-              selected={false}
-              title={() => (
-                <Heading style={{ flex: 1, marginLeft: 4 }} fontSize="md">
-                  {t("pages:user_activity")}
-                </Heading>
-              )}
-              accessoryLeft={props => <Icon name="calendar" {...props} />}
+            <Pressable
               onPress={() =>
                 nav.navigate("User", {
                   screen: "Activity",
                   params: { username: item.username },
                 })
-              }
-            />
+              }>
+              <HStack px={4} py={3} alignItems="center">
+                <Icon name="calendar" style={{ height: 20 }} />
+                <Heading style={{ flex: 1, marginLeft: 4 }} pl={2} fontSize="md">
+                  {t("pages:user_activity")}
+                </Heading>
+              </HStack>
+            </Pressable>
             {UserPagesNow.map(i => (
-              <DrawerItem
-                key={i.screen}
-                style={{ backgroundColor: "transparent" }}
-                selected={false}
-                title={() => (
-                  <Heading style={{ flex: 1, marginLeft: 4 }} fontSize="md">
-                    {"title" in i ? t(`pages:${i.title}` as const) : i.nontranslatedtitle}
-                  </Heading>
-                )}
-                accessoryLeft={props => <Icon name={i.icon} {...props} />}
+              <Pressable
                 onPress={() =>
                   nav.navigate("User", {
                     screen: i.screen,
                     params: { username: item.username },
                   })
-                }
-              />
+                }>
+                <HStack px={4} py={3} alignItems="center">
+                  <Icon name={i.icon} style={{ height: 20 }} />
+                  <Heading style={{ flex: 1, marginLeft: 4 }} pl={2} fontSize="md">
+                    {"title" in i ? t(`pages:${i.title}` as const) : i.nontranslatedtitle}
+                  </Heading>
+                </HStack>
+              </Pressable>
             ))}
             {!!user.data?.data?.clan ? (
-              <DrawerItem
-                key="Clan"
-                style={{ backgroundColor: "transparent" }}
-                selected={false}
-                title={() => (
-                  <Heading style={{ flex: 1, marginLeft: 4 }} fontSize="md">
-                    {user.data?.data?.clan?.name}
-                  </Heading>
-                )}
-                accessoryLeft={() => (
+              <Pressable
+                onPress={() =>
+                  nav.navigate("Clan", {
+                    screen: "Stats",
+                    params: { clanid: user.data?.data?.clan?.id },
+                  })
+                }>
+                <HStack px={4} py={3} alignItems="center">
                   <Image
                     source={{ uri: user.data?.data?.clan?.logo ?? "" }}
                     style={{
                       height: 32,
                       width: 32,
                       borderRadius: 16,
-                      marginVertical: -4,
-                      marginHorizontal: 2,
+                      margin: -6,
                     }}
                   />
-                )}
-                onPress={() =>
-                  nav.navigate("Clan", {
-                    screen: "Stats",
-                    params: { clanid: user.data?.data?.clan?.id },
-                  })
-                }
-              />
-            ) : (
-              <DrawerItem
-                key="Clan"
-                style={{ backgroundColor: "transparent" }}
-                selected={false}
-                title={() => (
-                  <Heading style={{ flex: 1, marginLeft: 4 }} fontSize="md">
-                    {t(`pages:user_clan_progress`)}
+                  <Heading style={{ flex: 1, marginLeft: 4 }} pl={2} fontSize="md">
+                    {user.data?.data?.clan?.name}
                   </Heading>
-                )}
-                accessoryLeft={props => <Icon name="shield-half-full" {...props} />}
+                </HStack>
+              </Pressable>
+            ) : (
+              <Pressable
                 onPress={() =>
                   nav.navigate("User", {
                     screen: "ClanProgress",
                     params: { username: item.username },
                   })
-                }
-              />
+                }>
+                <HStack px={4} py={3} alignItems="center">
+                  <Icon name="shield-half-full" style={{ height: 20 }} />
+                  <Heading style={{ flex: 1, marginLeft: 4 }} pl={2} fontSize="md">
+                    {t(`pages:user_clan_progress`)}
+                  </Heading>
+                </HStack>
+              </Pressable>
             )}
-            {/* <DrawerGroup
-              title={() => (
-                <Heading style={{ flex: 1, marginLeft: 4 }} category="s1">
-                  {t("pages:tools")}
-                </Text>
-              )}
-              style={{ backgroundColor: "transparent" }}
-              accessoryLeft={props => <Icon {...props} name="tools" />}>
-              {UserPagesTools.map(i => (
-                <DrawerItem
-                  key={i.screen}
-                  style={{ backgroundColor: "transparent" }}
-                  selected={false}
-                  title={() => (
-                    <Heading style={{ flex: 1, marginLeft: 4 }} category="s1">
-                      {t(`pages:${i.title}` as const)}
-                    </Text>
-                  )}
-                  accessoryLeft={props => <Icon name={i.icon} {...props} />}
+            <Heading px={3} pt={3} fontSize="lg">{t("pages:user_captures")}</Heading>
+            {db
+              .getCategory("root")
+              ?.children.filter(i => i.children.length > 0)
+              .map(c => (
+                <Pressable
                   onPress={() =>
                     nav.navigate("User", {
-                      screen: i.screen,
-                      params: { username: item.username },
+                      screen: "Captures",
+                      params: { username: item.username, category: c.id },
                     })
-                  }
-                />
+                  }>
+                  <HStack px={4} py={3} alignItems="center">
+                    <TypeImage icon={c.icon} style={{ size: 32, margin: -6 }} />
+                    <Heading style={{ flex: 1, marginLeft: 4 }} pl={2} fontSize="md">
+                      {c.name}
+                    </Heading>
+                  </HStack>
+                </Pressable>
               ))}
-            </DrawerGroup> */}
-            <DrawerGroup
-              title={() => (
-                <Heading style={{ flex: 1, marginLeft: 4 }} fontSize="md">
-                  {t("pages:user_captures")}
-                </Heading>
-              )}
-              style={{ backgroundColor: "transparent" }}
-              accessoryLeft={props => <Icon {...props} name="check-bold" />}>
-              {db
-                .getCategory("root")
-                ?.children.filter(i => i.children.length > 0)
-                .map(c => (
-                  <DrawerItem
-                    key={c.id}
-                    style={{ backgroundColor: "transparent" }}
-                    selected={false}
-                    title={() => (
-                      <Heading style={{ flex: 1, marginLeft: 4 }} fontSize="md">
-                        {c.name}
-                      </Heading>
-                    )}
-                    accessoryLeft={() => (
-                      <TypeImage icon={c.icon} style={{ size: 32, marginVertical: -4 }} />
-                    )}
-                    onPress={() =>
-                      nav.navigate("User", {
-                        screen: "Captures",
-                        params: { username: item.username, category: c.id },
-                      })
-                    }
-                  />
-                ))}
-            </DrawerGroup>
           </View>
         </View>
       </ScrollView>

@@ -87,7 +87,7 @@ export default function UserActivityOverview({ user_id, day, activityData }: Use
     [data.dataUpdatedAt, activityData]
   );
   if (!data.isFetched || !d) {
-    return <Loading level="3" data={[data]} />;
+    return <Loading bg="coolGray.200" darkBg="coolGray.800" data={[data]} />;
   }
   return (
     <View style={{ padding: 4 }}>

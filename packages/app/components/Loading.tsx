@@ -1,5 +1,4 @@
 import { useLinkBuilder, useRoute } from "@react-navigation/native";
-import { Button, Layout, Spinner, Text, useTheme } from "@ui-kitten/components";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Image, View } from "react-native";
@@ -9,6 +8,7 @@ import useLogin from "../hooks/useLogin";
 import { useTeakens } from "../hooks/useToken";
 import Icon from "./Common/Icon";
 import baseURL from "../baseURL";
+import { Box, Button, Heading, Text, useColorMode, useTheme } from "native-base";
 
 function LoginError({ children }: { children: (login: () => void) => React.ReactElement }) {
   const buildLink = useLinkBuilder();
@@ -20,7 +20,8 @@ function LoginError({ children }: { children: (login: () => void) => React.React
 export default function Loading({
   data,
   customErrors,
-  level,
+  bg,
+  darkBg,
   skeleton: Skeleton,
 }: {
   data?: (QueryObserverResult & {
@@ -31,7 +32,8 @@ export default function Loading({
     };
   })[];
   customErrors?: any[];
-  level?: "1" | "2" | "3" | "4";
+  bg?: string | false;
+  darkBg?: string | false;
   skeleton?: (props: {
     backgroundColor?: string;
     colors?: string[];
@@ -44,19 +46,18 @@ export default function Loading({
   const route = useRoute();
   const teakens = useTeakens();
   const [sentReport, setSentReport] = React.useState(false);
+  const { colorMode } = useColorMode();
   const theme = useTheme();
   if (data?.some(i => i.tokenStatus?.status === "missing")) {
     return (
-      <Layout
-        level={level}
+      <Box
+        bg={bg === false ? undefined : bg ?? "coolGray.100"}
+        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
         onLayout={onLayout}
-        style={[
-          { flex: 1, justifyContent: "center", alignItems: "center" },
-          !level && { backgroundColor: "transparent" },
-        ]}>
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
           source={
-            theme.style === "dark"
+            colorMode === "dark"
               ? require("../assets/images/error.png")
               : require("../assets/images/error-light.png")
           }
@@ -66,42 +67,37 @@ export default function Loading({
             height: Math.min(100, size?.height || 0),
           }}
         />
-        <Text category="h4">
+        <Heading fontSize="xl">
           {t("error:user_device_title", {
             username: (route.params as any)?.username || "this user",
           })}
-        </Text>
-        <Text category="s1">{t("error:user_device_description")}</Text>
+        </Heading>
+        <Heading fontSize="md">{t("error:user_device_description")}</Heading>
         <LoginError>
           {login => (
             <Button
               onPress={login}
               style={{ margin: 4 }}
-              appearance="outline"
-              status="success"
-              accessoryLeft={props => <Icon name="account-plus" {...props} />}>
+              color="success"
+              startIcon={<Icon name="account-plus" style={{ height: 24 }} />}>
               {t("error:user_device_add_account")}
             </Button>
           )}
         </LoginError>
-      </Layout>
+      </Box>
     );
   }
 
-  if (
-    data?.some(i => i.tokenStatus?.status === "failed")
-  ) {
+  if (data?.some(i => i.tokenStatus?.status === "failed")) {
     return (
-      <Layout
-        level={level}
+      <Box
+        bg={bg === false ? undefined : bg ?? "coolGray.100"}
+        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
         onLayout={onLayout}
-        style={[
-          { flex: 1, justifyContent: "center", alignItems: "center" },
-          !level && { backgroundColor: "transparent" },
-        ]}>
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
           source={
-            theme.style === "dark"
+            colorMode === "dark"
               ? require("../assets/images/error.png")
               : require("../assets/images/error-light.png")
           }
@@ -111,32 +107,38 @@ export default function Loading({
             height: Math.min(100, size?.height || 0),
           }}
         />
-        <Text style={{ textAlign: "center" }} category="h4">Unable to connect to CuppaZee's server.</Text>
-        <Text style={{ textAlign: "center" }} category="s1">Check your internet connection and try again. If you've got a stable internet connection, then CuppaZee's server might be down.</Text>
-      </Layout>
+        <Heading style={{ textAlign: "center" }} fontSize="xl">
+          Unable to connect to CuppaZee's server.
+        </Heading>
+        <Heading style={{ textAlign: "center" }} fontSize="md">
+          Check your internet connection and try again. If you've got a stable internet connection,
+          then CuppaZee's server might be down.
+        </Heading>
+      </Box>
     );
   }
-  if (data?.some(i => i.tokenStatus?.status === "expired") || data?.some(i => {
-    if (i.error && typeof i.error === "object") {
-      if ("status" in i.error) {
-        if ((i.error as any).status === 401 || (i.error as any).status === "401") {
-          return true;
+  if (
+    data?.some(i => i.tokenStatus?.status === "expired") ||
+    data?.some(i => {
+      if (i.error && typeof i.error === "object") {
+        if ("status" in i.error) {
+          if ((i.error as any).status === 401 || (i.error as any).status === "401") {
+            return true;
+          }
         }
       }
-    }
-    return false;
-  })) {
+      return false;
+    })
+  ) {
     return (
-      <Layout
-        level={level}
+      <Box
+        bg={bg === false ? undefined : bg ?? "coolGray.100"}
+        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
         onLayout={onLayout}
-        style={[
-          { flex: 1, justifyContent: "center", alignItems: "center" },
-          !level && { backgroundColor: "transparent" },
-        ]}>
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
           source={
-            theme.style === "dark"
+            colorMode === "dark"
               ? require("../assets/images/error.png")
               : require("../assets/images/error-light.png")
           }
@@ -146,42 +148,39 @@ export default function Loading({
             height: Math.min(100, size?.height || 0),
           }}
         />
-        <Text category="h4">
+        <Heading fontSize="xl">
           {t("error:user_expired_title", {
             username:
               teakens.data[
                 data.find(i => i.tokenStatus?.status === "expired")?.tokenStatus?.user_id || ""
               ]?.username || "you",
           })}
-        </Text>
-        <Text category="s1">{t("error:user_expired_description")}</Text>
+        </Heading>
+        <Heading fontSize="md">{t("error:user_expired_description")}</Heading>
         <LoginError>
           {login => (
             <Button
               onPress={login}
               style={{ margin: 4 }}
-              appearance="outline"
-              status="success"
-              accessoryLeft={props => <Icon name="account-plus" {...props} />}>
+              color="success"
+              startIcon={<Icon name="account-plus" style={{ height: 24 }} />}>
               {t("error:user_expired_log_in")}
             </Button>
           )}
         </LoginError>
-      </Layout>
+      </Box>
     );
   }
   if (customErrors?.length || data?.some(i => i.isError)) {
     return (
-      <Layout
-        level={level}
+      <Box
+        bg={bg === false ? undefined : bg ?? "coolGray.100"}
+        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
         onLayout={onLayout}
-        style={[
-          { flex: 1, justifyContent: "center", alignItems: "center" },
-          !level && { backgroundColor: "transparent" },
-        ]}>
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
           source={
-            theme.style === "dark"
+            colorMode === "dark"
               ? require("../assets/images/error.png")
               : require("../assets/images/error-light.png")
           }
@@ -191,14 +190,14 @@ export default function Loading({
             height: Math.min(100, size?.height || 0),
           }}
         />
-        <Text category="h4">{t("error:error_title")}</Text>
-        <Text category="s1">{t("error:error_description")}</Text>
+        <Heading fontSize="xl">{t("error:error_title")}</Heading>
+        <Heading fontSize="md">{t("error:error_description")}</Heading>
         {sentReport ? (
           <View>
-            <Text status="success" style={{ textAlign: "center" }} category="h6">
+            <Heading color="success" style={{ textAlign: "center" }} fontSize="md">
               {t("error:error_report_sent_title")}
-            </Text>
-            <Text status="success" style={{ textAlign: "center" }} category="p1">
+            </Heading>
+            <Text color="success" style={{ textAlign: "center" }} fontSize="md">
               {t("error:error_report_sent_description")}
             </Text>
           </View>
@@ -216,47 +215,22 @@ export default function Loading({
               setSentReport(true);
             }}
             style={{ margin: 4 }}
-            appearance="outline"
-            status="warning"
-            accessoryLeft={props => <Icon name="message-alert" {...props} />}>
+            color="warning"
+            startIcon={<Icon name="message-alert" style={{ height: 24 }} />}>
             {t("error:error_report")}
           </Button>
         )}
-      </Layout>
+      </Box>
     );
   }
 
   return (
-    <Layout
-      level={level}
+    <Box
+      bg={bg === false ? undefined : bg ?? "coolGray.100"}
+      _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
       onLayout={onLayout}
-      style={[
-        Skeleton ? { flex: 1 } : { flex: 1, justifyContent: "center", alignItems: "center" },
-        !level && { backgroundColor: "transparent" },
-      ]}>
-      {Skeleton ? (
-        <Skeleton
-          colorMode={theme.style === "dark" ? "dark" : "light"}
-          colors={
-            theme.style === "dark"
-              ? [
-                  theme["color-basic-800"],
-                  theme["color-basic-900"],
-                  theme["color-basic-800"],
-                  theme["color-basic-900"],
-                ]
-              : [
-                  theme["color-basic-500"],
-                  theme["color-basic-400"],
-                  theme["color-basic-500"],
-                  theme["color-basic-400"],
-                ]
-          }
-        />
-      ) : (
-        // <Spinner size="large" status="primary" />
-        <ActivityIndicator color={theme["color-primary-500"]} size={24} />
-      )}
-    </Layout>
+      style={Skeleton ? { flex: 1 } : { flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator color={theme.colors.primary[500]} size={24} />
+    </Box>
   );
 }

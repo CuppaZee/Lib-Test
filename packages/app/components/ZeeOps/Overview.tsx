@@ -4,11 +4,11 @@ import { Image, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import dayjs from "dayjs";
-import Svg, { Text as SvgText } from "react-native-svg";
 import { useTranslation } from "react-i18next";
 import Loading from "../Loading";
 import TypeImage from "../Common/TypeImage";
 import Icon from "../Common/Icon";
+import { Box } from "native-base";
 
 export type ZeeOpsOverviewProps = {
   user_id: number;
@@ -20,7 +20,7 @@ export default function ZeeOpsOverview({ user_id }: ZeeOpsOverviewProps) {
   const data = useMunzeeRequest("ops/zeeops/status", { user_id }, true, user_id);
   if (data.tokenStatus.status !== "valid") return null;
   if (!data.data?.data) {
-    return <Loading data={[data]} />;
+    return <Loading bg="coolGray.200" darkBg="coolGray.800" data={[data]} />;
   }
   const d = data.data.data;
   let current = d.missions.find(i => i.id === d.currentMission);
@@ -34,25 +34,17 @@ export default function ZeeOpsOverview({ user_id }: ZeeOpsOverviewProps) {
           justifyContent: "center",
         }}>
         <View>
-          <TypeImage
-            style={{ size: 36, margin: 4 }}
-            icon="spyderbot"
-          />
+          <TypeImage style={{ size: 36, margin: 4 }} icon="spyderbot" />
         </View>
         <View style={{ flex: 1, maxWidth: 400 }}>
           <Text category="s1" style={{ padding: 4 }}>
             Week Complete!
           </Text>
-          <Layout level="4" style={{ borderRadius: 8 }}>
+          <Box bg="coolGray.300" _dark={{ bg: "coolGray.700" }} style={{ borderRadius: 8 }}>
             <LinearGradient
               start={[0, 0.5]}
               end={[1, 0.5]}
-              locations={[
-                0,
-                1,
-                1.0001,
-                2,
-              ]}
+              locations={[0, 1, 1.0001, 2]}
               colors={[
                 theme["text-success-color"] + "66",
                 theme["text-success-color"] + "66",
@@ -69,7 +61,7 @@ export default function ZeeOpsOverview({ user_id }: ZeeOpsOverviewProps) {
                 {t("user_zeeops:spyderbot")}
               </Text>
             </LinearGradient>
-          </Layout>
+          </Box>
         </View>
       </View>
     );
@@ -100,7 +92,7 @@ export default function ZeeOpsOverview({ user_id }: ZeeOpsOverviewProps) {
         <Text category="s1" style={{ padding: 4 }}>
           {current?.description}
         </Text>
-        <Layout level="4" style={{ borderRadius: 8 }}>
+        <Box bg="coolGray.300" _dark={{ bg: "coolGray.700" }} style={{ borderRadius: 8 }}>
           <LinearGradient
             start={[0, 0.5]}
             end={[1, 0.5]}
@@ -128,7 +120,7 @@ export default function ZeeOpsOverview({ user_id }: ZeeOpsOverviewProps) {
                 : `${current?.progress}/${current?.goal}`}
             </Text>
           </LinearGradient>
-        </Layout>
+        </Box>
       </View>
     </View>
   );

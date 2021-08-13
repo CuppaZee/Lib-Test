@@ -16,6 +16,7 @@ import Tip from "../components/Common/Tip";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "../components/Common/Icon";
 import useSetting, { DrawerAtom, ReadyAtom } from "../hooks/useSetting";
+import { Box, HStack } from "native-base";
 
 const DrawerItem = React.memo(
   function ({ title, style, ...props }: DrawerItemProps) {
