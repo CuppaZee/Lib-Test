@@ -20,6 +20,7 @@ import useSetting, { DrawerAtom, ReadyAtom } from "../hooks/useSetting";
 import { Box, HStack } from "native-base";
 import ExpoClipboard from "expo-clipboard";
 import useDB, { dbLoadLog } from "../hooks/useDB";
+import { Box, HStack } from "native-base";
 
 const DrawerItem = React.memo(
   function ({ title, style, ...props }: DrawerItemProps) {
