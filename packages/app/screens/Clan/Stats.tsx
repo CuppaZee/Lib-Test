@@ -1,7 +1,7 @@
 import { GameID } from "@cuppazee/utils/lib";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { Layout } from "@ui-kitten/components";
 import dayjs from "dayjs";
+import { Box } from "native-base";
 import React from "react";
 import { ScrollView } from "react-native";
 import ClanRequirementsTable from "../../components/Clan/Requirements";
@@ -29,9 +29,9 @@ export default function ClanStatsScreen2() {
   const clan_id = Number(route.params.clanid);
   useTitle(`☕ ${clan_id}`);
   return (
-    <Layout style={{ flex: 1 }}>
+    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={{ flex: 1 }}>
       <ClanPersonalisationModal />
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 4 }}>
         <Tip
           wrapperStyle={{ margin: 4, width: 400, maxWidth: "100%", alignSelf: "center" }}
           id="clan_stats_customisation"
@@ -68,6 +68,6 @@ export default function ClanStatsScreen2() {
             .reverse()}
         />
       </ScrollView>
-    </Layout>
+    </Box>
   );
 }

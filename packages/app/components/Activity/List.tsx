@@ -47,17 +47,17 @@ export default function UserActivityList({
             width: 1000,
             maxWidth: "100%",
           }}>
-          <Datepicker
+          {/* <Datepicker
             date={new Date(route.params.date ? dayjs.mhqParse(route.params.date).valueOf() : dayjs.mhqNow().valueOf())}
             onSelect={nextDate => nav.setParams({ date: dayjs(nextDate.valueOf()).format("YYYY-MM-DD") })}
             accessoryRight={props => <Icon {...props} name="calendar" />}
             dateService={getDateService()}
-          />
+          /> */}
           {toggleFilterModal && (
             <Button
               onPress={() => toggleFilterModal()}
               size="sm"
-              startIcon={<Icon style={{ height: 24 }} name="filter" />}>
+              startIcon={<Icon colorBlank style={{ height: 24 }} name="filter" />}>
               {t("user_activity:filter_edit")}
             </Button>
           )}

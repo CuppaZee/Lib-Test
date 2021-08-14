@@ -1,4 +1,3 @@
-import { Button, Layout, Modal, Text, useTheme } from "@ui-kitten/components";
 import React from "react";
 import { Image, PixelRatio, View } from "react-native";
 import {
@@ -20,6 +19,7 @@ import useSetting, { ClanPersonalisationAtom, ClansAtom } from "../../hooks/useS
 import Icon from "../Common/Icon";
 import { ClanShadowData, ClanStatsData, ClanStatsUser, generateClanRequirements, generateClanStats } from "@cuppazee/utils/lib";
 import useDB from "../../hooks/useDB";
+import { Box, Button, Heading, Modal, Text, useColorMode, useTheme } from "native-base";
 export interface ClanStatsTableProps {
   game_id: number;
   clan_id: number;
@@ -52,9 +52,10 @@ export default React.memo(
 
     const db = useDB();
 
+    const {colorMode} = useColorMode()
     const theme = useTheme();
     const borderColor =
-      (theme.style === "dark" ? theme["color-basic-400"] : theme["color-basic-800"])
+      (colorMode === "dark" ? theme.colors.coolGray[400] : theme.colors.coolGray[600])
         .replace("rgb(", "rgba(")
         .slice(0, -1) + ", 0.3)";
 
@@ -114,9 +115,9 @@ export default React.memo(
       (!shadow_data.data && [-1, 1349, 1441, 457, 1902, 2042, 1870, 3224].includes(actual_clan_id))
     ) {
       return (
-        <Layout style={{ flex: 1 }} onLayout={onLayout}>
+        <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} flexGrow={1} onLayout={onLayout}>
           <Loading data={[clan_data, requirements_data, shadow_data]} />
-        </Layout>
+        </Box>
       );
     }
 
@@ -161,8 +162,12 @@ export default React.memo(
       | { type: "group" | "individual" | "share"; level: number }
     )[];
     return (
-      <Layout onLayout={onLayout} level="2" style={{ margin: 4, borderRadius: 8 }}>
-        <Layout
+      <Box
+        onLayout={onLayout}
+        bg="coolGray.200"
+        _dark={{ bg: "coolGray.800" }}
+        style={{ margin: 4, borderRadius: 8 }}>
+        <Box
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -171,7 +176,8 @@ export default React.memo(
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
           }}
-          level="4">
+          bg="coolGray.300"
+          _dark={{ bg: "coolGray.700" }}>
           <Image
             style={{ height: 32, width: 32, borderRadius: 16, marginRight: 8 }}
             source={{
@@ -181,36 +187,68 @@ export default React.memo(
             }}
           />
           <View style={{ flex: 1 }}>
-            <Text numberOfLines={1} category="h6">
+            <Heading numberOfLines={1} fontSize="lg">
               {clan_data.data.data?.details.name}
-            </Text>
-            <Text numberOfLines={1} category="s1">
+            </Heading>
+            <Heading numberOfLines={1} fontSize="md">
               {clan_data.data.data?.details.tagline}
-            </Text>
+            </Heading>
           </View>
+          <Button.Group size="sm" isAttached>
+            <Button
+              bg={options[actual_clan_id]?.subtract ? "primary.700" : "primary.400"}
+              borderRightRadius={0}
+              onPress={() =>
+                setOptions({
+                  ...options,
+                  [actual_clan_id]: {
+                    ...options[actual_clan_id],
+                    subtract: false,
+                  },
+                })
+              }>
+              Achieved
+            </Button>
+            <Button
+              bg={options[actual_clan_id]?.subtract ? "primary.400" : "primary.700"}
+              borderLeftRadius={0}
+              onPress={() =>
+                setOptions({
+                  ...options,
+                  [actual_clan_id]: {
+                    ...options[actual_clan_id],
+                    subtract: true,
+                  },
+                })
+              }>
+              Remaining
+            </Button>
+          </Button.Group>
           <Button
-            appearance="ghost"
-            accessoryLeft={props => <Icon {...props} name="plus-minus" />}
+            ml={2}
+            bg={options[actual_clan_id]?.shadow ? "primary.400" : "primary.700"}
+            startIcon={<Icon colorBlank style={{ height: 24, width: 24 }} name="coffee" />}
+            size="xs"
             onPress={() =>
               setOptions({
                 ...options,
                 [actual_clan_id]: {
                   ...options[actual_clan_id],
-                  subtract: !options[actual_clan_id].subtract,
+                  shadow: !(options[actual_clan_id]?.shadow ?? true),
                 },
               })
             }
           />
           <Button
-            appearance="ghost"
-            accessoryLeft={props => <Icon {...props} name="cog" />}
+            bg="transparent"
+            startIcon={<Icon style={{ height: 24, width: 24 }} name="cog" />}
             onPress={() => setModalVisible(true)}
           />
-        </Layout>
+        </Box>
         <Modal
-          backdropStyle={{ backgroundColor: "#00000077" }}
-          visible={modalVisible}
-          onBackdropPress={() => setModalVisible(false)}>
+          // backdropStyle={{ backgroundColor: "#00000077" }}
+          isOpen={modalVisible}
+          onClose={() => setModalVisible(false)}>
           <ClanSettingsModal
             levels={levels}
             close={() => setModalVisible(false)}
@@ -397,7 +435,7 @@ export default React.memo(
             ))}
           </SyncScrollView>
         </View>
-      </Layout>
+      </Box>
     );
   },
   (prev, now) => prev.clan_id === now.clan_id && prev.game_id === now.game_id

@@ -1,5 +1,5 @@
 import { StackHeaderProps } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useIsFetching, useQueryClient } from "react-query";
 import day from "dayjs";
 import { ActivityIndicator } from "react-native";
@@ -14,7 +14,8 @@ function LoadIcon() {
     <Button
       size="sm"
       bg="none"
-      startIcon={loading ? (
+      startIcon={
+        loading ? (
           <ActivityIndicator color={theme.colors.coolGray[500]} size={24} />
         ) : (
           <Icon style={{ height: 24 }} name="refresh" />
@@ -30,10 +31,21 @@ function LoadIcon() {
   );
 }
 
+function Time() {
+  const [_, u] = useReducer(i => i + 1, 0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      u();
+    }, 500);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  return <>{day.mhqNow().format("L LT [MHQ]")}</>;
+}
+
 export default function Header(props: StackHeaderProps) {
-  const titleData = (
-    props.options.headerTitle?.toString() ?? props.route.name
-  ).split("|");
+  const title = props.options.headerTitle?.toString() ?? props.route.name;
   return (
     <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} safeAreaTop>
       <HStack alignItems="center" p={1}>
@@ -46,8 +58,10 @@ export default function Header(props: StackHeaderProps) {
           disabled={!props.navigation.canGoBack()}
         />
         <Box flex={1}>
-          <Heading fontSize="lg">{titleData[0] ?? ""}</Heading>
-          <Text fontSize="sm">{titleData[1] ?? day.mhqNow().format("L LT [MHQ]")}</Text>
+          <Heading fontSize="lg">{title}</Heading>
+          <Text fontSize="sm">
+            <Time />
+          </Text>
         </Box>
         <LoadIcon />
       </HStack>

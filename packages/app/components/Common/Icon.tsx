@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { loadAsync } from "expo-font";
 import { ImageStyle, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -16,13 +16,22 @@ const iconLoadedRef = { iconLoaded: 0 };
 const iconLoaded = loadIconFont();
 iconLoaded.then(() => (iconLoadedRef.iconLoaded = 1)).catch(() => (iconLoadedRef.iconLoaded = 2));
 
+function TextWrapper({children, colorBlank}: PropsWithChildren<{colorBlank: boolean}>) {
+  if (colorBlank) {
+    return <>{children}</>;
+  }
+  return <Text>{children}</Text>;
+}
+
 export type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
 export default React.memo(function Icon({
   name,
   style,
+  colorBlank,
 }: {
   name?: IconName;
   style?: StyleProp<Partial<ImageStyle> & Partial<TextStyle> & Partial<ViewStyle>>;
+  colorBlank?: boolean;
 }) {
   const { height, marginHorizontal, ...iconStyle } = StyleSheet.flatten(style);
   const [loaded, setLoaded] = React.useState(iconLoadedRef.iconLoaded);
@@ -59,7 +68,7 @@ export default React.memo(function Icon({
           ?
         </Text>
       ) : loaded === 1 ? (
-        <Text>
+        <TextWrapper colorBlank={!!colorBlank}>
           <NativeBaseIcon
             as={
               <MaterialCommunityIcons
@@ -74,7 +83,7 @@ export default React.memo(function Icon({
               />
             }
           />
-        </Text>
+        </TextWrapper>
       ) : (
         <View style={{ width: Number(height) + 16, height }} />
       )}

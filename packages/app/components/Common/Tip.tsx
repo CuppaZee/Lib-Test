@@ -68,11 +68,11 @@ export default function Tip({ id, tip, wrapperStyle, small }: TipProps) {
               size="xs"
               onPress={() =>
                 setTipsViewed({
-                    ...tipsViewed,
-                    [id]: {
-                      count: (tipsViewed[id]?.count ?? 0) + 1,
-                      time: Date.now()
-                    }
+                  ...tipsViewed,
+                  [id]: {
+                    count: (tipsViewed[id]?.count ?? 0) + 1,
+                    time: Date.now(),
+                  },
                 })
               }
             />

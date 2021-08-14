@@ -79,7 +79,7 @@ export default function Loading({
               onPress={login}
               style={{ margin: 4 }}
               color="success"
-              startIcon={<Icon name="account-plus" style={{ height: 24 }} />}>
+              startIcon={<Icon colorBlank name="account-plus" style={{ height: 24 }} />}>
               {t("error:user_device_add_account")}
             </Button>
           )}
@@ -163,7 +163,7 @@ export default function Loading({
               onPress={login}
               style={{ margin: 4 }}
               color="success"
-              startIcon={<Icon name="account-plus" style={{ height: 24 }} />}>
+              startIcon={<Icon colorBlank name="account-plus" style={{ height: 24 }} />}>
               {t("error:user_expired_log_in")}
             </Button>
           )}
@@ -216,7 +216,7 @@ export default function Loading({
             }}
             style={{ margin: 4 }}
             color="warning"
-            startIcon={<Icon name="message-alert" style={{ height: 24 }} />}>
+            startIcon={<Icon colorBlank name="message-alert" style={{ height: 24 }} />}>
             {t("error:error_report")}
           </Button>
         )}

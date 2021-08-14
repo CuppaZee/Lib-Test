@@ -1,8 +1,7 @@
-import { Layout, Text, useTheme } from "@ui-kitten/components";
 import dayjs from "dayjs";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Image, PixelRatio, StyleSheet, View, Pressable } from "react-native";
+import { Image, PixelRatio, View, Pressable } from "react-native";
 import useComponentSize from "../../hooks/useComponentSize";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
@@ -11,6 +10,7 @@ import Loading from "../Loading";
 import Icon from "../Common/Icon";
 import { ClanRewardsData, GameID, generateClanRequirements } from "@cuppazee/utils/lib";
 import useDB from "../../hooks/useDB";
+import { Box, Heading, Text } from "native-base";
 
 export interface ClanRequirementsListProps {
   game_id: number;
@@ -25,7 +25,6 @@ export default React.memo(
     const { t } = useTranslation();
     const [size, onLayout] = useComponentSize();
     const fontScale = PixelRatio.getFontScale();
-    const theme = useTheme();
 
     const db = useDB();
 
@@ -49,7 +48,6 @@ export default React.memo(
     const levels = new Array(levelCount).fill(0).map((_, n) => n + 1);
 
     const rewards = rewards_data.data?.data;
-    // const rewardlevels = new Array(levelCount).fill(0).map((_, n) => n + 1);
 
     if (requirements_data.data?.data?.data.levels.length === 0) {
       return null;
@@ -57,14 +55,20 @@ export default React.memo(
 
     if (!requirements || !size || !rewards) {
       return (
-        <Layout style={{ flex: 1 }} onLayout={onLayout}>
+        <Box bg="coolGray.100" _dark={{ bg: "coolGray.900"}} style={{ flexGrow: 1 }} onLayout={onLayout}>
           <Loading data={[requirements_data, rewards_data]} />
-        </Layout>
+        </Box>
       );
     }
     return (
-      <Layout onLayout={onLayout} level="2" style={{ margin: 4, borderRadius: 8 }}>
-        <Layout
+      <Box
+        bg="coolGray.200"
+        _dark={{ bg: "coolGray.800" }}
+        onLayout={onLayout}
+        style={{ margin: 4, borderRadius: 8 }}>
+        <Box
+          bg="coolGray.300"
+          _dark={{ bg: "coolGray.700" }}
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -72,27 +76,25 @@ export default React.memo(
             padding: 4,
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
-          }}
-          level="4">
+          }}>
           <Icon
             style={{
               height: 32 * fontScale,
               width: 32 * fontScale,
               marginRight: 8,
-              color: theme.style === "dark" ? "#fff" : "#000",
             }}
             name="playlist-check"
           />
           <View>
-            <Text category="h6">{t("clan:clan_requirements")}</Text>
+            <Heading fontSize="lg">{t("clan:clan_requirements")}</Heading>
             <Pressable
               onPress={() => {
                 console.log(JSON.stringify(requirements.all));
               }}>
-              <Text category="s1">{dayjs(new GameID(game_id).date).format("MMMM YYYY")}</Text>
+              <Heading fontSize="sm">{dayjs(new GameID(game_id).date).format("MMMM YYYY")}</Heading>
             </Pressable>
           </View>
-        </Layout>
+        </Box>
         {requirements.isAprilFools && (
           <Text style={{ padding: 4 }}>
             Please be aware that the Munzee API is still returning April Fools requirements. I have
@@ -103,12 +105,12 @@ export default React.memo(
         )}
         {levels.map(level => (
           <View style={{ paddingBottom: 16 }}>
-            <Text style={{ margin: 4 }} category="h6">
+            <Heading style={{ margin: 4 }} fontSize="lg">
               {t("clan:level", { level })}
-            </Text>
-            <Text style={{ margin: 4 }} category="s1">
+            </Heading>
+            <Heading style={{ margin: 4 }} fontSize="md">
               {t("clan:individual")}
-            </Text>
+            </Heading>
             {requirements.individual
               .filter(i => requirements.tasks.individual[i][level])
               .map(i => (
@@ -117,18 +119,18 @@ export default React.memo(
                     source={{ uri: `https://server.cuppazee.app/requirements/${i}.png` }}
                     style={{ height: 24, width: 24, marginRight: 8 }}
                   />
-                  <Text category="s2">
-                    <Text category="s1">
+                  <Heading fontSize="xs">
+                    <Heading fontSize="sm">
                       {requirements.tasks.individual[i][level]?.toLocaleString()}
-                    </Text>{" "}
+                    </Heading>{" "}
                     {db.getClanRequirement(i).top} {db.getClanRequirement(i).bottom}
-                  </Text>
+                  </Heading>
                 </View>
               ))}
 
-            <Text style={{ margin: 4 }} category="s1">
+            <Heading style={{ margin: 4 }} fontSize="md">
               {t("clan:group")}
-            </Text>
+            </Heading>
             {requirements.group
               .filter(i => requirements.tasks.group[i][level])
               .map(i => (
@@ -137,40 +139,35 @@ export default React.memo(
                     source={{ uri: `https://server.cuppazee.app/requirements/${i}.png` }}
                     style={{ height: 24, width: 24, marginRight: 8 }}
                   />
-                  <Text category="s2">
-                    <Text category="s1">
+                  <Heading fontSize="xs">
+                    <Heading fontSize="sm">
                       {requirements.tasks.group[i][level]?.toLocaleString()}
-                    </Text>{" "}
+                    </Heading>{" "}
                     {db.getClanRequirement(i).top} {db.getClanRequirement(i).bottom}
-                  </Text>
+                  </Heading>
                 </View>
               ))}
 
-            <Text style={{ margin: 4 }} category="s1">
+            <Heading style={{ margin: 4 }} fontSize="md">
               {t("clan:rewards")}
-            </Text>
+            </Heading>
             {rewards.order
               .filter(i => rewards.levels[level - 1]?.[i])
               .map(i => (
                 <View style={{ padding: 4, flexDirection: "row" }}>
                   <TypeImage icon={rewards.rewards[i]?.logo} style={{ size: 24, marginRight: 8 }} />
-                  <Text category="s2">
-                    <Text category="s1">{rewards.levels[level - 1][i]?.toLocaleString()}x</Text>{" "}
+                  <Heading fontSize="xs">
+                    <Heading fontSize="sm">
+                      {rewards.levels[level - 1][i]?.toLocaleString()}x
+                    </Heading>{" "}
                     {rewards.rewards[i]?.name}
-                  </Text>
+                  </Heading>
                 </View>
               ))}
           </View>
         ))}
-      </Layout>
+      </Box>
     );
   },
   (prev, now) => prev.clan_id === now.clan_id && prev.game_id === now.game_id
 );
-
-const styles = StyleSheet.create({
-  card: {
-    margin: 4,
-    borderRadius: 8,
-  },
-});

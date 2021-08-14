@@ -1,4 +1,3 @@
-import { Layout, Spinner, Text, useTheme } from "@ui-kitten/components";
 import dayjs from "dayjs";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +13,7 @@ import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useSetting, { ClanPersonalisationAtom } from "../../hooks/useSetting";
 import Icon from "../Common/Icon";
 import { ClanRewardsData, GameID } from "@cuppazee/utils/lib";
+import { Box, Heading, Spinner, Text, useColorMode, useTheme } from "native-base";
 
 const generateLevels = (n: number) =>
   new Array(n)
@@ -41,9 +41,10 @@ export default React.memo(
     const reverse = style.reverse;
     const compact = style.style;
 
+    const { colorMode } = useColorMode();
     const theme = useTheme();
     const borderColor =
-      (theme.style === "dark" ? theme["color-basic-400"] : theme["color-basic-800"])
+      (colorMode === "dark" ? theme.colors.coolGray[400] : theme.colors.coolGray[600])
         .replace("rgb(", "rgba(")
         .slice(0, -1) + ", 0.3)";
 
@@ -59,11 +60,13 @@ export default React.memo(
 
     if (!rewards || !size) {
       return (
-        <Layout
+        <Box
+          bg="coolGray.100"
+          _dark={{ bg: "coolGray.900" }}
           onLayout={onLayout}
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
           <Spinner />
-        </Layout>
+        </Box>
       );
     }
     
@@ -88,8 +91,12 @@ export default React.memo(
       | { type: "group" | "individual"; level: number }
     )[];
     return (
-      <Layout onLayout={onLayout} level="2" style={{ margin: 4, borderRadius: 8 }}>
-        <Layout
+      <Box
+        onLayout={onLayout}
+        bg="coolGray.200"
+        _dark={{ bg: "coolGray.800" }}
+        style={{ margin: 4, borderRadius: 8 }}>
+        <Box
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -98,21 +105,21 @@ export default React.memo(
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
           }}
-          level="4">
+          bg="coolGray.300"
+          _dark={{ bg: "coolGray.700" }}>
           <Icon
             style={{
               height: 32 * fontScale,
               width: 32 * fontScale,
               marginRight: 8,
-              color: theme.style === "dark" ? "#fff" : "#000",
             }}
             name="playlist-check"
           />
           <View>
-            <Text category="h6">{t("clan:clan_rewards")}</Text>
-            <Text category="s1">{dayjs(new GameID(game_id).date).format("MMMM YYYY")}</Text>
+            <Heading fontSize="lg">{t("clan:clan_rewards")}</Heading>
+            <Heading fontSize="sm">{dayjs(new GameID(game_id).date).format("MMMM YYYY")}</Heading>
           </View>
-        </Layout>
+        </Box>
         {!Object.values(rewards.levels[0]).some(i => i !== 1) && (
           <Text style={{ padding: 4 }}>
             Please be aware that the Munzee API is still returning April Fools rewards. I have not
@@ -223,7 +230,7 @@ export default React.memo(
             ))}
           </ScrollView>
         </View>
-      </Layout>
+      </Box>
     );
   },
   (prev, now) => prev.game_id === now.game_id

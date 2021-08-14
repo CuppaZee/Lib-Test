@@ -1,7 +1,7 @@
 import { GameID } from "@cuppazee/utils/lib";
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
-import { Layout } from "@ui-kitten/components";
 import dayjs from "dayjs";
+import { Box } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
@@ -32,11 +32,11 @@ export default function ClanBookmarksScreen() {
   const [style] = useSetting(ClanPersonalisationAtom);
   const [clans] = useClanBookmarks();
   const isFocused = useIsFocused();
-  if(!isFocused || !size) return <Layout onLayout={onLayout} style={{ flex: 1 }}></Layout>
+  if(!isFocused || !size) return <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} onLayout={onLayout} style={{ flex: 1 }} />
   return (
-    <Layout onLayout={onLayout} style={{ flex: 1 }}>
+    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} onLayout={onLayout} style={{ flex: 1 }}>
       <ClanPersonalisationModal />
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 4 }}>
         <Tip
           wrapperStyle={{ margin: 4, width: 400, maxWidth: "100%", alignSelf: "center" }}
           id="clan_stats_customisation"
@@ -97,6 +97,6 @@ export default function ClanBookmarksScreen() {
           />
         </View>
       </ScrollView>
-    </Layout>
+    </Box>
   );
 }

@@ -19,14 +19,11 @@ export type SelectProps = Omit<
 
 export default function Select({ value, onValueChange, options, ...rest }: SelectProps) {
   return (
-    <NativeBaseSelect
-      {...rest}
-      selectedValue={value}
-      onValueChange={value => onValueChange(value)}>
+    <NativeBaseSelect {...rest} selectedValue={value} onValueChange={value => onValueChange(value)}>
       {options.map(i => (
         <NativeBaseSelect.Item
           key={i.value}
-          startIcon={i.icon ? <Icon style={{ height: 24 }} name={i.icon} /> : undefined}
+          startIcon={i.icon ? <Icon colorBlank style={{ height: 24 }} name={i.icon} /> : undefined}
           value={i.value}
           label={i.label}
         />

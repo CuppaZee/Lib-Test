@@ -1,4 +1,3 @@
-import { Layout, Text, useTheme } from "@ui-kitten/components";
 import dayjs from "dayjs";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -13,6 +12,7 @@ import useSetting, { ClanPersonalisationAtom } from "../../hooks/useSetting";
 import Icon from "../Common/Icon";
 import { GameID, generateClanRequirements } from "@cuppazee/utils/lib";
 import useDB from "../../hooks/useDB";
+import { Box, Text, Heading, useColorMode, useTheme } from "native-base";
 
 const generateLevels = (n: number) =>
   new Array(n).fill(0).map(
@@ -54,8 +54,9 @@ function Countdown({ time }: { time: number }) {
         | "minutes"
         | "seconds"
       )[]).map(i => (
-        <Layout
-          level="4"
+        <Box
+          bg="coolGray.300"
+          _dark={{ bg: "coolGray.700" }}
           style={{
             height: 80,
             width: 80,
@@ -64,9 +65,9 @@ function Countdown({ time }: { time: number }) {
             justifyContent: "center",
             alignItems: "center",
           }}>
-          <Text category="h1">{Math.floor(dur[i === "days" ? "asDays" : i]())}</Text>
-          <Text category="s1">{i.toUpperCase()}</Text>
-        </Layout>
+          <Heading fontSize="lg">{Math.floor(dur[i === "days" ? "asDays" : i]())}</Heading>
+          <Heading fontSize="sm">{i.toUpperCase()}</Heading>
+        </Box>
       ))}
     </View>
   );
@@ -87,9 +88,10 @@ export default React.memo(
 
     const db = useDB();
 
+    const { colorMode } = useColorMode();
     const theme = useTheme();
     const borderColor =
-      (theme.style === "dark" ? theme["color-basic-400"] : theme["color-basic-800"])
+      (colorMode === "dark" ? theme.colors.coolGray[400] : theme.colors.coolGray[600])
         .replace("rgb(", "rgba(")
         .slice(0, -1) + ", 0.3)";
 
@@ -116,9 +118,9 @@ export default React.memo(
 
     if (!requirements || !size) {
       return (
-        <Layout style={{ flex: 1 }} onLayout={onLayout}>
+        <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} flexGrow={1} onLayout={onLayout}>
           <Loading data={[requirements_data]} />
-        </Layout>
+        </Box>
       );
     }
 
@@ -139,8 +141,10 @@ export default React.memo(
       | { type: "group" | "individual"; level: number }
     )[];
     return (
-      <Layout onLayout={onLayout} level="2" style={{ margin: 4, borderRadius: 8 }}>
-        <Layout
+      <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} onLayout={onLayout} style={{ margin: 4, borderRadius: 8 }}>
+        <Box
+          bg="coolGray.300"
+          _dark={{ bg: "coolGray.700" }}
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -148,22 +152,20 @@ export default React.memo(
             padding: 4,
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
-          }}
-          level="4">
+          }}>
           <Icon
             style={{
               height: 32 * fontScale,
               width: 32 * fontScale,
               marginRight: 8,
-              color: theme.style === "dark" ? "#fff" : "#000",
             }}
             name="playlist-check"
           />
           <View>
-            <Text category="h6">{t("clan:clan_requirements")}</Text>
-            <Text category="s1">{dayjs(new GameID(game_id).date).format("MMMM YYYY")}</Text>
+            <Heading fontSize="lg">{t("clan:clan_requirements")}</Heading>
+            <Heading fontSize="sm">{dayjs(new GameID(game_id).date).format("MMMM YYYY")}</Heading>
           </View>
-        </Layout>
+        </Box>
         {requirements.isAprilFools && (
           <Text style={{ padding: 4 }}>
             Please be aware that the Munzee API is still returning April Fools requirements. I have
@@ -276,7 +278,7 @@ export default React.memo(
             ))}
           </SyncScrollView>
         </View>
-      </Layout>
+      </Box>
     );
   },
   (prev, now) => prev.clan_id === now.clan_id && prev.game_id === now.game_id

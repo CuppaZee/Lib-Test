@@ -1,10 +1,9 @@
 import React from 'react';
-import { Button, CheckBox, Layout } from "@ui-kitten/components";
 import { UpdateWrapper } from "../../screens/Settings/Notifications";
 import Select from '../Common/Select';
 import { useTranslation } from 'react-i18next';
 import useSetting, { ClansAtom } from '../../hooks/useSetting';
-import { Heading } from 'native-base';
+import { Box, Button, Checkbox, Heading } from 'native-base';
 
 export interface ClanSettingsModalProps {
   clan_id: number;
@@ -17,47 +16,50 @@ export default function ClanSettingsModal({ clan_id, close, levels }: ClanSettin
   const { t } = useTranslation();
   const goalLevel = Math.min(Math.max(options[clan_id].level, 0), levels.length);
   return (
-    <Layout level="4" style={{ borderRadius: 8, padding: 4 }}>
+    <Box bg="coolGray.50" _dark={{ bg: "coolGray.900" }} style={{ borderRadius: 8, padding: 4 }}>
       <UpdateWrapper>
         {update => (
-          <CheckBox
+          <Checkbox
             style={{ margin: 8 }}
-            checked={options[clan_id].shadow}
+            value=""
+            isChecked={options[clan_id].shadow}
             onChange={checked => {
               options[clan_id].shadow = checked;
               update();
             }}>
             {t("clan:settings_shadow")}
-          </CheckBox>
+          </Checkbox>
         )}
       </UpdateWrapper>
       <UpdateWrapper>
         {update => (
-          <CheckBox
+          <Checkbox
             style={{ margin: 8 }}
-            checked={options[clan_id].subtract}
+            value=""
+            isChecked={options[clan_id].subtract}
             onChange={checked => {
               options[clan_id].subtract = checked;
               update();
             }}>
             {t("clan:settings_subtract")}
-          </CheckBox>
+          </Checkbox>
         )}
       </UpdateWrapper>
       <UpdateWrapper>
         {update => (
-          <CheckBox
+          <Checkbox
             style={{ margin: 8 }}
-            checked={options[clan_id].share}
+            value=""
+            isChecked={options[clan_id].share}
             onChange={checked => {
               options[clan_id].share = checked;
               update();
             }}>
             {t("clan:settings_share")}
-          </CheckBox>
+          </Checkbox>
         )}
       </UpdateWrapper>
-      <Heading size="md">{t("clan:settings_goal")}</Heading>
+      <Heading ml={1} mt={1} size="md">{t("clan:settings_goal")}</Heading>
       <UpdateWrapper>
         {update => (
           <Select
@@ -82,6 +84,6 @@ export default function ClanSettingsModal({ clan_id, close, levels }: ClanSettin
         }}>
         {t("clan:settings_done")}
       </Button>
-    </Layout>
+    </Box>
   );
 }

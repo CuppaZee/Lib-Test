@@ -64,7 +64,7 @@ export default function UserActivityFilter({
   return (
     <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 4 }}>
       <Button
-        startIcon={<Icon style={{ height: 24 }} name="content-save" />}
+        startIcon={<Icon colorBlank style={{ height: 24 }} name="content-save" />}
         onPress={() => setBaseFilters(filters)}
         size="sm">
         {t("user_activity:filter_save")}
@@ -101,9 +101,12 @@ export default function UserActivityFilter({
         {t("user_activity:filter_category")}
       </Heading>
       <Checkbox.Group
-        value={Array.from(filters.category).map(i=>i.id)}
+        value={Array.from(filters.category).map(i => i.id)}
         onChange={(arr: any[]) => {
-          setFilters({ ...filters, category: new Set(arr.map(i=>d.categories.find(c=>c.id === i) as any)) });
+          setFilters({
+            ...filters,
+            category: new Set(arr.map(i => d.categories.find(c => c.id === i) as any)),
+          });
         }}>
         {d.categories.map(i => (
           <Checkbox key={i.id} style={{ margin: 4 }} value={i.id}>

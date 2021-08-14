@@ -73,8 +73,6 @@ export default function getConfig(notification?: NotificationResponse): LinkingO
         Tools_Donate: "about/donate",
         Tools_OpenSource: "about/opensource",
 
-        Tools_GardenPainter: "garden/painter",
-
         Settings_Personalisation: "settings/personalisation",
         Settings_Accounts: "settings/accounts",
         Settings_Notifications: "settings/notifications",

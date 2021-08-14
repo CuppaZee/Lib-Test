@@ -63,7 +63,6 @@ const MunzeeScreen = lazy(() => import("../screens/Tools/Munzee"));
 const TypeCategoryScreen = lazy(() => import("../screens/Tools/Types/Category"));
 const TypeMunzeeScreen = lazy(() => import("../screens/Tools/Types/Type"));
 const ActivityWidgetScreen = lazy(() => import("../screens/Tools/WidgetConfigure/ActivityWidget"));
-const GardenPainterScreen = lazy(() => import("../screens/Tools/Garden/Painter"));
 const UniversalScreen = lazy(() => import("../screens/Tools/Universal"));
 const BlastScreen = lazy(() => import("../screens/Tools/Blast"));
 
@@ -166,8 +165,6 @@ function RootNavigator() {
       <Stack.Screen name="Tools_Blast" component={BlastScreen} />
       <Stack.Screen name="Tools_POIPlanner" component={POIPlannerScreen} />
       <Stack.Screen name="Tools_DestinationPlanner" component={DestinationPlannerScreen} />
-
-      <Stack.Screen name="Tools_GardenPainter" component={GardenPainterScreen} />
 
       <Stack.Screen
         getId={({ params }) => `${params.a}/${params.b}`}

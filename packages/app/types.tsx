@@ -37,7 +37,6 @@ export type RootStackParamList = {
   Tools_TypeCategory: { category: string };
   Tools_TypeMunzee: { type: string };
   Tools_WidgetConfigureActivityWidget: { id: string };
-  Tools_GardenPainter: undefined;
 
   Settings_Personalisation: undefined;
   Settings_Accounts: undefined;

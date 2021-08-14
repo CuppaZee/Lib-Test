@@ -58,7 +58,7 @@ const UserActivityOverviewItem = React.memo(
                 type: db.strip(icon),
               })
             }
-            startIcon={<Icon style={{ height: 24 }} name="database" />}>
+            startIcon={<Icon colorBlank style={{ height: 24 }} name="database" />}>
             {t("user_activity:type_info")}
           </Button>
         </Popover.Content>

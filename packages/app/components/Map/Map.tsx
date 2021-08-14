@@ -169,13 +169,17 @@ export function AutoMap({
           <Button
             flex={1}
             size="xs"
-            startIcon={<Icon style={{ marginHorizontal: 2, height: 24 }} name="magnify" />}
+            startIcon={
+              <Icon colorBlank style={{ marginHorizontal: 2, height: 24 }} name="magnify" />
+            }
             onPress={() => setSearchModal(true)}>
             Search
           </Button>
           <Button
             size="xs"
-            startIcon={<Icon style={{ marginHorizontal: 2, height: 24 }} name="crosshairs-gps" />}
+            startIcon={
+              <Icon colorBlank style={{ marginHorizontal: 2, height: 24 }} name="crosshairs-gps" />
+            }
             onPress={async () => {
               var { status } = await Location.requestForegroundPermissionsAsync();
               if (status !== "granted") {
