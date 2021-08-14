@@ -3,7 +3,6 @@ import { Layout, Text } from "@ui-kitten/components";
 import * as React from "react";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
-import { UserStackParamList } from "../../types";
 import useTitle from "../../hooks/useTitle";
 import Loading from "../../components/Loading";
 import { Image, ScrollView, View } from "react-native";
@@ -15,14 +14,16 @@ import { useTranslation } from "react-i18next";
 import baseURL from "../../baseURL";
 import { generateClanRequirements, GameID } from "@cuppazee/utils/lib";
 import useDB from "../../hooks/useDB";
+import { RootStackParamList } from "../../types";
+import { NavProp } from "../../navigation-drawer";
 
 export default function UserClanScreen() {
   const { t } = useTranslation();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "ClanProgress">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_ClanProgress">>();
   const [style] = useSetting(ClanPersonalisationAtom);
   const game_id = new GameID().game_id;
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   useTitle(`☕ ${route.params.username} - ${t("pages:user_clan_progress")}`);
   const user = useMunzeeRequest(
     "user",
@@ -47,15 +48,12 @@ export default function UserClanScreen() {
     () => generateClanRequirements(db, requirements_data.data?.data),
     [requirements_data.dataUpdatedAt, db]
   );
-  
+
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
     if (user.data?.data?.clan && isFocused) {
-      nav.navigate("Clan", {
-        screen: "Stats",
-        params: { clanid: user.data.data.clan.id },
-      });
+      nav.navigate("Clan_Stats", { clanid: user.data.data.clan.id });
     }
   }, [user.dataUpdatedAt, isFocused]);
 
@@ -98,7 +96,8 @@ export default function UserClanScreen() {
                   />
                   <View style={{ paddingVertical: 8, flex: 1 }}>
                     <Text category="h6">
-                      {db.getClanRequirement(requirement).top} {db.getClanRequirement(requirement).bottom}
+                      {db.getClanRequirement(requirement).top}{" "}
+                      {db.getClanRequirement(requirement).bottom}
                     </Text>
                     <Text category="s1">{data.data.data[requirement]?.toLocaleString()}</Text>
                   </View>

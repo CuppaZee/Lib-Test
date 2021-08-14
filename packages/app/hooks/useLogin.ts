@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUserBookmarks } from "./useBookmarks";
 import ExpoClipboard from "expo-clipboard";
+import { NavProp } from "../navigation-drawer";
 const configs = {
   main: {
     redirect_uri: "https://server.cuppazee.app/auth/auth/v1",
@@ -43,7 +44,7 @@ export default function useLogin(
   var config = configs[application];
   const { loaded } = useTeakens();
   const [teakens, setTeakens] = useAtom(teakensAtom);
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   const [users, setUsers] = useUserBookmarks();
 
   const [loading, setLoading] = React.useState<boolean>(Platform.OS === "android");
@@ -183,7 +184,7 @@ export default function useLogin(
   }
   if (shouldRedirect && redirect && Object.keys(teakens.data).length > 0) {
     setRedirect("");
-    nav.navigate("User", { screen: "Profile", params: { username: redirect } } as any);
+    nav.navigate("User_Profile", { username: redirect });
   }
 
   return [loading, login, loaded && !loading, shouldUseAlternative, handleLogin] as const;

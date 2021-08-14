@@ -8,7 +8,8 @@ import Loading from "../../components/Loading";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useTitle from "../../hooks/useTitle";
-import { ToolsStackParamList } from "../../types";
+import { NavProp } from "../../navigation-drawer";
+import { RootStackParamList } from "../../types";
 
 interface BouncerListData {
   list: string[];
@@ -18,8 +19,8 @@ interface BouncerListData {
 
 export default function BouncersMapScreen() {
   const [view, setView] = React.useState<"clustered" | "all" | "heatmap">("clustered");
-  const route = useRoute<RouteProp<ToolsStackParamList, "BouncersMap">>();
-  const nav = useNavigation();
+  const route = useRoute<RouteProp<RootStackParamList, "Tools_BouncersMap">>();
+  const nav = useNavigation<NavProp>();
   const { t } = useTranslation();
   useTitle(`☕ ${t("pages:tools_bouncers")} - ${route.params.type.split(",").join(", ")}`);
   const data = useCuppaZeeRequest<{ data: BouncerListData }>("bouncers/list", {
@@ -39,23 +40,20 @@ export default function BouncersMapScreen() {
         onPress={point => {
           const munzee = point.features?.find(i => i.source?.startsWith("bouncers"));
           if (munzee) {
-            nav.navigate("Tools", {
-              screen: "Munzee",
-              params: { a: munzee.id },
-            });
+            nav.navigate("Tools_Munzee", { a: munzee.id });
           }
         }}
         controls={
           <Select
             style={{ margin: 4 }}
-            accessoryLeft={({ style, ...props }: any) => (
-              <Icon
-                {...props}
-                style={[style, { transform: [{ scale: 0.8 }], marginHorizontal: 0 }]}
-                name="map-marker"
-              />
-            )}
-            accessoryRight={() => null as any}
+            // accessoryLeft={({ style, ...props }: any) => (
+            //   <Icon
+            //     {...props}
+            //     style={[style, { transform: [{ scale: 0.8 }], marginHorizontal: 0 }]}
+            //     name="map-marker"
+            //   />
+            // )}
+            // accessoryRight={() => null as any}
             size="small"
             value={view}
             onValueChange={(value: any) => setView(value)}

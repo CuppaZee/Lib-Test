@@ -37,64 +37,6 @@ async function loadDB2(cacheVersion: number) {
   }
 }
 
-async function loadDB(cacheVersion: number, depth: number = 0) {
-  if (depth > 5) {
-    dbLoadLog.push("Depth 5 Reached, Suspended.");
-    return null;
-  }
-  try {
-    const response = await Promise.race([
-      await fetch(`https://db.cuppazee.app/lzwmsgpack/${cacheVersion}`),
-      new Promise<never>((_, r) => setTimeout(r, 1000)),
-    ]);
-    if (!response.ok) throw "e";
-    dbLoadLog.push("Loaded from lzwmsgpack, Reading.");
-    const data = await Promise.race([
-      await response.arrayBuffer(),
-      new Promise<never>((_, r) => setTimeout(r, 500)),
-    ]);
-    if (data.byteLength > 0) {
-      dbLoadLog.push("Read from lzwmsgpack, Parsing.");
-      const { db, cache } = loadFromArrayBuffer(data);
-      dbLoadLog.push("Parsed from lzwmsgpack, Succeeded.");
-      dbCache.value = db;
-      dbCache.onLoad.forEach(i => i());
-      await AsyncStorage.setItem("@czexpress/dbcache", JSON.stringify(cache));
-    } else {
-      dbLoadLog.push("Nothing to load from lzwmsgpack, Suspended.");
-    }
-  } catch (e) {
-    dbLoadLog.push("Failed to load from lzwmsgpack, Continuing.");
-    try {
-      const response = await Promise.race([
-        await fetch(`https://db.cuppazee.app/lzw/${cacheVersion}`),
-        new Promise<never>((_, r) => setTimeout(r, 1000)),
-      ]);
-        if (!response.ok) throw "e";
-        dbLoadLog.push("Loaded from lzw, Reading.");
-        const data = await Promise.race([
-          await response.text(),
-          new Promise<never>((_, r) => setTimeout(r, 500)),
-        ]);
-        if (data.length > 0) {
-          dbLoadLog.push("Read from lzw, Parsing.");
-          const { db, cache } = loadFromLzwJson(data);
-          dbLoadLog.push("Parsed from lzw, Succeeded.");
-          dbCache.value = db;
-          dbCache.onLoad.forEach(i => i());
-          await AsyncStorage.setItem("@czexpress/dbcache", JSON.stringify(cache));
-        } else {
-          dbLoadLog.push("Nothing to load from lzw, Suspended.");
-        }
-      } catch (e) {
-        dbLoadLog.push("Failed to load from lzw/lzwmsgpack, Continuing.");
-        await new Promise(r => setTimeout(r, 5000));
-        await loadDB(cacheVersion, depth + 1);
-      }
-  };
-  dbLoadLog.push("Finished.");
-}
-
 async function loadDBBase() {
   dbCache.running = true;
   dbLoadLog.push("Loading...");

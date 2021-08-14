@@ -4,7 +4,6 @@ import * as React from "react";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
-import { UserStackParamList } from "../../types";
 import useTitle from "../../hooks/useTitle";
 import { Pressable, ScrollView, View } from "react-native";
 import { UserDeploys } from "@cuppazee/api/user/deploys";
@@ -13,12 +12,14 @@ import Loading from "../../components/Loading";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
 import dayjs from "dayjs";
 import useDB from "../../hooks/useDB";
+import { NavProp } from "../../navigation-drawer";
+import { RootStackParamList } from "../../types";
 
 export default function UserBouncersScreen() {
   const db = useDB();
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "Rooms">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Rooms">>();
   useTitle(`☕ ${route.params.username} - Rooms`);
   const user = useMunzeeRequest(
     "user",
@@ -50,10 +51,7 @@ export default function UserBouncersScreen() {
             onPress={point => {
               const munzee = point.features?.find(i => i.source === "bouncers");
               if (munzee) {
-                nav.navigate("Tools", {
-                  screen: "Munzee",
-                  params: { a: munzee.id },
-                });
+                nav.navigate("Tools_Munzee", { a: munzee.id });
               }
             }}
             controls={
@@ -147,11 +145,8 @@ export default function UserBouncersScreen() {
                 flexGrow: 1,
               }}
               onPress={() =>
-                nav.navigate("Tools", {
-                  screen: "Munzee",
-                  params: {
-                    a: i.munzee_id,
-                  },
+                nav.navigate("Tools_Munzee", {
+                  a: i.munzee_id,
                 })
               }>
               <Layout

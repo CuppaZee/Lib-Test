@@ -5,6 +5,7 @@ import TypeImage from "../Common/TypeImage";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "../Common/Icon";
+import { NavProp } from "../../navigation-drawer";
 
 export type CubimalsIconProps = {
   name?: string;
@@ -15,7 +16,7 @@ export type CubimalsIconProps = {
 export function CubimalsIcon({ count, icon, name }: CubimalsIconProps) {
   const { t } = useTranslation();
   const [visible, setVisible] = React.useState(false);
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   return (
     <Popover
       visible={visible}
@@ -39,11 +40,8 @@ export function CubimalsIcon({ count, icon, name }: CubimalsIconProps) {
           style={{ margin: 4 }}
           appearance="outline"
           onPress={() =>
-            nav.navigate("Tools", {
-              screen: "TypeMunzee",
-              params: {
-                type: icon ?? "",
-              },
+            nav.navigate("Tools_TypeMunzee", {
+              type: icon ?? "",
             })
           }
           accessoryLeft={props => <Icon {...props} name="database" />}>

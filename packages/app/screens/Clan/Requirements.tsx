@@ -11,14 +11,15 @@ import ClanRewardsTable from "../../components/Clan/Rewards";
 import Select from "../../components/Common/Select";
 import Tip from "../../components/Common/Tip";
 import useTitle from "../../hooks/useTitle";
-import { ClanStackParamList } from "../../types";
+import { NavProp } from "../../navigation-drawer";
+import { RootStackParamList } from "../../types";
 import { ClanPersonalisationModal } from "../Settings/Personalisation";
 
 export default function ClanStatsScreen2() {
   const { t } = useTranslation();
   useTitle(`☕ ${t("pages:clan_requirements")}`);
-  const route = useRoute<RouteProp<ClanStackParamList, "Requirements">>();
-  const nav = useNavigation();
+  const route = useRoute<RouteProp<RootStackParamList, "Clan_Requirements">>();
+  const nav = useNavigation<NavProp>();
   const game_id = route.params?.year
     ? new GameID(
         Number(route.params.year),

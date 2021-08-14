@@ -60,13 +60,15 @@ export default function EvaWrapper({ children, dark }: PropsWithChildren<{dark?:
                 },
         } as any
       }
-      theme={theme}>
-      {Platform.OS === "web" && (
+      theme={eva.light}
+      // theme={theme}
+    >
+      {/* {Platform.OS === "web" && (
         <style>{`*::-webkit-scrollbar {width: 8px;height:8px;}
           *::-webkit-scrollbar-thumb {background-color: ${
             theme.style === "dark" ? theme["color-basic-1100"] : theme["color-basic-400"]
           };border-radius: 8px;}`}</style>
-      )}
+      )} */}
       {children}
     </ApplicationProvider>
   );

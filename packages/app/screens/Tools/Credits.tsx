@@ -7,6 +7,7 @@ import { Layout } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import useTitle from "../../hooks/useTitle";
 import { useTranslation } from "react-i18next";
+import { NavProp } from "../../navigation-drawer";
 
 export type Datum = {
   username: string;
@@ -49,7 +50,7 @@ export type PackProps = {
 };
 
 function CreditsCircles({ width, height }: PackProps) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavProp>();
   return (
     <Pack<Datum> root={root} size={[width, height]}>
       {(packData) => {
@@ -68,10 +69,7 @@ function CreditsCircles({ width, height }: PackProps) {
           >
             <Pressable
               onPress={() =>
-                navigation.navigate("User", {
-                  screen: "Profile",
-                  params: { username: circle.data.username },
-                })
+                navigation.navigate("User_Profile", { username: circle.data.username })
               }
             >
               <Image

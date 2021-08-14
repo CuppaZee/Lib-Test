@@ -11,7 +11,8 @@ import useComponentSize from "../../hooks/useComponentSize";
 import useDB from "../../hooks/useDB";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useTitle from "../../hooks/useTitle";
-import { UserStackParamList } from "../../types";
+import { NavProp } from "../../navigation-drawer";
+import { RootStackParamList } from "../../types";
 
 const unavailable = new Set([
   "1starmotelroom",
@@ -25,8 +26,8 @@ const unavailable = new Set([
 export default function UserCapturesScreen() {
   const { t } = useTranslation();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "Captures">>();
-  const nav = useNavigation();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Captures">>();
+  const nav = useNavigation<NavProp>();
   useTitle(`☕ ${route.params.username} - ${t("pages:user_captures")} - ${route.params.category}`);
   const user = useMunzeeRequest(
     "user",

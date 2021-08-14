@@ -1,4 +1,4 @@
-import { DrawerContentComponentProps, DrawerContentOptions } from "@react-navigation/drawer";
+import { DrawerContentComponentProps } from "@react-navigation/drawer";
 import { getPathFromState, useNavigationState } from "@react-navigation/native";
 import {
   DrawerGroup as UIKittenDrawerGroup,
@@ -9,7 +9,7 @@ import {
   Text,
 } from "@ui-kitten/components";
 import React, { useState } from "react";
-import { Alert, Image, Platform, ScrollView, useWindowDimensions, View } from "react-native";
+import { Image, Platform, ScrollView, useWindowDimensions, View } from "react-native";
 import { useClanBookmarks, useUserBookmarks } from "../hooks/useBookmarks";
 import useDay from "../hooks/useDay";
 import { useTranslation } from "react-i18next";
@@ -17,10 +17,7 @@ import Tip from "../components/Common/Tip";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "../components/Common/Icon";
 import useSetting, { DrawerAtom, ReadyAtom } from "../hooks/useSetting";
-import { Box, HStack } from "native-base";
-import ExpoClipboard from "expo-clipboard";
 import useDB, { dbLoadLog } from "../hooks/useDB";
-import { Box, HStack } from "native-base";
 
 const DrawerItem = React.memo(
   function ({ title, style, ...props }: DrawerItemProps) {
@@ -584,7 +581,7 @@ const MainDrawerContent = function ({ page, navigation }: { page: any[]; navigat
   );
 };
 
-export default function DrawerContent(props: DrawerContentComponentProps<DrawerContentOptions>) {
+export default function DrawerContent(props: DrawerContentComponentProps) {
   const state = useNavigationState(i => i);
   const pathURL = getPathFromState(state);
   const page = React.useMemo(() => {

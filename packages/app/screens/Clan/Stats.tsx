@@ -11,14 +11,15 @@ import Select from "../../components/Common/Select";
 import Tip from "../../components/Common/Tip";
 import useSetting, { ClanPersonalisationAtom } from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
-import { ClanStackParamList } from "../../types";
+import { NavProp } from "../../navigation-drawer";
+import { RootStackParamList } from "../../types";
 import { ClanPersonalisationModal } from "../Settings/Personalisation";
 
 export default function ClanStatsScreen2() {
   const [style] = useSetting(ClanPersonalisationAtom);
   const scrollViewController = useSyncScrollViewController();
-  const route = useRoute<RouteProp<ClanStackParamList, "Stats">>();
-  const nav = useNavigation();
+  const route = useRoute<RouteProp<RootStackParamList, "Clan_Stats">>();
+  const nav = useNavigation<NavProp>();
   const game_id = route.params?.year
     ? new GameID(
         Number(route.params.year),

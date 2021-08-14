@@ -12,6 +12,7 @@ import Tip from "../../components/Common/Tip";
 import { useTranslation } from "react-i18next";
 import Icon from "../../components/Common/Icon";
 import useDB from "../../hooks/useDB";
+import { NavProp } from "../../navigation-drawer";
 
 export default function SearchScreen() {
   const db = useDB();
@@ -20,7 +21,7 @@ export default function SearchScreen() {
   const [value, search, onValue] = useSearch(500);
   const users = useMunzeeRequest("user/find", { text: search }, true, undefined, true);
   const clans = useCuppaZeeRequest("clan/list", { format: "list" }, true, undefined, true);
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
 
   const fuse = React.useMemo(
     () =>
@@ -114,32 +115,20 @@ export default function SearchScreen() {
             }
             onPress={() => {
               if ("user_id" in item.item) {
-                nav.navigate("User", {
-                  screen: "Profile",
-                  params: {
-                    username: item.item.username,
-                  },
+                nav.navigate("User_Profile", {
+                  username: item.item.username,
                 });
               } else if ("clan_id" in item.item) {
-                nav.navigate("Clan", {
-                  screen: "Stats",
-                  params: {
-                    clanid: item.item.clan_id,
-                  },
+                nav.navigate("Clan_Stats", {
+                  clanid: item.item.clan_id,
                 });
               } else if ("category" in item.item) {
-                nav.navigate("Tools", {
-                  screen: "TypeMunzee",
-                  params: {
-                    type: item.item.icon,
-                  },
+                nav.navigate("Tools_TypeMunzee", {
+                  type: item.item.icon,
                 });
               } else {
-                nav.navigate("Tools", {
-                  screen: "TypeCategory",
-                  params: {
-                    category: item.item.id,
-                  },
+                nav.navigate("Tools_TypeCategory", {
+                  category: item.item.id,
                 });
               }
             }}

@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import * as React from "react";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
-import { UserStackParamList } from "../../types";
 import useTitle from "../../hooks/useTitle";
 import ChallengesConverter from "../../components/Challenges/Data";
 import useActivity from "../../hooks/useActivity";
@@ -15,12 +14,13 @@ import { useTranslation } from "react-i18next";
 import Icon from "../../components/Common/Icon";
 import useDB from "../../hooks/useDB";
 import { generateUserActivityData } from "@cuppazee/utils/lib";
+import { RootStackParamList } from "../../types";
 
 export default function UserChallengesScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "Challenge">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Challenge">>();
   useTitle(
     `☕ ${route.params.username} - ${t("pages:user_challenges")} - ${dayjs(
       route.params?.date ?? dayjs.mhqNow()

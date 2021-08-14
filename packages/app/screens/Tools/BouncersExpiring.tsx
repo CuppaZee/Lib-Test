@@ -7,6 +7,7 @@ import TypeImage from "../../components/Common/TypeImage";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import useDB from "../../hooks/useDB";
+import { NavProp } from "../../navigation-drawer";
 
 export default function BouncersExpiringScreen() {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ export default function BouncersExpiringScreen() {
     }, 1000);
     return () => clearInterval(interval);
   });
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   const typeS = type.toLowerCase().replace(/\s/g, "");
   const playerS = player.toLowerCase().replace(/\s/g, "");
 
@@ -94,11 +95,8 @@ export default function BouncersExpiringScreen() {
               .toString()
               .padStart(2, "0")}`}
             onPress={() => {
-              nav.navigate("Tools", {
-                screen: "Munzee",
-                params: {
-                  a: item[3],
-                },
+              nav.navigate("Tools_Munzee", {
+                a: item[3],
               });
             }}
           />

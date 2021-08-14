@@ -36,10 +36,10 @@ function LoadIcon() {
 export default function Header(props: StackHeaderProps) {
   const dimensions = useWindowDimensions();
   const titleData = (
-    props.scene.descriptor.options.headerTitle?.toString() ?? props.scene.route.name
+    props.options.headerTitle?.toString() ?? props.route.name
   ).split("|");
   return (
-    <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} style={{ paddingTop: props.insets.top }}>
+    <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} safeAreaTop>
       <HStack alignItems="center" p={1}>
         {dimensions.width <= 1000 && (
           <Button

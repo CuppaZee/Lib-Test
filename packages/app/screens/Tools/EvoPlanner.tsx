@@ -8,6 +8,7 @@ import Select from "../../components/Common/Select";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import getDateService from "../../components/Common/getDateService";
+import { Heading } from "native-base";
 
 
 const options = [
@@ -121,8 +122,8 @@ export default function SearchScreen() {
     <Layout style={{ padding: 4, flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
         <View style={{ width: 400, alignSelf: "center", maxWidth: "100%", padding: 4 }}>
+          <Heading fontSize="md">{t("evo_planner:type")}</Heading>
           <Select
-            label={t("evo_planner:type")}
             style={{ margin: 4 }}
             value={type}
             onValueChange={t => {
@@ -134,8 +135,8 @@ export default function SearchScreen() {
               label: t(`evo_planner:type_${i.id}` as any),
             }))}
           />
+          <Heading fontSize="md">{t("evo_planner:stage")}</Heading>
           <Select
-            label={t("evo_planner:stage")}
             style={{ margin: 4 }}
             value={level.toString()}
             onValueChange={t => setLevel(Number(t))}

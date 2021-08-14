@@ -4,15 +4,15 @@ import dayjs from "dayjs";
 import * as React from "react";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
-import { UserStackParamList } from "../../types";
 import useTitle from "../../hooks/useTitle";
 import ZeeOpsOverview from "../../components/ZeeOps/Overview";
 import Loading from "../../components/Loading";
 import { ScrollView, View } from "react-native";
+import { RootStackParamList } from "../../types";
 
 export default function UserActivityScreen() {
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "ZeeOps">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_ZeeOps">>();
   useTitle(`☕ ${route.params.username} - ZeeOps`);
   const user = useMunzeeRequest(
     "user",

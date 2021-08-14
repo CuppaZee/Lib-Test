@@ -1,23 +1,24 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { DrawerItem, Layout, Text, useTheme } from "@ui-kitten/components";
+import { DrawerItem, Layout, Text } from "@ui-kitten/components";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, View, Linking } from "react-native";
 import Loading from "../../components/Loading";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useTitle from "../../hooks/useTitle";
-import { ToolsStackParamList } from "../../types";
 import TypeImage from "../../components/Common/TypeImage";
 import dayjs from "dayjs";
 import Icon from "../../components/Common/Icon";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
 import useDB from "../../hooks/useDB";
+import { RootStackParamList } from "../../types";
+import { NavProp } from "../../navigation-drawer";
 
 export default function MunzeeScreen() {
   const { t } = useTranslation();
   const db = useDB();
-  const nav = useNavigation();
-  const route = useRoute<RouteProp<ToolsStackParamList, "Munzee">>();
+  const nav = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "Tools_Munzee">>();
 
   const munzee = useMunzeeRequest(
     "munzee",
@@ -67,10 +68,7 @@ export default function MunzeeScreen() {
                   onPress={point => {
                     const munzee = point.features?.find(i => i.source === "bouncers");
                     if (munzee) {
-                      nav.navigate("Tools", {
-                        screen: "Munzee",
-                        params: { a: munzee.id },
-                      });
+                      nav.navigate("Tools_Munzee", { a: munzee.id });
                     }
                   }}>
                   <Icons icons={[db.strip(m.pin_icon)]} />

@@ -1,8 +1,8 @@
 import React from "react";
-import { Input, Layout, List, ListItem, Text } from "@ui-kitten/components";
 import { Image } from "react-native";
 import { useQuery } from "react-query";
 import useSearch from "../../hooks/useSearch";
+import { Box, Column, FlatList, Heading, HStack, Input, List } from "native-base";
 
 interface MapSearchModalProps {
   select: (location: { latitude: number; longitude: number; bbox?: [number, number, number, number] }) => void;
@@ -19,34 +19,40 @@ export function MapSearchModal({ select }: MapSearchModalProps) {
     return await response.json();
   })
   return (
-    <Layout level="4" style={{ borderRadius: 8, padding: 4 }}>
-      <Input style={{ margin: 4 }} label="Search" value={value} onChangeText={onValue} />
+    <Box bg="blueGray.300" _dark={{ bg: "blueGray.700" }} borderRadius={8}>
+      <Column space={2} p={2}>
+        <Box>
+          <Heading mb={1} size="md">Search</Heading>
+          <Input value={value} onChangeText={onValue} />
+        </Box>
 
-      <List
-        style={{
-          height: 400,
-          width: 300,
-          margin: 4,
-          borderRadius: 8,
-          maxWidth: "100%",
-          flexShrink: 1,
-        }}
-        data={query.data?.features ?? []}
-        renderItem={({ item}) => (
-          <ListItem
-            style={{ paddingVertical: 4 }}
-            title={item.text}
-            description={item.context?.map((i: any)=>i.text).join(", ")}
-            onPress={() =>
-              select({
-                latitude: item.center[1],
-                longitude: item.center[0],
-                bbox: item.bbox,
-              })
-            }
-          />
-        )}
-      />
-    </Layout>
+        <FlatList
+          style={{
+            height: 400,
+            width: 300,
+            margin: 4,
+            borderRadius: 8,
+            maxWidth: "100%",
+            flexShrink: 1,
+          }}
+          data={query.data?.features ?? []}
+          renderItem={({ item }) =>
+            null
+            // <HStack
+            //   style={{ paddingVertical: 4 }}
+            //   title={item.text}
+            //   description={item.context?.map((i: any)=>i.text).join(", ")}
+            //   onPress={() =>
+            //     select({
+            //       latitude: item.center[1],
+            //       longitude: item.center[0],
+            //       bbox: item.bbox,
+            //     })
+            //   }
+            // />
+          }
+        />
+      </Column>
+    </Box>
   );
 }

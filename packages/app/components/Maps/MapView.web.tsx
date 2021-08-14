@@ -94,7 +94,7 @@ function WebMap(props: MapProps) {
           //Feature is not clustered and has not been created, create an icon for it
           const el = new Image();
           const img = getTypeImage(props?.icon);
-          el.src = typeof img === "object" && "uri" in img ? img.uri : img;
+          el.src = typeof img === "object" && "uri" in img ? img.uri : img as any;
           el.className = "mapMarker";
           el.style.width = "48px";
           el.style.height = "48px";

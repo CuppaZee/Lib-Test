@@ -7,11 +7,12 @@ import UserActivityOverview from "../../components/Activity/Overview";
 import Loading from "../../components/Loading";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useTitle from "../../hooks/useTitle";
-import { UserStackParamList } from "../../types";
 import TypeImage from "../../components/Common/TypeImage";
 import dayjs from "dayjs";
 import Icon from "../../components/Common/Icon";
 import useDB from "../../hooks/useDB";
+import { NavProp } from "../../navigation-drawer";
+import { RootStackParamList } from "../../types";
 
 export const UserPagesNow = [
   {
@@ -55,8 +56,8 @@ export default function TabOneScreen() {
   const db = useDB();
   const { t } = useTranslation();
   const theme = useTheme();
-  const nav = useNavigation();
-  const route = useRoute<RouteProp<UserStackParamList, "Profile">>();
+  const nav = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Profile">>();
   useTitle(`☕ ${route.params.username}`);
 
   const user = useMunzeeRequest(
@@ -97,10 +98,7 @@ export default function TabOneScreen() {
                 accessoryLeft={props => <Icon name="calendar" {...props} />}
                 accessoryRight={props => <Icon name="chevron-right" {...props} />}
                 onPress={() =>
-                  nav.navigate("User", {
-                    screen: "Activity",
-                    params: { username: route.params.username },
-                  })
+                  nav.navigate("User_Activity", { username: route.params.username })
                 }
               />
               <UserActivityOverview
@@ -182,10 +180,7 @@ export default function TabOneScreen() {
                   )}
                   accessoryLeft={props => <Icon name={i.icon} {...props} />}
                   onPress={() =>
-                    nav.navigate("User", {
-                      screen: i.screen,
-                      params: { username: route.params.username },
-                    })
+                    nav.navigate(`User_${i.screen}`, { username: route.params.username })
                   }
                 />
               ))}
@@ -212,10 +207,7 @@ export default function TabOneScreen() {
                     />
                   )}
                   onPress={() =>
-                    nav.navigate("Clan", {
-                      screen: "Stats",
-                      params: { clanid: user.data?.data?.clan?.id },
-                    })
+                    nav.navigate("Clan_Stats", { clanid: user.data?.data?.clan?.id ?? 0 })
                   }
                 />
               ) : (
@@ -230,12 +222,9 @@ export default function TabOneScreen() {
                   )}
                   accessoryLeft={props => <Icon name="shield-half-full" {...props} />}
                   onPress={() =>
-                    nav.navigate("User", {
-                      screen: "ClanProgress",
-                      params: { username: route.params.username },
-                    })
+                    nav.navigate("User_ClanProgress", { username: route.params.username })
                   }
-                />
+                  />
               )}
             </Layout>
           </View>
@@ -281,10 +270,7 @@ export default function TabOneScreen() {
                       <TypeImage icon={c.icon} style={{ size: 32, marginVertical: -4 }} />
                     )}
                     onPress={() =>
-                      nav.navigate("User", {
-                        screen: "Captures",
-                        params: { username: route.params.username, category: c.id },
-                      })
+                      nav.navigate("User_Captures",{ username: route.params.username, category: c.id })
                     }
                   />
                 ))}

@@ -3,19 +3,19 @@ import * as React from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import useTitle from "../../../hooks/useTitle";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { ToolsStackParamList } from "../../../types";
 import TypeImage from "../../../components/Common/TypeImage";
-import { ToolsNavigatorProp } from "../../../navigation-drawer/ToolsNavigator";
 import { useTranslation } from "react-i18next";
 import useDB from "../../../hooks/useDB";
+import { NavProp } from "../../../navigation-drawer";
+import { RootStackParamList } from "../../../types";
 
 export default function SearchScreen() {
   const { t } = useTranslation();
-  const route = useRoute<RouteProp<ToolsStackParamList, "TypeMunzee">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Tools_TypeMunzee">>();
   const db = useDB();
   const type = db.getType(route.params.type);
   useTitle(`☕ ${type?.name || ""}`);
-  const nav = useNavigation<ToolsNavigatorProp<"TypeMunzee">>();
+  const nav = useNavigation<NavProp>();
   if (!type) {
     nav.goBack();
     return null;
@@ -38,7 +38,7 @@ export default function SearchScreen() {
               title={type.category?.name || type.category_raw}
               description="Category"
               onPress={() => {
-                nav.push("TypeCategory", {
+                nav.push("Tools_TypeCategory", {
                   category: type.category_raw,
                 });
               }}
@@ -92,7 +92,7 @@ export default function SearchScreen() {
                   .sort((a, b) => Number(a.id) - Number(b.id))
                   .map(i => (
                     <Pressable
-                      onPress={() => nav.push("TypeMunzee", { type: i.icon })}
+                      onPress={() => nav.push("Tools_TypeMunzee", { type: i.icon })}
                       style={{ width: 80, alignItems: "center", flexGrow: 1, padding: 4 }}>
                       <TypeImage style={{ size: 32 }} icon={i.icon} />
                       <Text style={{ textAlign: "center" }} category="c1">
@@ -119,7 +119,7 @@ export default function SearchScreen() {
                   .sort((a, b) => Number(a.id) - Number(b.id))
                   .map(i => (
                     <Pressable
-                      onPress={() => nav.push("TypeMunzee", { type: i.icon })}
+                      onPress={() => nav.push("Tools_TypeMunzee", { type: i.icon })}
                       style={{ width: 80, alignItems: "center", flexGrow: 1, padding: 4 }}>
                       <TypeImage style={{ size: 32 }} icon={i.icon} />
                       <Text style={{ textAlign: "center" }} category="c1">

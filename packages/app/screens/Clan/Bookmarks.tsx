@@ -14,7 +14,8 @@ import { useClanBookmarks } from "../../hooks/useBookmarks";
 import useComponentSize from "../../hooks/useComponentSize";
 import useSetting, { ClanPersonalisationAtom } from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
-import { ClanStackParamList } from "../../types";
+import { NavProp } from "../../navigation-drawer";
+import { RootStackParamList } from "../../types";
 import { ClanPersonalisationModal } from "../Settings/Personalisation";
 
 export default function ClanBookmarksScreen() {
@@ -22,8 +23,8 @@ export default function ClanBookmarksScreen() {
   useTitle(`☕ ${t("pages:clan_bookmarks")}`);
   const [size, onLayout] = useComponentSize();
   const scrollViewController = useSyncScrollViewController();
-  const route = useRoute<RouteProp<ClanStackParamList, "Bookmarks">>();
-  const nav = useNavigation();
+  const route = useRoute<RouteProp<RootStackParamList, "Clan_Bookmarks">>();
+  const nav = useNavigation<NavProp>();
   const game_id = route.params?.year ? new GameID(
     Number(route.params.year),
     route.params?.month ? Number(route.params.month) - 1 : dayjs.mhqNow().month(),

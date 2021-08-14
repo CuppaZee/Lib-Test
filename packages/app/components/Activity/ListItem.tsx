@@ -6,21 +6,19 @@ import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { UserActivityItem } from "@cuppazee/utils";
 import { Box, Heading, Text } from "native-base";
+import { NavProp } from "../../navigation-drawer";
 
 export default React.memo(
   function UserActivityListItem(item: UserActivityItem) {
-    const nav = useNavigation();
+    const nav = useNavigation<NavProp>();
     const { t } = useTranslation();
     const day = useDay();
     return (
       <Pressable
         onPress={() =>
-          nav.navigate("Tools", {
-            screen: "Munzee",
-            params: {
-              a: item.creator,
-              b: item.code,
-            },
+          nav.navigate("Tools_Munzee", {
+            a: item.creator ?? "",
+            b: item.code,
           })
         }>
         <Box

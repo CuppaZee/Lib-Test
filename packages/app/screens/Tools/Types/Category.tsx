@@ -3,18 +3,18 @@ import * as React from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import useTitle from "../../../hooks/useTitle";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { ToolsStackParamList } from "../../../types";
 import TypeImage from "../../../components/Common/TypeImage";
-import { ToolsNavigatorProp } from "../../../navigation-drawer/ToolsNavigator";
 import useDB from "../../../hooks/useDB";
+import { NavProp } from "../../../navigation-drawer";
+import { RootStackParamList } from "../../../types";
 
 export default function SearchScreen() {
   const db = useDB();
-  const route = useRoute<RouteProp<ToolsStackParamList, "TypeCategory">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Tools_TypeCategory">>();
   const category =
     db.getCategory(route.params.category) ?? db.getCategory("root") ?? db.categories[0];
   useTitle(`☕ ${category?.name || ""}`);
-  const nav = useNavigation<ToolsNavigatorProp<"TypeCategory">>();
+  const nav = useNavigation<NavProp>();
 
   return (
     <Layout style={{ flex: 1 }}>
@@ -30,7 +30,7 @@ export default function SearchScreen() {
                 accessoryLeft={() => <TypeImage style={{ size: 32 }} icon={i.icon} />}
                 title={i.name}
                 onPress={() => {
-                  nav.push("TypeCategory", {
+                  nav.push("Tools_TypeCategory", {
                     category: i.id,
                   });
                 }}
@@ -39,7 +39,7 @@ export default function SearchScreen() {
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
               {category.types.map(i => (
                 <Pressable
-                  onPress={() => nav.push("TypeMunzee", { type: i.icon })}
+                  onPress={() => nav.push("Tools_TypeMunzee", { type: i.icon })}
                   style={{ width: 80, alignItems: "center", flexGrow: 1, padding: 4 }}>
                   <TypeImage style={{ size: 32 }} icon={i.icon} />
                   <Text style={{ textAlign: "center" }} category="c1">

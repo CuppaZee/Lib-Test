@@ -13,7 +13,7 @@ import { Box, Button, Heading, Text, useColorMode, useTheme } from "native-base"
 function LoginError({ children }: { children: (login: () => void) => React.ReactElement }) {
   const buildLink = useLinkBuilder();
   const route = useRoute();
-  const [loading, login, ready] = useLogin(buildLink(route.name, route.params) || "");
+  const [, login] = useLogin(buildLink(route.name, route.params) || "");
   return children(login);
 }
 

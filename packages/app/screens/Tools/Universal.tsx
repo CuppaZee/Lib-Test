@@ -24,6 +24,7 @@ import baseURL from "../../baseURL";
 import useUsernameSelect from "./UserSelect";
 import Select from "../../components/Common/Select";
 import useToken from "../../hooks/useToken";
+import { Heading } from "native-base";
 
 interface ReportModalProps {
   munzee: UniversalMunzee;
@@ -292,7 +293,8 @@ export default function UniversalScreen() {
   if (!data.data || !size) {
     return (
       <Layout onLayout={onLayout} style={{ flex: 1 }}>
-        <Select label="Capping as" {...props} />
+        <Heading fontSize="md">Capping as</Heading>
+        <Select {...props} />
         <Loading data={[user, data]} />
       </Layout>
     );
@@ -322,7 +324,8 @@ export default function UniversalScreen() {
         <SubmitModal close={() => setSubmitModal(false)} />
       </Modal>
       <View style={{ alignSelf: "center", maxWidth: "100%" }}>
-        <Select label="Capping as" {...props} />
+        <Heading fontSize="md">Capping as</Heading>
+        <Select {...props} />
         <Text style={{ textAlign: "center" }} category="h6">
           {t("user_universal_capper:remaining", {
             remaining: data.data.data.total - data.data.data.capped - index,

@@ -4,7 +4,6 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Pressable, ScrollView, View } from "react-native";
 import Icon from "../../components/Common/Icon";
-import useDay from "../../hooks/useDay";
 import useTitle from "../../hooks/useTitle";
 
 const egyptianTimes: [number, string][] = ([

@@ -19,6 +19,7 @@ import { useClanBookmarks, useUserBookmarks } from "../../hooks/useBookmarks";
 import useComponentSize from "../../hooks/useComponentSize";
 import useSetting, { BuildAtom, LiveLocationErrorAtom } from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
+import { NavProp } from "../../navigation-drawer";
 import ChangesDashCard from "./Changes";
 import ClansDashCard from "./Clans";
 import ToolsDashCard from "./Tools";
@@ -55,7 +56,7 @@ export interface DashCardProps<i> {
 
 export default function DashboardScreen() {
   const { t } = useTranslation();
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   const [clans] = useClanBookmarks();
   const pageOffset = clans.length > 2 ? 2 : 1;
   const scrollRef = React.useRef<FlatList>();
@@ -107,9 +108,7 @@ export default function DashboardScreen() {
           </Text>
           <Button
             onPress={() =>
-              nav.navigate("Settings", {
-                screen: "Notifications",
-              })
+              nav.navigate("Settings_Notifications")
             }
             style={{ marginTop: 4 }}>
             Notification Settings

@@ -1,14 +1,14 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { Button, Input, Layout, Text } from "@ui-kitten/components";
 import * as React from "react";
-import { ToolsStackParamList } from "../../../types";
+import { RootStackParamList } from "../../../types";
 
 import SharedStorage from './SharedStorage';
 
 export default function BouncersScreen() {
   const [username, setUsername] = React.useState("");
   const [done, setDone] = React.useState(false);
-  const route = useRoute<RouteProp<ToolsStackParamList, "WidgetConfigureActivityWidget">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Tools_WidgetConfigureActivityWidget">>();
   React.useEffect(() => {
     setUsername("");
     setDone(false);

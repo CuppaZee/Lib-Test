@@ -9,11 +9,11 @@ import Loading from "../../components/Loading";
 import useComponentSize from "../../hooks/useComponentSize";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useTitle from "../../hooks/useTitle";
-import { UserStackParamList } from "../../types";
+import { RootStackParamList } from "../../types";
 
 export default function UserCubimalsScreen() {
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "QRates">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_QRates">>();
   useTitle(`☕ ${route.params.username} - QRates`);
   const user = useMunzeeRequest(
     "user",

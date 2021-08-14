@@ -24,6 +24,7 @@ import { useUserBookmarks } from "../../hooks/useBookmarks";
 import useSetting, { ClanPersonalisationAtom, ClansAtom } from "../../hooks/useSetting";
 import Icon, { IconName } from "../Common/Icon";
 import useDB from "../../hooks/useDB";
+import { NavProp } from "../../navigation-drawer";
 
 export function pickTextColor(
   bgColor: string,
@@ -246,7 +247,7 @@ export function DataCell(props: DataCellProps) {
   let level;
   if (
     props.user?.requirements[props.task_id]?.value === undefined ||
-    props.user?.requirements[props.task_id]?.value === null || 
+    props.user?.requirements[props.task_id]?.value === null ||
     Number.isNaN(props.user?.requirements[props.task_id]?.value)
   ) {
     text = "🚫";
@@ -379,16 +380,18 @@ export type UserCellProps = {
 };
 
 export function UserCell(props: UserCellProps) {
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   const { t } = useTranslation();
   return (
     <CommonCell
-      onPress={"user_id" in props.user ? (() => nav.navigate("User", {
-        screen: "Profile",
-        params: {
-          username: "user_id" in props.user ? props.user.username : "",
-        }
-      })) : undefined}
+      onPress={
+        "user_id" in props.user
+          ? () =>
+              nav.navigate("User_Profile", {
+                username: "user_id" in props.user ? props.user.username ?? "" : "",
+              })
+          : undefined
+      }
       type={props.stack ? "header_stack" : "header"}
       color={props.user.level}
       image={
@@ -477,15 +480,21 @@ export function LevelCell(props: LevelCellProps) {
         </View>
       )}>
       <Layout>
-        {open && props.levels.map(i => <ListItem title={t("clan:level", { level: i })} onPress={() => {
-          setOptions({
-            ...options,
-            [props.clan_id || 0]: {
-              ...options[props.clan_id || 0],
-              level: i,
-            }
-          })
-        }} />)}
+        {open &&
+          props.levels.map(i => (
+            <ListItem
+              title={t("clan:level", { level: i })}
+              onPress={() => {
+                setOptions({
+                  ...options,
+                  [props.clan_id || 0]: {
+                    ...options[props.clan_id || 0],
+                    level: i,
+                  },
+                });
+              }}
+            />
+          ))}
       </Layout>
     </Popover>
   );
@@ -558,7 +567,7 @@ export function RequirementCell(props: RequirementCellProps) {
   const [style] = useSetting(ClanPersonalisationAtom);
   const g = props.requirements.group.includes(props.task_id);
   const i = props.requirements.individual.includes(props.task_id);
-  const db = useDB()
+  const db = useDB();
   return (
     <CommonCell
       onPress={props.onPress}
@@ -595,11 +604,7 @@ export function RewardDataCell(props: RewardDataCellProps) {
         type="data"
         color={props.level}
         icon={
-          style.reverse
-            ? undefined
-            : props.type === "individual"
-            ? "account-check"
-            : "shield-check"
+          style.reverse ? undefined : props.type === "individual" ? "account-check" : "shield-check"
         }
         image={
           style.reverse

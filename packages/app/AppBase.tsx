@@ -3,8 +3,6 @@ import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import "./polyfill";
-// @ts-ignore
-import "./arrayBufferPolyfill";
 
 import { useColorScheme } from "react-native";
 import Navigation from "./navigation-drawer";

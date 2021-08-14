@@ -6,7 +6,7 @@ import circle from "@turf/circle";
 
 import MapboxGL from "@react-native-mapbox-gl/maps";
 import { PixelRatio, View } from "react-native";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
 import Icon from "../Common/Icon";
 
 MapboxGL.setAccessToken(

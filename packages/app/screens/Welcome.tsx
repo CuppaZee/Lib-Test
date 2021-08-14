@@ -6,7 +6,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import useTitle from "../hooks/useTitle";
 import * as themes from "../themes";
 import { useTeakens } from "../hooks/useToken";
-import { useNavigation } from "@react-navigation/native";
 import useSetting, { ReadyAtom, ThemeAtom } from "../hooks/useSetting";
 import { Trans, useTranslation } from "react-i18next";
 import Select from "../components/Common/Select";

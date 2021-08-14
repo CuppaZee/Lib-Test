@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import * as React from "react";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
-import { UserStackParamList } from "../../types";
 import useTitle from "../../hooks/useTitle";
 import ChallengesConverter from "../../components/Challenges/Data";
 import useActivity from "../../hooks/useActivity";
@@ -16,12 +15,14 @@ import getDateService from "../../components/Common/getDateService";
 import Icon from "../../components/Common/Icon";
 import { generateUserActivityData } from "@cuppazee/utils/lib";
 import useDB from "../../hooks/useDB";
+import { RootStackParamList } from "../../types";
+import { NavProp } from "../../navigation-drawer";
 
 export default function UserChallengesScreen() {
   const { t } = useTranslation();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "Challenges">>();
-  const nav = useNavigation();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Challenges">>();
+  const nav = useNavigation<NavProp>();
   useTitle(
     `☕ ${route.params.username} - ${t("pages:user_challenges")} - ${dayjs(
       route.params?.date ?? dayjs.mhqNow()
@@ -70,7 +71,7 @@ export default function UserChallengesScreen() {
           .map(c => (
             <View style={{ width: 400, maxWidth: "100%", padding: 4 }}>
               <Pressable
-                onPress={() => nav.navigate("Challenge", { ...route.params, challenge: c.id })}>
+                onPress={() => nav.navigate("User_Challenge", { ...route.params, challenge: c.id })}>
                 <Layout
                   level="3"
                   style={{ flexDirection: "row", alignItems: "center", borderRadius: 8 }}>

@@ -3,7 +3,6 @@ import * as React from "react";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
-import { UserStackParamList } from "../../types";
 import useTitle from "../../hooks/useTitle";
 import { Pressable, ScrollView, View } from "react-native";
 import { UserDeploys } from "@cuppazee/api/user/deploys";
@@ -15,6 +14,8 @@ import { useTranslation } from "react-i18next";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
 import useDB from "../../hooks/useDB";
 import { Box, Heading, Text } from "native-base";
+import { NavProp } from "../../navigation-drawer";
+import { RootStackParamList } from "../../types";
 
 type Bouncer = NonNullable<UserDeploys["response"]["data"]>["munzees"][0] & {
   bouncer?: MunzeeSpecialBouncer & { hash: string };
@@ -33,17 +34,20 @@ type Bouncer = NonNullable<UserDeploys["response"]["data"]>["munzees"][0] & {
 export default function UserBouncersScreen() {
   const db = useDB();
   const { t } = useTranslation();
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   const day = useDay();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "Bouncers">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Bouncers">>();
   useTitle(`☕ ${route.params.username} - ${t("pages:user_bouncers")}`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },
     route.params?.username !== undefined
   );
-  const data = useCuppaZeeRequest<{ data: Bouncer[]; endpointsDown: { label: string; endpoint: string}[] }>(
+  const data = useCuppaZeeRequest<{
+    data: Bouncer[];
+    endpointsDown: { label: string; endpoint: string }[];
+  }>(
     "user/bouncers",
     {
       user_id: user.data?.data?.user_id,
@@ -53,7 +57,7 @@ export default function UserBouncersScreen() {
 
   if (!data.data || !size) {
     return (
-      <Box bg="coolGray.100" _dark={{bg:"coolGray.900"}} style={{ flex: 1 }} onLayout={onLayout}>
+      <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={{ flex: 1 }} onLayout={onLayout}>
         <Loading data={[user, data]} />
       </Box>
     );
@@ -94,10 +98,7 @@ export default function UserBouncersScreen() {
             onPress={point => {
               const munzee = point.features?.find(i => i.source === "bouncers");
               if (munzee) {
-                nav.navigate("Tools", {
-                  screen: "Munzee",
-                  params: { a: munzee.id },
-                });
+                nav.navigate("Tools_Munzee", { a: munzee.id });
               }
             }}>
             <Icons
@@ -149,11 +150,8 @@ export default function UserBouncersScreen() {
               onPress={
                 i.bouncer
                   ? () =>
-                      nav.navigate("Tools", {
-                        screen: "Munzee",
-                        params: {
-                          a: i.bouncer?.munzee_id,
-                        },
+                      nav.navigate("Tools_Munzee", {
+                        a: i.bouncer?.munzee_id ?? "",
                       })
                   : undefined
               }>

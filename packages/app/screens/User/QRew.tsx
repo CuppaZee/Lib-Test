@@ -3,7 +3,6 @@ import { Layout, Text, useTheme } from "@ui-kitten/components";
 import * as React from "react";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
-import { UserStackParamList } from "../../types";
 import useTitle from "../../hooks/useTitle";
 import Loading from "../../components/Loading";
 import { ScrollView, View } from "react-native";
@@ -14,6 +13,7 @@ import dayjs from "dayjs";
 import useSetting, { ClanPersonalisationAtom } from "../../hooks/useSetting";
 import { useTranslation } from "react-i18next";
 import Icon from "../../components/Common/Icon";
+import { RootStackParamList } from "../../types";
 
 interface QRewData {
   cap: {
@@ -89,7 +89,7 @@ export default function UserClanScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "QRew">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_QRew">>();
   useTitle(`☕ ${route.params.username} - ${t("pages:user_qrew_checker")}`);
   const user = useMunzeeRequest(
     "user",

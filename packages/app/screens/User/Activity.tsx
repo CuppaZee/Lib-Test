@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import * as React from "react";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
-import { UserStackParamList } from "../../types";
 import UserActivityList from "../../components/Activity/List";
 import UserActivityFilter from "../../components/Activity/Filter";
 import useTitle from "../../hooks/useTitle";
@@ -14,6 +13,7 @@ import useModalSafeArea from "../../hooks/useModalSafeArea";
 import { generateUserActivityData, UserActivityFilters } from "@cuppazee/utils";
 import useDB from "../../hooks/useDB";
 import { Box, Modal } from "native-base";
+import { RootStackParamList } from "../../types";
 
 export default function UserActivityScreen() {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ export default function UserActivityScreen() {
     category: new Set(),
     state: new Set(),
   });
-  const route = useRoute<RouteProp<UserStackParamList, "Activity">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Activity">>();
   useTitle(
     `☕ ${route.params.username} - ${t("pages:user_activity")} - ${dayjs(
       route.params?.date ?? dayjs.mhqNow()

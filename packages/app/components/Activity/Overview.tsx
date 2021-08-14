@@ -9,6 +9,7 @@ import Icon from "../Common/Icon";
 import useDB from "../../hooks/useDB";
 import { generateUserActivityData, UserActivityData } from "@cuppazee/utils/lib";
 import { Box, Button, Heading, Popover, Text } from "native-base";
+import { NavProp } from "../../navigation-drawer";
 
 export type UserActivityOverviewProps = {
   user_id: number;
@@ -30,7 +31,7 @@ const UserActivityOverviewItem = React.memo(
   function ({ icon, data, count }: UserActivityOverviewItemProps) {
     const db = useDB();
     const { t } = useTranslation();
-    const nav = useNavigation();
+    const nav = useNavigation<NavProp>();
     return (
       <Popover
         trigger={triggerProps => (
@@ -53,11 +54,8 @@ const UserActivityOverviewItem = React.memo(
           <Button
             style={{ margin: 4 }}
             onPress={() =>
-              nav.navigate("Tools", {
-                screen: "TypeMunzee",
-                params: {
-                  type: db.strip(icon),
-                },
+              nav.navigate("Tools_TypeMunzee", {
+                type: db.strip(icon),
               })
             }
             startIcon={<Icon style={{ height: 24 }} name="database" />}>
@@ -73,7 +71,11 @@ const UserActivityOverviewItem = React.memo(
     prev.data.points === now.data.points &&
     prev.count > 30 === now.count > 30
 );
-export default function UserActivityOverview({ user_id, day, activityData }: UserActivityOverviewProps) {
+export default function UserActivityOverview({
+  user_id,
+  day,
+  activityData,
+}: UserActivityOverviewProps) {
   const { t } = useTranslation();
   const data = useActivity(user_id, day);
   const db = useDB();
@@ -82,7 +84,12 @@ export default function UserActivityOverview({ user_id, day, activityData }: Use
       activityData
         ? activityData
         : data.data?.data
-          ? generateUserActivityData(db, data.data?.data, {state: new Set(), category: new Set(), activity: new Set()}, "sohcah")
+        ? generateUserActivityData(
+            db,
+            data.data?.data,
+            { state: new Set(), category: new Set(), activity: new Set() },
+            "sohcah"
+          )
         : null,
     [data.dataUpdatedAt, activityData]
   );

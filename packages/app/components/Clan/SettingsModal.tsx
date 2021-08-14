@@ -4,6 +4,7 @@ import { UpdateWrapper } from "../../screens/Settings/Notifications";
 import Select from '../Common/Select';
 import { useTranslation } from 'react-i18next';
 import useSetting, { ClansAtom } from '../../hooks/useSetting';
+import { Heading } from 'native-base';
 
 export interface ClanSettingsModalProps {
   clan_id: number;
@@ -56,11 +57,11 @@ export default function ClanSettingsModal({ clan_id, close, levels }: ClanSettin
           </CheckBox>
         )}
       </UpdateWrapper>
+      <Heading size="md">{t("clan:settings_goal")}</Heading>
       <UpdateWrapper>
         {update => (
           <Select
-            style={{ margin: 4 }}
-            label={t("clan:settings_goal")}
+            m={1}
             value={goalLevel.toString()}
             onValueChange={value => {
               options[clan_id].level = Number(value);

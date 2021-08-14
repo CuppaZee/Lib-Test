@@ -4,7 +4,6 @@ import { StyleSheet, ScrollView, View, Platform } from "react-native";
 import { InventoryIcon } from "../../components/Inventory/Icon";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
-import { UserStackParamList } from "../../types";
 import useTitle from "../../hooks/useTitle";
 import { useTranslation } from "react-i18next";
 import Loading from "../../components/Loading";
@@ -13,12 +12,13 @@ import useDB from "../../hooks/useDB";
 import dayjs from "dayjs";
 import { openURL } from "expo-linking";
 import { Box, Button, Checkbox, Heading, Text } from "native-base";
+import { RootStackParamList } from "../../types";
 
 export default function UserInventoryScreen() {
   const [includeZeroes, setIncludeZeroes] = React.useState(false);
   const [groupByState, setGroupByState] = React.useState(false);
   const { t } = useTranslation();
-  const route = useRoute<RouteProp<UserStackParamList, "Inventory">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Inventory">>();
   useTitle(`☕ ${route.params.username} - ${t("pages:user_inventory")}`);
   const user = useMunzeeRequest("user", { username: route.params.username });
   const data = useCuppaZeeRequest<{ data: UserInventoryInputData }>(
@@ -88,7 +88,7 @@ export default function UserInventoryScreen() {
   //       .sort((a, b) => b.total - a.total);
 
   if (!user.isFetched || !data.isFetched || !d) {
-    return <Loading level="1" data={[user, data]} />;
+    return <Loading data={[user, data]} />;
   }
 
   return (

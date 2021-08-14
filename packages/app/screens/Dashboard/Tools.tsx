@@ -8,6 +8,7 @@ import Icon from "../../components/Common/Icon";
 import Tip from "../../components/Common/Tip";
 import { useClanBookmarks } from "../../hooks/useBookmarks";
 import useTitle from "../../hooks/useTitle";
+import { NavProp } from "../../navigation-drawer";
 import { DashCardProps } from "./Dashboard";
 
 export const ToolsPagesBouncers = [
@@ -121,7 +122,7 @@ export const ToolsPagesOther = [
 
 export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) {
   const { t } = useTranslation();
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   const [clans] = useClanBookmarks();
   return (
     <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} style={[styles.card, { flex: 1 }]}>
@@ -148,9 +149,7 @@ export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) 
                 )}
                 accessoryLeft={props => <Icon name="star" {...props} />}
                 onPress={() =>
-                  nav.navigate("Clan", {
-                    screen: "Requirements",
-                  })
+                  nav.navigate("Clan_Requirements", {})
                 }
               />
               {!!clans && clans.length > 0 && (
@@ -165,9 +164,7 @@ export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) 
                   )}
                   accessoryLeft={props => <Icon name="bookmark" {...props} />}
                   onPress={() =>
-                    nav.navigate("Clan", {
-                      screen: "Bookmarks",
-                    })
+                    nav.navigate("Clan_Bookmarks", {})
                   }
                 />
               )}
@@ -198,10 +195,7 @@ export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) 
                     />
                   )}
                   onPress={() =>
-                    nav.navigate("Clan", {
-                      params: { clanid: clan.clan_id.toString() },
-                      screen: "Stats",
-                    })
+                    nav.navigate("Clan_Stats", { clanid: clan.clan_id })
                   }
                 />
               ))}
@@ -229,10 +223,7 @@ export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) 
               disabled={"disabled" in i && i.disabled}
               accessoryLeft={props => <Icon name={i.icon} {...props} />}
               onPress={() =>
-                nav.navigate("Tools", {
-                  screen: i.screen,
-                  params: "params" in i ? i.params : undefined,
-                })
+                nav.navigate(`Tools_${i.screen}`, "params" in i ? i.params : undefined)
               }
             />
           ))}
@@ -251,9 +242,7 @@ export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) 
               )}
               accessoryLeft={props => <Icon name={i.icon} {...props} />}
               onPress={() =>
-                nav.navigate("Tools", {
-                  screen: i.screen,
-                })
+                nav.navigate(`Tools_${i.screen}`)
               }
             />
           ))}
@@ -272,9 +261,7 @@ export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) 
               )}
               accessoryLeft={props => <Icon name={i.icon} {...props} />}
               onPress={() =>
-                nav.navigate("Tools", {
-                  screen: i.screen,
-                })
+                nav.navigate(`Tools_${i.screen}`)
               }
             />
           ))}
@@ -293,9 +280,7 @@ export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) 
               )}
               accessoryLeft={props => <Icon name={i.icon} {...props} />}
               onPress={() =>
-                nav.navigate("Settings", {
-                  screen: i.screen,
-                })
+                nav.navigate(`Settings_${i.screen}`)
               }
             />
           ))}
@@ -314,9 +299,7 @@ export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) 
               )}
               accessoryLeft={props => <Icon name={i.icon} {...props} />}
               onPress={() =>
-                nav.navigate("Tools", {
-                  screen: i.screen,
-                })
+                nav.navigate(`Tools_${i.screen}`)
               }
             />
           ))}

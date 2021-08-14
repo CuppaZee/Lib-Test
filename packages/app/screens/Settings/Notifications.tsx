@@ -18,7 +18,6 @@ import * as Location from "expo-location";
 import * as Application from "expo-application";
 import { TypeTags } from "@cuppazee/db";
 import TypeImage from "../../components/Common/TypeImage";
-import MapView from "../../components/Maps/MapView";
 import useSearch from "../../hooks/useSearch";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import fuse from "fuse.js";
@@ -31,6 +30,7 @@ import Loading from "../../components/Loading";
 import { LocationPickerMap } from "../../components/Map/Map";
 import baseURL from "../../baseURL";
 import useDB from "../../hooks/useDB";
+import { Heading } from "native-base";
 
 interface LocationPickerModalProps {
   location: DeviceNotificationStaticLocation;
@@ -885,9 +885,9 @@ export default function NotificationScreen() {
               {t("settings_notifications:other_units_imperial")}
             </CheckBox>
 
+            <Heading fontSize="md">{t("settings_personalisation:language")}</Heading>
             <Select
               style={{ margin: 4 }}
-              label={t("settings_personalisation:language")}
               value={settings.language || "en-GB"}
               onValueChange={value => setSettings({ ...settings, language: value })}
               options={LANGS.map(i => ({
@@ -922,14 +922,14 @@ export default function NotificationScreen() {
             try {
               let responseCode = 1;
               if (!settings) return;
-              
+
               // Setup Dynamic Locations
               if (settings.locations.dynamic) {
                 // Ask for Location Permission
                 const permissionsResponse = await Location.requestBackgroundPermissionsAsync();
                 const { status } = permissionsResponse;
                 setDebugStatus(`DATA: ${JSON.stringify(permissionsResponse)}`);
-                
+
                 // Check Permission allowed Always
                 if (status === "granted") {
                   await Location.startLocationUpdatesAsync("BACKGROUND_LOCATION", {
@@ -945,7 +945,8 @@ export default function NotificationScreen() {
               } else {
                 try {
                   // Stop Location Updates
-                  if("LiveLocation" in NativeModules) NativeModules.LiveLocation.stopLocationUpdates();
+                  if ("LiveLocation" in NativeModules)
+                    NativeModules.LiveLocation.stopLocationUpdates();
                   await Location.stopLocationUpdatesAsync("BACKGROUND_LOCATION");
                 } catch (e) {}
               }
@@ -958,7 +959,9 @@ export default function NotificationScreen() {
                     ...settings,
                     platform:
                       Platform.OS === "android"
-                        ? `android_${Application.nativeApplicationVersion === "2.0.1" ? "2.0.1" : "2.0.2"}`
+                        ? `android_${
+                            Application.nativeApplicationVersion === "2.0.1" ? "2.0.1" : "2.0.2"
+                          }`
                         : "ios",
                   }),
                 }),

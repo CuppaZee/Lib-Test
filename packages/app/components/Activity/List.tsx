@@ -12,12 +12,13 @@ import * as React from "react";
 import { FlatList } from "react-native";
 import UserActivityListItem from "./ListItem";
 import UserActivityOverview from "./Overview";
-import { UserStackParamList } from "../../types";
 import getDateService from "../Common/getDateService";
 import { useTranslation } from "react-i18next";
 import Icon from "../Common/Icon";
 import { UserActivityData } from "@cuppazee/utils/lib";
 import { Box, Button } from "native-base";
+import { NavProp } from "../../navigation-drawer";
+import { RootStackParamList } from "../../types";
 
 export default function UserActivityList({
   d,
@@ -29,10 +30,8 @@ export default function UserActivityList({
   toggleFilterModal?: () => void;
 }) {
   const { t } = useTranslation();
-  const route = useRoute<RouteProp<UserStackParamList, "Activity">>();
-  const nav = useNavigation<
-    StackNavigationProp<UserStackParamList, "Activity">
-  >();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Activity">>();
+  const nav = useNavigation<NavProp>();
   return (
     <FlatList
       style={{ flex: 1 }}

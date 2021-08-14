@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import Icon from "../../components/Common/Icon";
 import { AutoMap, Icons, Layer, Marker, Source } from "../../components/Map/Map";
 import useDB from "../../hooks/useDB";
+import { NavProp } from "../../navigation-drawer";
 
 type Bouncer = (MunzeeSpecialBouncer | MunzeeSpecial) & {
   hash: string;
@@ -42,7 +43,7 @@ interface NearbySettings {
 
 export default function NearbyScreen() {
   const { t } = useTranslation();
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   const locationRef = React.useRef<{ latitude: number; longitude: number } | null>(null);
   const [size, onLayout] = useComponentSize();
   const theme = useTheme();
@@ -180,10 +181,7 @@ export default function NearbyScreen() {
             onPress={point => {
               const munzee = point.features?.find(i => i.source === "bouncers");
               if (munzee) {
-                nav.navigate("Tools", {
-                  screen: "Munzee",
-                  params: { a: munzee.id },
-                });
+                nav.navigate("Tools_Munzee", { a: munzee.id });
               }
             }}>
             <Icons
@@ -263,11 +261,8 @@ export default function NearbyScreen() {
               <Pressable
                 key={i.hash}
                 onPress={() =>
-                  nav.navigate("Tools", {
-                    screen: "Munzee",
-                    params: {
-                      a: i.munzee_id,
-                    },
+                  nav.navigate("Tools_Munzee", {
+                    a: i.munzee_id,
                   })
                 }
                 style={{

@@ -7,11 +7,11 @@ import Loading from "../../components/Loading";
 import useComponentSize from "../../hooks/useComponentSize";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useTitle from "../../hooks/useTitle";
-import { UserStackParamList } from "../../types";
+import { RootStackParamList } from "../../types";
 
 export default function UserCubimalsScreen() {
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<UserStackParamList, "Cubimals">>();
+  const route = useRoute<RouteProp<RootStackParamList, "User_Cubimals">>();
   useTitle(`☕ ${route.params.username} - Cubimals`);
   const user = useMunzeeRequest(
     "user",

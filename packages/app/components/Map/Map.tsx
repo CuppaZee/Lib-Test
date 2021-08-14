@@ -19,7 +19,7 @@ import { MapSearchModal } from "./MapShared";
 import Icon from "../Common/Icon";
 import * as Location from "expo-location";
 import circle from "@turf/circle";
-import { Box, Button } from "native-base";
+import { Box, Button, Row } from "native-base";
 
 MapboxGL.setAccessToken(
   "pk.eyJ1Ijoic29oY2FoIiwiYSI6ImNqeWVqcm8wdTAxc2MzaXFpa282Yzd2aHEifQ.afYbt2sVMZ-kbwdx5_PekQ"
@@ -165,17 +165,16 @@ export function AutoMap({
         bg="coolGray.200"
         _dark={{ bg: "coolGray.800" }}
         style={{ position: "absolute", top: 0, right: 0, padding: 4, borderBottomLeftRadius: 8 }}>
-        <View style={{ flexDirection: "row" }}>
+        <Row p={1} space={1}>
           <Button
-            style={{ margin: 4, flex: 1 }}
-            size="sm"
+            flex={1}
+            size="xs"
             startIcon={<Icon style={{ marginHorizontal: 2, height: 24 }} name="magnify" />}
             onPress={() => setSearchModal(true)}>
             Search
           </Button>
           <Button
-            style={{ margin: 4, marginLeft: 0 }}
-            size="sm"
+            size="xs"
             startIcon={<Icon style={{ marginHorizontal: 2, height: 24 }} name="crosshairs-gps" />}
             onPress={async () => {
               var { status } = await Location.requestForegroundPermissionsAsync();
@@ -192,11 +191,9 @@ export function AutoMap({
               } catch (e) {}
             }}
           />
-        </View>
+        </Row>
         <Select
-          style={{ margin: 4, width: 130 }}
-          pt={0}
-          pb={0}
+          m={1}
           value={
             mapStyle === "monochrome" && theme.mapboxURL === "mapbox://styles/mapbox/streets-v11"
               ? "streets"

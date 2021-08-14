@@ -30,7 +30,7 @@ import {
 import * as Location from "expo-location";
 import { MapSearchModal } from "./MapShared";
 import circle from "@turf/circle";
-import { Box, Button } from "native-base";
+import { Box, Button, Row } from "native-base";
 
 export function LocationPickerMap({ icon, onPositionChange, circleColor, circleRadius }: LocationPickerMapProps) {
   const [viewport, setViewport] = React.useState<MapViewport>();
@@ -188,17 +188,17 @@ export function AutoMap({
       <Box
         bg="coolGray.200"
         _dark={{ bg: "coolGray.800" }}
+        w={200}
         style={{ position: "absolute", top: 0, right: 0, padding: 4, borderBottomLeftRadius: 8 }}>
-        <View style={{ flexDirection: "row" }}>
+        <Row p={1} space={1}>
           <Button
-            style={{ margin: 4, flex: 1 }}
+            flex={1}
             size="xs"
             startIcon={<Icon style={{ marginHorizontal: 2, height: 24 }} name="magnify" />}
             onPress={() => setSearchModal(true)}>
             Search
           </Button>
           <Button
-            style={{ margin: 4, marginLeft: 0 }}
             size="xs"
             startIcon={<Icon style={{ marginHorizontal: 2, height: 24 }} name="crosshairs-gps" />}
             onPress={async () => {
@@ -219,11 +219,9 @@ export function AutoMap({
               } catch (e) {}
             }}
           />
-        </View>
+        </Row>
         <Select
-          style={{ margin: 4, width: 130 }}
-          pt={0}
-          pb={0}
+          m={1}
           value={mapStyle}
           onValueChange={(value: any) => setMapStyle(value)}
           options={[
@@ -232,7 +230,7 @@ export function AutoMap({
               : { value: "monochrome", label: "Themed" },
             { value: "streets", label: "Classic" },
             { value: "satellite", label: "Satellite" },
-          ].filter(i=>i)}
+          ].filter(i => i)}
         />
         {controls}
       </Box>

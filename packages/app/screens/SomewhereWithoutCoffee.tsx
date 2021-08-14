@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import { Image } from "react-native";
 import Icon from "../components/Common/Icon";
 import useTitle from "../hooks/useTitle";
+import { NavProp } from "../navigation-drawer";
 
 export default function SomewhereWithoutCoffeeScreen() {
   const { t } = useTranslation();
   useTitle(`❌ Coffee Not Found`);
   const theme = useTheme();
-  const nav = useNavigation();
+  const nav = useNavigation<NavProp>();
   return (
     <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Image
@@ -24,7 +25,7 @@ export default function SomewhereWithoutCoffeeScreen() {
       <Text category="h1">{t("404:title")}</Text>
       <Text category="h4">{t("404:subtitle")}</Text>
       <Button
-        onPress={() => nav.navigate("Root", { screen: "Dashboard" })}
+        onPress={() => nav.navigate("User_Profile", {username: "_"})}
         appearance="outline"
         size="large"
         accessoryLeft={props => <Icon {...props} name="home" />}>

@@ -42,10 +42,6 @@ PODS:
     - React-Core
     - UMCore
     - UMImageLoaderInterface
-  - EXImageManipulator (9.1.0):
-    - UMCore
-    - UMFileSystemInterface
-    - UMImageLoaderInterface
   - EXImagePicker (10.1.1):
     - UMCore
     - UMFileSystemInterface
@@ -346,8 +342,6 @@ PODS:
     - Mapbox-iOS-SDK (~> 5.9.0)
     - React
     - React-Core
-  - react-native-maps (0.27.1):
-    - React
   - react-native-safe-area-context (3.2.0):
     - React-Core
   - React-RCTActionSheet (0.63.4):
@@ -412,8 +406,6 @@ PODS:
     - React-jsi (= 0.63.4)
   - RNCAsyncStorage (1.15.2):
     - React-Core
-  - RNCMaskedView (0.1.10):
-    - React
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNReanimated (2.1.0):
@@ -497,7 +489,6 @@ DEPENDENCIES:
   - EXFirebaseCore (from `../node_modules/expo-firebase-core/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
-  - EXImageManipulator (from `../node_modules/expo-image-manipulator/ios`)
   - EXImagePicker (from `../node_modules/expo-image-picker/ios`)
   - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
@@ -527,7 +518,6 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
-  - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -540,7 +530,6 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
-  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -604,8 +593,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-font/ios"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
-  EXImageManipulator:
-    :path: "../node_modules/expo-image-manipulator/ios"
   EXImagePicker:
     :path: "../node_modules/expo-image-picker/ios"
   EXKeepAwake:
@@ -660,8 +647,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-mapbox-gl:
     :path: "../node_modules/@react-native-mapbox-gl/maps"
-  react-native-maps:
-    :path: "../node_modules/react-native-maps"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-RCTActionSheet:
@@ -686,8 +671,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
-  RNCMaskedView:
-    :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
@@ -741,7 +724,6 @@ SPEC CHECKSUMS:
   EXFirebaseCore: 7865e37021ddcff5c575a4598686a2939d6c4183
   EXFont: d6fb79f9863120f0d0b26b0c2d1453bc9511e9df
   EXImageLoader: da941c9399e01ec28f2d5b270bdd21f2c8ca596c
-  EXImageManipulator: a099e4694070c7cb86aa0b0b1afa3ea184153a7d
   EXImagePicker: 75f16de9f1113682352fa7bd5db4a8b28a57c898
   EXKeepAwake: a4938450365c1df5a0dcc4f0be77798ca4fafc3c
   EXLinearGradient: 39b1cf1df5b885e8c35e8afedc9d8893b9fced4b
@@ -781,7 +763,6 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-mapbox-gl: b147c5e106c69870198ae6bd16b190a261ecbbcc
-  react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
@@ -794,7 +775,6 @@ SPEC CHECKSUMS:
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   RNCAsyncStorage: 9b7605e899f9acb2fba33e87952c529731265453
-  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
   RNScreens: e8e8dd0588b5da0ab57dcca76ab9b2d8987757e0

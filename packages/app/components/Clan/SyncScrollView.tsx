@@ -1,6 +1,5 @@
 import React, { MutableRefObject } from "react";
-import { ScrollViewProps } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, ScrollViewProps } from "react-native";
 
 export function useSyncScrollViewController() {
   return React.useRef<SyncScrollViewController["current"]>({ views: [], lastScrollEvent: 0 });

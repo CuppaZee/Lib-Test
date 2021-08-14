@@ -1,10 +1,8 @@
-import { RouteProp, useRoute } from "@react-navigation/native";
 import { Button, Layout, Text } from "@ui-kitten/components";
 import * as React from "react";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useComponentSize from "../../hooks/useComponentSize";
-import { UserStackParamList } from "../../types";
 import useTitle from "../../hooks/useTitle";
 import { ScrollView, View } from "react-native";
 import Loading from "../../components/Loading";
@@ -13,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { LocationPickerMap } from "../../components/Map/Map";
 import useUsernameSelect from "./UserSelect";
 import Select from "../../components/Common/Select";
+import { Heading } from "native-base";
 
 export interface BlastPointsData {
   min: number;
@@ -61,7 +60,8 @@ export default function BlastPlannerScreen() {
   if (!size) {
     return (
       <Layout style={{ flex: 1 }} onLayout={onLayout}>
-        <Select label="Blasting as" {...props} />
+        <Heading fontSize="md">Blasting as</Heading>
+        <Select {...props} />
         <Loading data={[user, data]} />
       </Layout>
     );
@@ -69,7 +69,8 @@ export default function BlastPlannerScreen() {
   return (
     <Layout onLayout={onLayout} style={{ flex: 1, flexDirection: "row" }}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 4 }}>
-        <Select label="Blasting as" {...props} />
+        <Heading fontSize="md">Blasting as</Heading>
+        <Select {...props} />
         <Layout style={{ height: 400, margin: 4, borderRadius: 8 }}>
           <LocationPickerMap
             circleRadius={1609.344}
@@ -84,12 +85,14 @@ export default function BlastPlannerScreen() {
           />
         </Layout>
         <View style={{ flexDirection: "row" }}>
-          {([
-            [50, "Mini"],
-            [100, "Normal"],
-            [500, "MEGA"],
-            //[50000, "Inter-Continental (Beta)"],
-          ] as const).map(([n, l]) => (
+          {(
+            [
+              [50, "Mini"],
+              [100, "Normal"],
+              [500, "MEGA"],
+              //[50000, "Inter-Continental (Beta)"],
+            ] as const
+          ).map(([n, l]) => (
             <Button
               appearance="outline"
               onPress={() => {

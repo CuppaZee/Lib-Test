@@ -11,15 +11,21 @@ import Loading from "../../components/Loading";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useDB from "../../hooks/useDB";
 import useTitle from "../../hooks/useTitle";
+import { NavProp } from "../../navigation-drawer";
 
 export default function BouncersScreen() {
   const { t } = useTranslation();
   useTitle(`☕ ${t("pages:tools_bouncers")}`);
-  const nav = useNavigation();
-  const data = useCuppaZeeRequest<{ data: any; endpointsDown: { label: string; endpoint: string;}[] }>("bouncers/overview", {});
+  const nav = useNavigation<NavProp>();
+  const data = useCuppaZeeRequest<{
+    data: any;
+    endpointsDown: { label: string; endpoint: string }[];
+  }>("bouncers/overview", {});
   const db = useDB();
-  const d = React.useMemo(() => data.data ? BouncerOverviewConverter(db, data.data.data) : null, [data.dataUpdatedAt]);
-  
+  const d = React.useMemo(
+    () => (data.data ? BouncerOverviewConverter(db, data.data.data) : null),
+    [data.dataUpdatedAt]
+  );
 
   if (!data.isFetched || !d) {
     return (
@@ -91,14 +97,11 @@ export default function BouncersScreen() {
                   </Text>
                   <Button
                     onPress={() =>
-                      nav.navigate("Tools", {
-                        screen: "BouncersMap",
-                        params: {
-                          type: i.types
-                            .filter(i => !i.hidden(TypeHidden.Bouncers))
-                            .map(i => i.icon)
-                            .join(","),
-                        },
+                      nav.navigate("Tools_BouncersMap", {
+                        type: i.types
+                          .filter(i => !i.hidden(TypeHidden.Bouncers))
+                          .map(i => i.icon)
+                          .join(","),
                       })
                     }
                     appearance="ghost"
