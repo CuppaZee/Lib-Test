@@ -1,15 +1,22 @@
-import { NavigationContainer, DefaultTheme, DarkTheme, getPathFromState } from '@react-navigation/native';
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
-import * as React from 'react';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+  getPathFromState,
+} from "@react-navigation/native";
+import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack";
+import * as React from "react";
 import * as Notifications from "expo-notifications";
-import { ColorSchemeName, Platform } from 'react-native';
+import { ColorSchemeName, Platform } from "react-native";
 
-import SomewhereWithoutCoffeeScreen from '../screens/SomewhereWithoutCoffee';
-import { RootStackParamList } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
+import SomewhereWithoutCoffeeScreen from "../screens/SomewhereWithoutCoffee";
+import { RootStackParamList } from "../types";
+import LinkingConfiguration from "./LinkingConfiguration";
 import * as Analytics from "expo-firebase-analytics";
 import lazy from "../components/lazy";
-import Header from './Header';
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import { Box, HStack } from "native-base";
 
 // Clan
 const ClanStatsScreen = lazy(() => import("../screens/Clan/Stats"));
@@ -62,22 +69,30 @@ const BlastScreen = lazy(() => import("../screens/Tools/Blast"));
 
 export type NavProp = StackNavigationProp<RootStackParamList>;
 
-
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
-  const LinkingConfig = React.useMemo(() => LinkingConfiguration(lastNotificationResponse || undefined), [lastNotificationResponse]);
+  const LinkingConfig = React.useMemo(
+    () => LinkingConfiguration(lastNotificationResponse || undefined),
+    [lastNotificationResponse]
+  );
+  console.log("nav");
   return (
     <NavigationContainer
       linking={LinkingConfig}
-      onStateChange={(state) => {
+      onStateChange={state => {
         if (!state) return;
         const currentScreen = getPathFromState(state);
         Analytics.setCurrentScreen(currentScreen);
       }}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <RootNavigator />
+      <HStack flex={1}>
+        <Sidebar />
+        <Box flex={2}>
+          <RootNavigator />
+        </Box>
+      </HStack>
     </NavigationContainer>
   );
 }

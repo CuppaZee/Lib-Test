@@ -15,7 +15,7 @@ import baseURL from "../../baseURL";
 import { generateClanRequirements, GameID } from "@cuppazee/utils/lib";
 import useDB from "../../hooks/useDB";
 import { RootStackParamList } from "../../types";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export default function UserClanScreen() {
   const { t } = useTranslation();

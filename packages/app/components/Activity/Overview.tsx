@@ -9,7 +9,7 @@ import Icon from "../Common/Icon";
 import useDB from "../../hooks/useDB";
 import { generateUserActivityData, UserActivityData } from "@cuppazee/utils/lib";
 import { Box, Button, Heading, Popover, Text } from "native-base";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export type UserActivityOverviewProps = {
   user_id: number;

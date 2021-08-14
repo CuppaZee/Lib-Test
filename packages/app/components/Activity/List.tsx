@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 import Icon from "../Common/Icon";
 import { UserActivityData } from "@cuppazee/utils/lib";
 import { Box, Button } from "native-base";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 
 export default function UserActivityList({

@@ -12,7 +12,7 @@ import Loading from "../../components/Loading";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
 import dayjs from "dayjs";
 import useDB from "../../hooks/useDB";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 
 export default function UserBouncersScreen() {

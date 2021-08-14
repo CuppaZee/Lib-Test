@@ -19,10 +19,12 @@ export function MapSearchModal({ select }: MapSearchModalProps) {
     return await response.json();
   })
   return (
-    <Box bg="blueGray.300" _dark={{ bg: "blueGray.700" }} borderRadius={8}>
+    <Box bg="coolGray.300" _dark={{ bg: "coolGray.700" }} borderRadius={8}>
       <Column space={2} p={2}>
         <Box>
-          <Heading mb={1} size="md">Search</Heading>
+          <Heading mb={1} size="md">
+            Search
+          </Heading>
           <Input value={value} onChangeText={onValue} />
         </Box>
 
@@ -36,8 +38,8 @@ export function MapSearchModal({ select }: MapSearchModalProps) {
             flexShrink: 1,
           }}
           data={query.data?.features ?? []}
-          renderItem={({ item }) =>
-            null
+          renderItem={
+            ({ item }) => null
             // <HStack
             //   style={{ paddingVertical: 4 }}
             //   title={item.text}

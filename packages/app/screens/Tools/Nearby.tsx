@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import Icon from "../../components/Common/Icon";
 import { AutoMap, Icons, Layer, Marker, Source } from "../../components/Map/Map";
 import useDB from "../../hooks/useDB";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 type Bouncer = (MunzeeSpecialBouncer | MunzeeSpecial) & {
   hash: string;

@@ -24,7 +24,7 @@ import { useUserBookmarks } from "../../hooks/useBookmarks";
 import useSetting, { ClanPersonalisationAtom, ClansAtom } from "../../hooks/useSetting";
 import Icon, { IconName } from "../Common/Icon";
 import useDB from "../../hooks/useDB";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export function pickTextColor(
   bgColor: string,

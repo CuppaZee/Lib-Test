@@ -116,7 +116,6 @@ export default function SearchScreen() {
   const [date, setDate] = React.useState(Date.now());
   const [level, setLevel] = React.useState(0);
   const [type, setType] = React.useState("farm");
-  const nav = useNavigation();
 
   return (
     <Layout style={{ padding: 4, flex: 1 }}>

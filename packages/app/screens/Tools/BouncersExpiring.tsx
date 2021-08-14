@@ -7,7 +7,7 @@ import TypeImage from "../../components/Common/TypeImage";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import useDB from "../../hooks/useDB";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export default function BouncersExpiringScreen() {
   const { t } = useTranslation();

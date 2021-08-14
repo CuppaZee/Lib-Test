@@ -12,7 +12,7 @@ import { UserPagesNow } from "../User/Profile";
 import Icon from "../../components/Common/Icon";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useDB from "../../hooks/useDB";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export default React.memo(
   function UserDashCard({

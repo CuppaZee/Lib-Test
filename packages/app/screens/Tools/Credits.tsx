@@ -7,7 +7,7 @@ import { Layout } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import useTitle from "../../hooks/useTitle";
 import { useTranslation } from "react-i18next";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export type Datum = {
   username: string;

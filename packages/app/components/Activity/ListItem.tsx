@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { UserActivityItem } from "@cuppazee/utils";
 import { Box, Heading, Text } from "native-base";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export default React.memo(
   function UserActivityListItem(item: UserActivityItem) {

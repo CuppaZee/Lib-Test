@@ -8,7 +8,7 @@ import Loading from "../../components/Loading";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useTitle from "../../hooks/useTitle";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 
 interface BouncerListData {

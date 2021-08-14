@@ -5,7 +5,7 @@ import TypeImage from "../Common/TypeImage";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "../Common/Icon";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export type CubimalsIconProps = {
   name?: string;

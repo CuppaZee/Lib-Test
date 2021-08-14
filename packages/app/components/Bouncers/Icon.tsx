@@ -4,7 +4,7 @@ import { Type } from "@cuppazee/db";
 import TypeImage from "../Common/TypeImage";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Heading, Text } from "native-base";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export type BouncerIconProps = {
   type?: Type;

@@ -11,7 +11,7 @@ import useComponentSize from "../../hooks/useComponentSize";
 import useDB from "../../hooks/useDB";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useTitle from "../../hooks/useTitle";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 
 const unavailable = new Set([

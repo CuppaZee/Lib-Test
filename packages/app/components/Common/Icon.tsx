@@ -23,7 +23,7 @@ export default React.memo(function Icon({
 }: {
   name?: IconName;
   style?: StyleProp<Partial<ImageStyle> & Partial<TextStyle> & Partial<ViewStyle>>;
-  }) {
+}) {
   const { height, marginHorizontal, ...iconStyle } = StyleSheet.flatten(style);
   const [loaded, setLoaded] = React.useState(iconLoadedRef.iconLoaded);
   React.useEffect(() => {
@@ -42,7 +42,9 @@ export default React.memo(function Icon({
         }
       })();
     }
-    return () => {unloadedRef.value = true}
+    return () => {
+      unloadedRef.value = true;
+    };
   });
   return (
     <View style={{ height }}>

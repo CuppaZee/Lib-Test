@@ -12,7 +12,7 @@ import Icon from "../../components/Common/Icon";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
 import useDB from "../../hooks/useDB";
 import { RootStackParamList } from "../../types";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export default function MunzeeScreen() {
   const { t } = useTranslation();

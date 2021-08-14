@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Image } from "react-native";
 import Icon from "../components/Common/Icon";
 import useTitle from "../hooks/useTitle";
-import { NavProp } from "../navigation-drawer";
+import { NavProp } from "../navigation";
 
 export default function SomewhereWithoutCoffeeScreen() {
   const { t } = useTranslation();

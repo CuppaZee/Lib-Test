@@ -16,7 +16,7 @@ import Icon from "../../components/Common/Icon";
 import { generateUserActivityData } from "@cuppazee/utils/lib";
 import useDB from "../../hooks/useDB";
 import { RootStackParamList } from "../../types";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export default function UserChallengesScreen() {
   const { t } = useTranslation();

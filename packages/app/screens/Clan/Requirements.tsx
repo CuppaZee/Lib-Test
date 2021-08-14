@@ -11,7 +11,7 @@ import ClanRewardsTable from "../../components/Clan/Rewards";
 import Select from "../../components/Common/Select";
 import Tip from "../../components/Common/Tip";
 import useTitle from "../../hooks/useTitle";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 import { ClanPersonalisationModal } from "../Settings/Personalisation";
 

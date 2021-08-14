@@ -8,7 +8,7 @@ import Icon from "../../components/Common/Icon";
 import Tip from "../../components/Common/Tip";
 import { useClanBookmarks } from "../../hooks/useBookmarks";
 import useTitle from "../../hooks/useTitle";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 import { DashCardProps } from "./Dashboard";
 
 export const ToolsPagesBouncers = [

@@ -1,27 +1,27 @@
-import { Input, Layout, ListItem } from "@ui-kitten/components";
 import * as React from "react";
-import { FlatList, Image } from "react-native";
+import { FlatList } from "react-native";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useSearch from "../../hooks/useSearch";
 import useTitle from "../../hooks/useTitle";
 import Fuse from "fuse.js";
-import TypeImage from "../../components/Common/TypeImage";
 import { useNavigation } from "@react-navigation/native";
 import Tip from "../../components/Common/Tip";
 import { useTranslation } from "react-i18next";
-import Icon from "../../components/Common/Icon";
 import useDB from "../../hooks/useDB";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
+import { Box, Heading, Input } from "native-base";
+import { Item } from "../../components/Common/Item";
 
 export default function SearchScreen() {
   const db = useDB();
   const { t } = useTranslation();
   useTitle(`☕ ${t("pages:tools_search")}`);
   const [value, search, onValue] = useSearch(500);
-  const users = useMunzeeRequest("user/find", { text: search }, true, undefined, true);
-  const clans = useCuppaZeeRequest("clan/list", { format: "list" }, true, undefined, true);
-  const nav = useNavigation<NavProp>();
+  const users = useMunzeeRequest("user/find", { text: search }, true, undefined, true, {keepPreviousData: true});
+  const clans = useCuppaZeeRequest("clan/list", { format: "list" }, true, undefined, true, {
+    keepPreviousData: true,
+  });
 
   const fuse = React.useMemo(
     () =>
@@ -38,16 +38,17 @@ export default function SearchScreen() {
       ),
     [clans.dataUpdatedAt, users.dataUpdatedAt]
   );
-  const results = React.useMemo(() => fuse.search(search), [fuse, search]);
+  const results = React.useMemo(() => fuse.search(search, {limit: 50}), [fuse, search]);
 
   return (
-    <Layout style={{ padding: 4, flex: 1 }}>
-      <Input
-        style={{ margin: 4, width: 400, maxWidth: "100%", alignSelf: "center" }}
-        label={t("search:search")}
-        value={value}
-        onChangeText={onValue}
-      />
+    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} p={1} flex={1}>
+      <Box style={{ margin: 4, width: 400, maxWidth: "100%", alignSelf: "center" }}>
+        <Heading fontSize="md">{t("search:search")}</Heading>
+        <Input
+          value={value}
+          onChangeText={onValue}
+        />
+      </Box>
 
       {!search && (
         <Tip
@@ -68,73 +69,67 @@ export default function SearchScreen() {
         }}
         windowSize={2}
         data={results}
-        renderItem={({ item, index }: { item: typeof results[0]; index: number }) => (
-          <ListItem
-            accessoryLeft={() =>
-              "icon" in item.item ? (
-                <TypeImage style={{ size: 32 }} icon={item.item.icon} />
-              ) : (
-                <Image
-                  style={{ height: 32, width: 32, borderRadius: 16 }}
-                  source={{
-                    uri:
-                      "user_id" in item.item
-                        ? `https://munzee.global.ssl.fastly.net/images/avatars/ua${Number(
-                            item.item.user_id
-                          ).toString(36)}.png`
-                        : `https://munzee.global.ssl.fastly.net/images/clan_logos/${Number(
-                            item.item.clan_id
-                          ).toString(36)}.png`,
-                  }}
-                />
-              )
-            }
-            accessoryRight={props => (
-              <Icon
-                name={
-                  "icon" in item.item
-                    ? "category" in item.item
-                      ? "map-marker"
-                      : "map-marker-multiple"
-                    : "user_id" in item.item
-                    ? "account"
-                    : "shield-half-full"
-                }
-                style={props?.style as any}
-              />
-            )}
-            title={item.item.username ?? item.item.name}
-            description={
-              "icon" in item.item
-                ? "category" in item.item
-                  ? t("search:type")
-                  : t("search:category")
-                : "user_id" in item.item
-                ? t("search:player")
-                : t("search:clan")
-            }
-            onPress={() => {
-              if ("user_id" in item.item) {
-                nav.navigate("User_Profile", {
-                  username: item.item.username,
-                });
-              } else if ("clan_id" in item.item) {
-                nav.navigate("Clan_Stats", {
-                  clanid: item.item.clan_id,
-                });
-              } else if ("category" in item.item) {
-                nav.navigate("Tools_TypeMunzee", {
-                  type: item.item.icon,
-                });
-              } else {
-                nav.navigate("Tools_TypeCategory", {
-                  category: item.item.id,
-                });
+        renderItem={({ item }: { item: typeof results[0]; index: number }) => {
+          let link: any;
+          if ("user_id" in item.item) {
+            link = [
+              "User_Profile",
+              {
+                username: item.item.username,
+              },
+            ] as const;
+          } else if ("clan_id" in item.item) {
+            link = [
+              "Clan_Stats",
+              {
+                clanid: item.item.clan_id,
+              },
+            ] as const;
+          } else if ("category" in item.item) {
+            link = [
+              "Tools_TypeMunzee",
+              {
+                type: item.item.icon,
+              },
+            ] as const;
+          } else {
+            link = [
+              "Tools_TypeCategory",
+              {
+                category: item.item.id,
+              },
+            ] as const;
+          }
+          return (
+            <Item
+              link={link}
+              typeImage={"icon" in item.item ? item.item.icon : undefined}
+              imageRounded={!("icon" in item.item)}
+              image={
+                "icon" in item.item
+                  ? undefined
+                  : "user_id" in item.item
+                  ? `https://munzee.global.ssl.fastly.net/images/avatars/ua${Number(
+                      item.item.user_id
+                    ).toString(36)}.png`
+                  : `https://munzee.global.ssl.fastly.net/images/clan_logos/${Number(
+                      item.item.clan_id
+                    ).toString(36)}.png`
               }
-            }}
-          />
-        )}
+              title={item.item.username ?? item.item.name}
+              subtitle={
+                "icon" in item.item
+                  ? "category" in item.item
+                    ? t("search:type")
+                    : t("search:category")
+                  : "user_id" in item.item
+                  ? t("search:player")
+                  : t("search:clan")
+              }
+            />
+          );
+        }}
       />
-    </Layout>
+    </Box>
   );
 }

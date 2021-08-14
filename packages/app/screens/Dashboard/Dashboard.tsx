@@ -19,7 +19,7 @@ import { useClanBookmarks, useUserBookmarks } from "../../hooks/useBookmarks";
 import useComponentSize from "../../hooks/useComponentSize";
 import useSetting, { BuildAtom, LiveLocationErrorAtom } from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 import ChangesDashCard from "./Changes";
 import ClansDashCard from "./Clans";
 import ToolsDashCard from "./Tools";

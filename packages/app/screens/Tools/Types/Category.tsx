@@ -5,7 +5,7 @@ import useTitle from "../../../hooks/useTitle";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import TypeImage from "../../../components/Common/TypeImage";
 import useDB from "../../../hooks/useDB";
-import { NavProp } from "../../../navigation-drawer";
+import { NavProp } from "../../../navigation";
 import { RootStackParamList } from "../../../types";
 
 export default function SearchScreen() {

@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
 import useDB from "../../hooks/useDB";
 import { Box, Heading, Text } from "native-base";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 
 type Bouncer = NonNullable<UserDeploys["response"]["data"]>["munzees"][0] & {

@@ -1,13 +1,10 @@
-import { DrawerActions } from "@react-navigation/native";
 import { StackHeaderProps } from "@react-navigation/stack";
-import { Layout, TopNavigation, TopNavigationAction, useTheme } from "@ui-kitten/components";
 import React from "react";
 import { useIsFetching, useQueryClient } from "react-query";
 import day from "dayjs";
-import { ActivityIndicator, useWindowDimensions, View } from "react-native";
+import { ActivityIndicator } from "react-native";
 import Icon from "../components/Common/Icon";
-import EvaWrapper from "../EvaWrapper";
-import { Box, Button, Heading, HStack, Text } from "native-base";
+import { Box, Button, Heading, HStack, Text, useTheme } from "native-base";
 
 function LoadIcon() {
   const loading = useIsFetching();
@@ -18,7 +15,7 @@ function LoadIcon() {
       size="sm"
       bg="none"
       startIcon={loading ? (
-          <ActivityIndicator color={theme["color-primary-500"]} size={24} />
+          <ActivityIndicator color={theme.colors.coolGray[500]} size={24} />
         ) : (
           <Icon style={{ height: 24 }} name="refresh" />
         )
@@ -34,19 +31,12 @@ function LoadIcon() {
 }
 
 export default function Header(props: StackHeaderProps) {
-  const dimensions = useWindowDimensions();
   const titleData = (
     props.options.headerTitle?.toString() ?? props.route.name
   ).split("|");
   return (
     <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} safeAreaTop>
       <HStack alignItems="center" p={1}>
-        {dimensions.width <= 1000 && (
-          <Button
-            onPress={() => props.navigation.dispatch(DrawerActions.toggleDrawer())}
-            startIcon={<Icon style={{ height: 24 }} name="menu" />}
-          />
-        )}
         <Button
           size="sm"
           bg="none"
@@ -59,20 +49,6 @@ export default function Header(props: StackHeaderProps) {
           <Heading fontSize="lg">{titleData[0] ?? ""}</Heading>
           <Text fontSize="sm">{titleData[1] ?? day.mhqNow().format("L LT [MHQ]")}</Text>
         </Box>
-        <Button
-          size="sm"
-          bg="none"
-          startIcon={<Icon style={{ height: 24 }} name="home" />}
-          onPress={() =>
-            props.navigation.reset({
-              routes: [
-                {
-                  name: "Root",
-                },
-              ],
-            })
-          }
-        />
         <LoadIcon />
       </HStack>
     </Box>

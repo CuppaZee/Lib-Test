@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUserBookmarks } from "./useBookmarks";
 import ExpoClipboard from "expo-clipboard";
-import { NavProp } from "../navigation-drawer";
+import { NavProp } from "../navigation";
 const configs = {
   main: {
     redirect_uri: "https://server.cuppazee.app/auth/auth/v1",

@@ -1,10 +1,10 @@
 import React from "react";
 import TypeImage from "./TypeImage";
-import { Button, Layout, Text } from "@ui-kitten/components";
 import { View, ViewStyle } from "react-native";
 import { useTranslation } from "react-i18next";
 import useSetting, { TipsAtom } from "../../hooks/useSetting";
 import Icon from "./Icon";
+import { Box, Button, Heading, Text } from "native-base";
 
 const babyAnimals: [string, string][] = [
   ["babyhippo", "Baby Hippo"],
@@ -46,8 +46,9 @@ export default function Tip({ id, tip, wrapperStyle, small }: TipProps) {
     return null;
   return (
     <View style={wrapperStyle}>
-      <Layout
-        level="4"
+      <Box
+        bg="coolGray.300"
+        _dark={{ bg: "coolGray.700" }}
         style={{
           borderRadius: 8,
           padding: 4,
@@ -57,14 +58,14 @@ export default function Tip({ id, tip, wrapperStyle, small }: TipProps) {
         <TypeImage style={{ size: small ? 32 : 48, marginRight: 8 }} icon={animal[0]} />
         <View style={{ flex: 1 }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ flex: 1 }} category="s1">
+            <Heading style={{ flex: 1 }} fontSize="md">
               {t("tips:title")}
-            </Text>
+            </Heading>
             <Button
+              bg="transparent"
               style={{ height: 24, width: 24 }}
-              accessoryLeft={props => <Icon name="close" {...props} />}
-              appearance="ghost"
-              size="tiny"
+              startIcon={<Icon name="close" style={{ height: 24, width: 24 }} />}
+              size="xs"
               onPress={() =>
                 setTipsViewed({
                     ...tipsViewed,
@@ -76,9 +77,9 @@ export default function Tip({ id, tip, wrapperStyle, small }: TipProps) {
               }
             />
           </View>
-          <Text category="p1">{t(`tips:${id}` as any)}</Text>
+          <Text fontSize="sm">{t(`tips:${id}` as any)}</Text>
         </View>
-      </Layout>
+      </Box>
     </View>
   );
 }

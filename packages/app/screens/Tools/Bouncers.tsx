@@ -11,7 +11,7 @@ import Loading from "../../components/Loading";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useDB from "../../hooks/useDB";
 import useTitle from "../../hooks/useTitle";
-import { NavProp } from "../../navigation-drawer";
+import { NavProp } from "../../navigation";
 
 export default function BouncersScreen() {
   const { t } = useTranslation();
