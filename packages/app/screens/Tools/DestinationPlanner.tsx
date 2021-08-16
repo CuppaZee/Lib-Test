@@ -5,7 +5,7 @@ import { Pressable, View } from "react-native";
 import TypeImage from "../../components/Common/TypeImage";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useTitle from "../../hooks/useTitle";
-import Clipboard from "expo-clipboard";
+import * as Clipboard from "expo-clipboard";
 import Icon from "../../components/Common/Icon";
 import { AutoMap, Icons, Layer, Marker, Source } from "../../components/Map/Map";
 import WebMercatorViewport from "viewport-mercator-project";

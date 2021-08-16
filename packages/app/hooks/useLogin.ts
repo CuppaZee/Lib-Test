@@ -6,7 +6,7 @@ import { teakensAtom, useTeakens } from "../hooks/useToken";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUserBookmarks } from "./useBookmarks";
-import ExpoClipboard from "expo-clipboard";
+import * as ExpoClipboard from "expo-clipboard";
 import { NavProp } from "../navigation";
 const configs = {
   main: {

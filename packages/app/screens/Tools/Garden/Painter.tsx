@@ -7,7 +7,7 @@ import TypeImage from "../../../components/Common/TypeImage";
 import MapView from "../../../components/Maps/MapView";
 import useMunzeeRequest from "../../../hooks/useMunzeeRequest";
 import useTitle from "../../../hooks/useTitle";
-import Clipboard from "expo-clipboard";
+import * as Clipboard from "expo-clipboard";
 import Icon from "../../../components/Common/Icon";
 import useDB from "../../../hooks/useDB";
 
