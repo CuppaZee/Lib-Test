@@ -1,4 +1,4 @@
-import { Layout, Spinner, Text, useTheme } from "@ui-kitten/components";
+import {Button, ButtonGroup, Layout, Spinner, Text, useTheme} from "@ui-kitten/components";
 import dayjs from "dayjs";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -38,6 +38,7 @@ export default React.memo(
     const [size, onLayout] = useComponentSize();
     const fontScale = PixelRatio.getFontScale();
     const [style] = useSetting(ClanPersonalisationAtom);
+    const [cumulative, setCumulative] = React.useState(false);
     const reverse = style.reverse;
     const compact = style.style;
 
@@ -108,10 +109,26 @@ export default React.memo(
             }}
             name="playlist-check"
           />
-          <View>
+          <View style={{flex: 1}}>
             <Text category="h6">{t("clan:clan_rewards")}</Text>
             <Text category="s1">{dayjs(new GameID(game_id).date).format("MMMM YYYY")}</Text>
           </View>
+          <Button
+            size="tiny"
+            style={{borderTopRightRadius: 0, borderBottomRightRadius: 0}}
+            appearance={cumulative ? "outline" : "filled"}
+            onPress={() => setCumulative(false)}
+          >
+            Individual
+          </Button>
+          <Button
+            size="tiny"
+            style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}
+            appearance={cumulative ? "filled" : "outline"}
+            onPress={() => setCumulative(true)}
+          >
+            Cumulative
+          </Button>
         </Layout>
         {!Object.values(rewards.levels[0]).some(i => i !== 1) && (
           <Text style={{ padding: 4 }}>
@@ -203,6 +220,7 @@ export default React.memo(
                         level={row.level}
                         type={row.type}
                         rewards={rewards}
+                        cumulative={cumulative}
                       />
                     );
                   }
@@ -214,6 +232,7 @@ export default React.memo(
                         level={column.level}
                         type={column.type}
                         rewards={rewards}
+                        cumulative={cumulative}
                       />
                     );
                   }
