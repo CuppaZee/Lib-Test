@@ -59,8 +59,10 @@ export default function NearbyScreen() {
     (async () => {
       let perm;
       try {
-        perm = await Location.requestForegroundPermissionsAsync();
-        console.log(perm);
+        perm = await Promise.race([
+          Location.requestForegroundPermissionsAsync(),
+          new Promise<any>((_, rej) => setTimeout(rej, 2000))
+        ]);
         if (perm.status === Location.PermissionStatus.DENIED) {
           setPermissionError(true);
         }
@@ -68,7 +70,16 @@ export default function NearbyScreen() {
         setPermissionError(true);
       }
       const loc = perm?.granted
-        ? await Location.getCurrentPositionAsync()
+        ? await Promise.race([
+          Location.getCurrentPositionAsync(),
+          new Promise<any>((res) => setTimeout(res, 2000, {
+            coords: {
+              latitude: 0,
+              longitude: 0,
+              accuracy: 6378000,
+            },
+          }))
+        ])
         : {
             coords: {
               latitude: 0,
@@ -80,10 +91,12 @@ export default function NearbyScreen() {
       if (Platform.OS !== "web") {
         try {
           token = (
-            await Notifications.getExpoPushTokenAsync({
-              experienceId: "@sohcah/PaperZee",
-            })
-          )?.data;
+            await Promise.race([
+              Notifications.getExpoPushTokenAsync({
+                experienceId: "@sohcah/PaperZee",
+              }),
+              new Promise<null>((_, rej) => setTimeout(rej, 2000))
+            ]))?.data;
         } catch (e) {}
       }
       setSettings({
