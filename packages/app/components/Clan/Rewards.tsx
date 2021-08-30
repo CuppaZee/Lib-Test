@@ -11,7 +11,7 @@ import {
 } from "./Cell";
 import useComponentSize from "../../hooks/useComponentSize";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
-import useSetting, { ClanPersonalisationAtom } from "../../hooks/useSetting";
+import useSetting, {ClanPersonalisationAtom, CumulativeRewardsAtom} from "../../hooks/useSetting";
 import Icon from "../Common/Icon";
 import { ClanRewardsData, GameID } from "@cuppazee/utils/lib";
 
@@ -38,7 +38,7 @@ export default React.memo(
     const [size, onLayout] = useComponentSize();
     const fontScale = PixelRatio.getFontScale();
     const [style] = useSetting(ClanPersonalisationAtom);
-    const [cumulative, setCumulative] = React.useState(false);
+    const [cumulative, setCumulative] = useSetting(CumulativeRewardsAtom);
     const reverse = style.reverse;
     const compact = style.style;
 

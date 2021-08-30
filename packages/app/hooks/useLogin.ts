@@ -53,14 +53,16 @@ export default function useLogin(
   
   React.useEffect(() => {
     async function checkClipboard() {
-      const string = await ExpoClipboard.getStringAsync();
-      if (string?.startsWith("czlogin:")) {
-        const s = string.split(":");
-        handleLogin({
-          teaken: s[1],
-          username: s[2],
-          user_id: s[3],
-        });
+      if(Platform.OS === "android") {
+        const string = await ExpoClipboard.getStringAsync();
+        if (string?.startsWith("czlogin:")) {
+          const s = string.split(":");
+          handleLogin({
+            teaken: s[1],
+            username: s[2],
+            user_id: s[3],
+          });
+        }
       }
     }
     AppState.addEventListener("change", checkClipboard);

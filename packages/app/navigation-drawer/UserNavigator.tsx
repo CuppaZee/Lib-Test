@@ -21,6 +21,7 @@ const UserQRewScreen = lazy(() => import("../screens/User/QRew"));
 const UserCubimalsScreen = lazy(() => import("../screens/User/Cubimals"));
 const UserQRatesScreen = lazy(() => import("../screens/User/QRates"));
 const UserRoomsScreen = lazy(() => import("../screens/User/Rooms"));
+const UserLotterZeeScreen = lazy(() => import("../screens/User/LotterZee"));
 
 export type SettingsNavigatorProp<T extends keyof UserStackParamList> = CompositeNavigationProp<
   DrawerNavigationProp<MainDrawerParamList, "User">,
@@ -67,6 +68,7 @@ export default function UserNavigator() {
       <UserStack.Screen name="Cubimals" component={UserCubimalsScreen} />
       <UserStack.Screen name="QRates" component={UserQRatesScreen} />
       <UserStack.Screen name="Rooms" component={UserRoomsScreen} />
+      <UserStack.Screen name="LotterZee" component={UserLotterZeeScreen} />
     </UserStack.Navigator>
   );
 }

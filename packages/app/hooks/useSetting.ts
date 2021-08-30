@@ -119,6 +119,12 @@ export const MapStyleAtom = atom<Setting<"monochrome" | "streets" | "satellite">
   key: "@cuppazee/personalisation/maps",
 });
 
+export const CumulativeRewardsAtom = atom<Setting<boolean>>({
+  data: false,
+  loaded: false,
+  key: "@cuppazee/clan/cumulative_rewards",
+});
+
 export default function useSetting<T>(atom: WritableAtom<Setting<T>, Setting<T>> & {loading?: number}) {
   const [value, setValue] = useAtom(atom);
   useEffect(() => {

@@ -30,6 +30,7 @@ export type UserStackParamList = {
   Cubimals: { username: string };
   QRates: { username: string };
   Rooms: { username: string };
+  LotterZee: { username: string };
 };
 
 export type DashStackParamList = {
