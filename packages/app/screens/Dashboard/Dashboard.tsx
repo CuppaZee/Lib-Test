@@ -90,7 +90,7 @@ export default function DashboardScreen() {
   const isFocused = useIsFocused();
   React.useEffect(() => {
     if (skipDashboard && users.length > 0 && isFocused) {
-      nav.navigate("User_Profile", {
+      nav.navigate("Player_Profile", {
         username: users[0]?.username,
       });
     }

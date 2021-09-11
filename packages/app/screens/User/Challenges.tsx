@@ -18,10 +18,10 @@ import useDB from "../../hooks/useDB";
 import { RootStackParamList } from "../../types";
 import { NavProp } from "../../navigation";
 
-export default function UserChallengesScreen() {
+export default function PlayerChallengesScreen() {
   const { t } = useTranslation();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<RootStackParamList, "User_Challenges">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_Challenges">>();
   const nav = useNavigation<NavProp>();
   useTitle(
     `☕ ${route.params.username} - ${t("pages:user_challenges")} - ${dayjs(
@@ -71,7 +71,7 @@ export default function UserChallengesScreen() {
           .map(c => (
             <View style={{ width: 400, maxWidth: "100%", padding: 4 }}>
               <Pressable
-                onPress={() => nav.navigate("User_Challenge", { ...route.params, challenge: c.id })}>
+                onPress={() => nav.navigate("Player_Challenge", { ...route.params, challenge: c.id })}>
                 <Layout
                   level="3"
                   style={{ flexDirection: "row", alignItems: "center", borderRadius: 8 }}>

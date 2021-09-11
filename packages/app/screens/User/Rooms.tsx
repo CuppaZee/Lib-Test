@@ -15,11 +15,11 @@ import useDB from "../../hooks/useDB";
 import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 
-export default function UserBouncersScreen() {
+export default function PlayerBouncersScreen() {
   const db = useDB();
   const nav = useNavigation<NavProp>();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<RootStackParamList, "User_Rooms">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_Rooms">>();
   useTitle(`☕ ${route.params.username} - Rooms`);
   const user = useMunzeeRequest(
     "user",

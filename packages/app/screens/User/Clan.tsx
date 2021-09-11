@@ -17,10 +17,10 @@ import useDB from "../../hooks/useDB";
 import { RootStackParamList } from "../../types";
 import { NavProp } from "../../navigation";
 
-export default function UserClanScreen() {
+export default function PlayerClanScreen() {
   const { t } = useTranslation();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<RootStackParamList, "User_ClanProgress">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_ClanProgress">>();
   const [style] = useSetting(ClanPersonalisationAtom);
   const game_id = new GameID().game_id;
   const nav = useNavigation<NavProp>();

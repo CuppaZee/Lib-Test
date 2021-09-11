@@ -61,7 +61,7 @@ export const UserPagesNow = [
 export default function TabOneScreen() {
   const db = useDB();
   const { t } = useTranslation();
-  const route = useRoute<RouteProp<RootStackParamList, "User_Profile">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_Profile">>();
   useTitle(`☕ ${route.params.username}`);
 
   const user = useMunzeeRequest(
@@ -95,7 +95,7 @@ export default function TabOneScreen() {
                 chevron
                 title={t("pages:user_activity")}
                 icon="calendar"
-                link={["User_Activity", { username: route.params.username }]}
+                link={["Player_Activity", { username: route.params.username }]}
               />
               <UserActivityOverview
                 user_id={user.data.data.user_id}
@@ -172,7 +172,7 @@ export default function TabOneScreen() {
                   key={i.screen}
                   title={"title" in i ? t(`pages:${i.title}` as const) : i.nontranslatedtitle}
                   icon={i.icon}
-                  link={[`User_${i.screen}` as const, { username: route.params.username }]}
+                  link={[`Player_${i.screen}` as const, { username: route.params.username }]}
                 />
               ))}
               {!!user.data?.data?.clan ? (
@@ -188,7 +188,7 @@ export default function TabOneScreen() {
                   key="Clan"
                   title={t(`pages:user_clan_progress`)}
                   icon="shield-half-full"
-                  link={["User_ClanProgress", { username: route.params.username }]}
+                  link={["Player_ClanProgress", { username: route.params.username }]}
                 />
               )}
             </Box>
@@ -208,7 +208,7 @@ export default function TabOneScreen() {
                   <Item
                     title={c.name}
                     typeImage={c.icon}
-                    link={["User_Captures", {
+                    link={["Player_Captures", {
                       username: route.params.username,
                       category: c.id,
                     }]

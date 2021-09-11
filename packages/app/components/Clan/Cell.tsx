@@ -429,7 +429,7 @@ export function UserCell(props: UserCellProps) {
       onPress={
         "user_id" in props.user
           ? () =>
-              nav.navigate("User_Profile", {
+              nav.navigate("Player_Profile", {
                 username: "user_id" in props.user ? props.user.username ?? "" : "",
               })
           : undefined

@@ -27,19 +27,20 @@ const ClanRequirementsScreen = lazy(() => import("../screens/Clan/Requirements")
 const CuppaManagerScreen = lazy(() => import("../screens/Clan/CuppaManager"));
 
 // User
-const UserProfileScreen = lazy(() => import("../screens/User/Profile"));
-const UserActivityScreen = lazy(() => import("../screens/User/Activity"));
-const UserInventoryScreen = lazy(() => import("../screens/User/Inventory"));
-const UserZeeOpsScreen = lazy(() => import("../screens/User/ZeeOps"));
-const UserChallengesScreen = lazy(() => import("../screens/User/Challenges"));
-const UserChallengeScreen = lazy(() => import("../screens/User/Challenge"));
-const UserCapturesScreen = lazy(() => import("../screens/User/Captures"));
-const UserBouncersScreen = lazy(() => import("../screens/User/Bouncers"));
-const UserClanScreen = lazy(() => import("../screens/User/Clan"));
-const UserQRewScreen = lazy(() => import("../screens/User/QRew"));
-const UserCubimalsScreen = lazy(() => import("../screens/User/Cubimals"));
-const UserQRatesScreen = lazy(() => import("../screens/User/QRates"));
-const UserRoomsScreen = lazy(() => import("../screens/User/Rooms"));
+const PlayerProfileScreen = lazy(() => import("../screens/User/Profile"));
+const PlayerActivityScreen = lazy(() => import("../screens/User/Activity"));
+const PlayerInventoryScreen = lazy(() => import("../screens/User/Inventory"));
+const PlayerZeeOpsScreen = lazy(() => import("../screens/User/ZeeOps"));
+const PlayerChallengesScreen = lazy(() => import("../screens/User/Challenges"));
+const PlayerChallengeScreen = lazy(() => import("../screens/User/Challenge"));
+const PlayerCapturesScreen = lazy(() => import("../screens/User/Captures"));
+const PlayerBouncersScreen = lazy(() => import("../screens/User/Bouncers"));
+const PlayerClanScreen = lazy(() => import("../screens/User/Clan"));
+const PlayerQRewScreen = lazy(() => import("../screens/User/QRew"));
+const PlayerCubimalsScreen = lazy(() => import("../screens/User/Cubimals"));
+const PlayerQRatesScreen = lazy(() => import("../screens/User/QRates"));
+const PlayerRoomsScreen = lazy(() => import("../screens/User/Rooms"));
+const PlayerLotterZeeScreen = lazy(() => import("../screens/User/LotterZee"));
 
 // Settings
 const PersonalisationScreen = lazy(() => import("../screens/Settings/Personalisation"));
@@ -126,35 +127,36 @@ function RootNavigator() {
         component={ClanStatsScreen}
       />
 
-      <Stack.Screen name="User_Profile" component={UserProfileScreen} />
+      <Stack.Screen name="Player_Profile" component={PlayerProfileScreen} />
       <Stack.Screen
         getId={({ params }) => params.date}
-        name="User_Activity"
-        component={UserActivityScreen}
+        name="Player_Activity"
+        component={PlayerActivityScreen}
       />
-      <Stack.Screen name="User_Inventory" component={UserInventoryScreen} />
-      <Stack.Screen name="User_ZeeOps" component={UserZeeOpsScreen} />
-      <Stack.Screen name="User_Bouncers" component={UserBouncersScreen} />
+      <Stack.Screen name="Player_Inventory" component={PlayerInventoryScreen} />
+      <Stack.Screen name="Player_ZeeOps" component={PlayerZeeOpsScreen} />
+      <Stack.Screen name="Player_Bouncers" component={PlayerBouncersScreen} />
       <Stack.Screen
         getId={({ params }) => params.date}
-        name="User_Challenges"
-        component={UserChallengesScreen}
+        name="Player_Challenges"
+        component={PlayerChallengesScreen}
       />
       <Stack.Screen
         getId={({ params }) => `${params.date}/${params.challenge}`}
-        name="User_Challenge"
-        component={UserChallengeScreen}
+        name="Player_Challenge"
+        component={PlayerChallengeScreen}
       />
       <Stack.Screen
         getId={({ params }) => params.category}
-        name="User_Captures"
-        component={UserCapturesScreen}
+        name="Player_Captures"
+        component={PlayerCapturesScreen}
       />
-      <Stack.Screen name="User_ClanProgress" component={UserClanScreen} />
-      <Stack.Screen name="User_QRew" component={UserQRewScreen} />
-      <Stack.Screen name="User_Cubimals" component={UserCubimalsScreen} />
-      <Stack.Screen name="User_QRates" component={UserQRatesScreen} />
-      <Stack.Screen name="User_Rooms" component={UserRoomsScreen} />
+      <Stack.Screen name="Player_ClanProgress" component={PlayerClanScreen} />
+      <Stack.Screen name="Player_QRew" component={PlayerQRewScreen} />
+      <Stack.Screen name="Player_Cubimals" component={PlayerCubimalsScreen} />
+      <Stack.Screen name="Player_QRates" component={PlayerQRatesScreen} />
+      <Stack.Screen name="Player_Rooms" component={PlayerRoomsScreen} />
+      <Stack.Screen name="Player_LotterZee" component={PlayerLotterZeeScreen} />
 
       <Stack.Screen name="Tools_Search" component={SearchScreen} />
 
@@ -199,11 +201,7 @@ function RootNavigator() {
       <Stack.Screen name="Settings_Notifications" component={NotificationScreen} />
       <Stack.Screen name="Settings_Bookmarks" component={BookmarksScreen} />
 
-      <Stack.Screen
-        name="Welcome"
-        component={WelcomeScreen}
-        options={{ title: "Welcome" }}
-      />
+      <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ title: "Welcome" }} />
 
       <Stack.Screen
         name="somewherewithoutcoffee"

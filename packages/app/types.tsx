@@ -1,18 +1,18 @@
 export type RootStackParamList = {
-  User_Profile: { username: string };
-  User_Activity: { username: string; date?: string };
-  User_Inventory: { username: string };
-  User_Challenges: { username: string; date?: string };
-  User_Challenge: { username: string; challenge: string; date?: string };
-  User_Captures: { username: string; category?: string };
-  User_ZeeOps: { username: string };
-  User_Bouncers: { username: string };
-  User_ClanProgress: { username: string };
-  User_QRew: { username: string };
-  User_Cubimals: { username: string };
-  User_QRates: { username: string };
-  User_Rooms: { username: string };
-  User_LotterZee: { username: string };
+  Player_Profile: { username: string };
+  Player_Activity: { username: string; date?: string };
+  Player_Inventory: { username: string };
+  Player_Challenges: { username: string; date?: string };
+  Player_Challenge: { username: string; challenge: string; date?: string };
+  Player_Captures: { username: string; category?: string };
+  Player_ZeeOps: { username: string };
+  Player_Bouncers: { username: string };
+  Player_ClanProgress: { username: string };
+  Player_QRew: { username: string };
+  Player_Cubimals: { username: string };
+  Player_QRates: { username: string };
+  Player_Rooms: { username: string };
+  Player_LotterZee: { username: string };
 
   Clan_Cuppa: undefined;
   Clan_Requirements: { year?: number; month?: number };

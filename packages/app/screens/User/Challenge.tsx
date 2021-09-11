@@ -16,11 +16,11 @@ import useDB from "../../hooks/useDB";
 import { generateUserActivityData } from "@cuppazee/utils/lib";
 import { RootStackParamList } from "../../types";
 
-export default function UserChallengesScreen() {
+export default function PlayerChallengesScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<RootStackParamList, "User_Challenge">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_Challenge">>();
   useTitle(
     `☕ ${route.params.username} - ${t("pages:user_challenges")} - ${dayjs(
       route.params?.date ?? dayjs.mhqNow()

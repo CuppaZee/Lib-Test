@@ -187,7 +187,7 @@ export default function useLogin(
   }
   if (shouldRedirect && redirect && Object.keys(teakens.data).length > 0) {
     setRedirect("");
-    nav.navigate("User_Profile", { username: redirect });
+    nav.navigate("Player_Profile", { username: redirect });
   }
 
   return [loading, login, loaded && !loading, shouldUseAlternative, handleLogin] as const;

@@ -14,11 +14,11 @@ import { openURL } from "expo-linking";
 import { Box, Button, Checkbox, Heading, Text } from "native-base";
 import { RootStackParamList } from "../../types";
 
-export default function UserInventoryScreen() {
+export default function PlayerInventoryScreen() {
   const [includeZeroes, setIncludeZeroes] = React.useState(false);
   const [groupByState, setGroupByState] = React.useState(false);
   const { t } = useTranslation();
-  const route = useRoute<RouteProp<RootStackParamList, "User_Inventory">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_Inventory">>();
   useTitle(`☕ ${route.params.username} - ${t("pages:user_inventory")}`);
   const user = useMunzeeRequest("user", { username: route.params.username });
   const data = useCuppaZeeRequest<{ data: UserInventoryInputData }>(

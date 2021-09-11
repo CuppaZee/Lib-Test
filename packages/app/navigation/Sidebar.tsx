@@ -49,7 +49,7 @@ export default function Drawer() {
                 ).toString(36)}.png`}
                 imageRounded
                 title={i.username}
-                link={["User_Profile", { username: i.username }]}
+                link={["Player_Profile", { username: i.username }]}
               />
             ))}
           </Box>

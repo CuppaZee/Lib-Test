@@ -11,9 +11,9 @@ import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useTitle from "../../hooks/useTitle";
 import { RootStackParamList } from "../../types";
 
-export default function UserCubimalsScreen() {
+export default function PlayerCubimalsScreen() {
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<RootStackParamList, "User_QRates">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_QRates">>();
   useTitle(`☕ ${route.params.username} - QRates`);
   const user = useMunzeeRequest(
     "user",

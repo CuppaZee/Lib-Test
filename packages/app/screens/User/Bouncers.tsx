@@ -31,13 +31,13 @@ type Bouncer = NonNullable<UserDeploys["response"]["data"]>["munzees"][0] & {
   timezone: string[];
 };
 
-export default function UserBouncersScreen() {
+export default function PlayerBouncersScreen() {
   const db = useDB();
   const { t } = useTranslation();
   const nav = useNavigation<NavProp>();
   const day = useDay();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<RootStackParamList, "User_Bouncers">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_Bouncers">>();
   useTitle(`☕ ${route.params.username} - ${t("pages:user_bouncers")}`);
   const user = useMunzeeRequest(
     "user",

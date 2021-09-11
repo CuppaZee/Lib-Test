@@ -10,9 +10,9 @@ import Loading from "../../components/Loading";
 import { ScrollView, View } from "react-native";
 import { RootStackParamList } from "../../types";
 
-export default function UserActivityScreen() {
+export default function PlayerActivityScreen() {
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<RootStackParamList, "User_ZeeOps">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_ZeeOps">>();
   useTitle(`☕ ${route.params.username} - ZeeOps`);
   const user = useMunzeeRequest(
     "user",

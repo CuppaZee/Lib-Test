@@ -15,7 +15,7 @@ import useDB from "../../hooks/useDB";
 import { Box, Modal } from "native-base";
 import { RootStackParamList } from "../../types";
 
-export default function UserActivityScreen() {
+export default function PlayerActivityScreen() {
   const { t } = useTranslation();
   const [size, onLayout] = useComponentSize();
   const [visible, setVisible] = React.useState(false);
@@ -24,7 +24,7 @@ export default function UserActivityScreen() {
     category: new Set(),
     state: new Set(),
   });
-  const route = useRoute<RouteProp<RootStackParamList, "User_Activity">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_Activity">>();
   useTitle(
     `☕ ${route.params.username} - ${t("pages:user_activity")} - ${dayjs(
       route.params?.date ?? dayjs.mhqNow()

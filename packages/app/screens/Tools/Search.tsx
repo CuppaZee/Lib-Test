@@ -73,7 +73,7 @@ export default function SearchScreen() {
           let link: any;
           if ("user_id" in item.item) {
             link = [
-              "User_Profile",
+              "Player_Profile",
               {
                 username: item.item.username,
               },

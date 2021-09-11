@@ -30,7 +30,7 @@ export default function UserActivityList({
   toggleFilterModal?: () => void;
 }) {
   const { t } = useTranslation();
-  const route = useRoute<RouteProp<RootStackParamList, "User_Activity">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_Activity">>();
   const nav = useNavigation<NavProp>();
   return (
     <FlatList

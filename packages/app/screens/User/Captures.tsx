@@ -23,10 +23,10 @@ const unavailable = new Set([
   "munzee",
 ]);
 
-export default function UserCapturesScreen() {
+export default function PlayerCapturesScreen() {
   const { t } = useTranslation();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<RootStackParamList, "User_Captures">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_Captures">>();
   const nav = useNavigation<NavProp>();
   useTitle(`☕ ${route.params.username} - ${t("pages:user_captures")} - ${route.params.category}`);
   const user = useMunzeeRequest(

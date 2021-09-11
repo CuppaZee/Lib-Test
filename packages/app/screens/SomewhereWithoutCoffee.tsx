@@ -26,7 +26,7 @@ export default function SomewhereWithoutCoffeeScreen() {
       <Heading fontSize="lg">{t("404:title")}</Heading>
       <Heading fontSize="md">{t("404:subtitle")}</Heading>
       <Button
-        onPress={() => nav.navigate("User_Profile", {username: "_"})}
+        onPress={() => nav.navigate("Player_Profile", {username: "_"})}
         size="lg"
         startIcon={<Icon colorBlank style={{ height: 24 }} name="home" />}>
         {t("404:home")}

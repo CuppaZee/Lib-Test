@@ -29,7 +29,7 @@ export default React.memo(
       <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} style={[styles.card, { flex: 1 }]}>
         <ScrollView onLayout={onOuterLayout} style={{ flex: 1 }}>
           <View onLayout={onInnerLayout}>
-            <Pressable onPress={() => nav.navigate("User_Profile", { username: item.username })}>
+            <Pressable onPress={() => nav.navigate("Player_Profile", { username: item.username })}>
               <View
                 style={{
                   flexDirection: "row",

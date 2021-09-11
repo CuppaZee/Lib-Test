@@ -69,7 +69,7 @@ function CreditsCircles({ width, height }: PackProps) {
           >
             <Pressable
               onPress={() =>
-                navigation.navigate("User_Profile", { username: circle.data.username })
+                navigation.navigate("Player_Profile", { username: circle.data.username })
               }
             >
               <Image

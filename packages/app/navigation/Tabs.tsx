@@ -30,7 +30,7 @@ export default function Tabs() {
         ).toString(36)}.png`}
         imageRounded
         title={users[0]?.username}
-        link={["User_Profile", { username: users[0]?.username }]}
+        link={["Player_Profile", { username: users[0]?.username }]}
       />
       <TabItem
         checkMatch navMethod="reset"

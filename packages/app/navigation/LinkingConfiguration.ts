@@ -15,19 +15,20 @@ export default function getConfig(notification?: NotificationResponse): LinkingO
       screens: {
         ...Object.fromEntries(
           Object.entries({
-            User_Profile: "user/:username",
-            User_Activity: "user/:username/activity/:date?",
-            User_Inventory: "user/:username/inventory",
-            User_ZeeOps: "user/:username/zeeops",
-            User_Challenges: "user/:username/challenges/:date?",
-            User_Challenge: "user/:username/challenge/:challenge/:date?",
-            User_Captures: "user/:username/captures/:category?",
-            User_Bouncers: "user/:username/bouncers",
-            User_ClanProgress: "user/:username/clan",
-            User_QRew: "user/:username/qrew",
-            User_Cubimals: "user/:username/cubimals",
-            User_QRates: "user/:username/qrates",
-            User_Rooms: "user/:username/rooms",
+            Player_Profile: "player/:username",
+            Player_Activity: "player/:username/activity/:date?",
+            Player_Inventory: "player/:username/inventory",
+            Player_ZeeOps: "player/:username/zeeops",
+            Player_Challenges: "player/:username/challenges/:date?",
+            Player_Challenge: "player/:username/challenge/:challenge/:date?",
+            Player_Captures: "player/:username/captures/:category?",
+            Player_Bouncers: "player/:username/bouncers",
+            Player_ClanProgress: "player/:username/clan",
+            Player_QRew: "player/:username/qrew",
+            Player_Cubimals: "player/:username/cubimals",
+            Player_QRates: "player/:username/qrates",
+            Player_Rooms: "player/:username/rooms",
+            Player_LotterZee: "player/:username/lotterzee",
           }).map(i => [
             i[0],
             {

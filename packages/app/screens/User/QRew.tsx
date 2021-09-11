@@ -85,11 +85,11 @@ function Card(props: CardProps) {
   );
 }
 
-export default function UserClanScreen() {
+export default function PlayerClanScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const [size, onLayout] = useComponentSize();
-  const route = useRoute<RouteProp<RootStackParamList, "User_QRew">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Player_QRew">>();
   useTitle(`☕ ${route.params.username} - ${t("pages:user_qrew_checker")}`);
   const user = useMunzeeRequest(
     "user",
