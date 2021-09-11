@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button, Input, Layout, List, ListItem, Modal, Text, useTheme } from "@ui-kitten/components";
 import * as React from "react";
 import { Image, ScrollView, View } from "react-native";
@@ -310,11 +309,9 @@ export default function AccountsScreen() {
           onPress={async () => {
             if (clanBookmarks) {
               setClanBookmarks(clanBookmarks);
-              AsyncStorage.setItem("CLAN_BOOKMARKS", JSON.stringify(clanBookmarks));
             }
             if (userBookmarks) {
               setUserBookmarks(userBookmarks);
-              AsyncStorage.setItem("USER_BOOKMARKS", JSON.stringify(userBookmarks));
             }
             setSaved(true);
             setTimeout(() => {

@@ -4,7 +4,6 @@ import * as WebBrowser from "expo-web-browser";
 import { useAtom } from "jotai";
 import { teakensAtom, useTeakens } from "../hooks/useToken";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUserBookmarks } from "./useBookmarks";
 import * as ExpoClipboard from "expo-clipboard";
 import { NavProp } from "../navigation";
@@ -101,26 +100,9 @@ export default function useLogin(
           },
         },
       });
-    
-    console.log(params);
-    
-      // // AsyncStorage.setItem(
-      // //   "CUPPAZEE_TEAKENS",
-      // //   JSON.stringify({
-      // //     ...teakens.data,
-      // //     [params.user_id]: {
-      // //       username: params.username,
-      // //       teaken: params.teaken,
-      // //     },
-      // //   })
-      // );
 
       if (!users.some(i => i.user_id === params.user_id)) {
         setUsers([...users, { user_id: params.user_id, username: params.username }]);
-        // AsyncStorage.setItem(
-        //   "USER_BOOKMARKS",
-        //   JSON.stringify([...users, { user_id: params.user_id, username: params.username }])
-        // );
       }
 
       setRedirect(params.username);

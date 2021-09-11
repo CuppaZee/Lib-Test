@@ -5,20 +5,21 @@ import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useSearch from "../../hooks/useSearch";
 import useTitle from "../../hooks/useTitle";
 import Fuse from "fuse.js";
-import { useNavigation } from "@react-navigation/native";
 import Tip from "../../components/Common/Tip";
 import { useTranslation } from "react-i18next";
 import useDB from "../../hooks/useDB";
-import { NavProp } from "../../navigation";
 import { Box, Heading, Input } from "native-base";
 import { Item } from "../../components/Common/Item";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export default function SearchScreen() {
   const db = useDB();
   const { t } = useTranslation();
   useTitle(`${t("pages:tools_search")}`);
   const [value, search, onValue] = useSearch(500);
-  const users = useMunzeeRequest("user/find", { text: search }, true, undefined, true, {keepPreviousData: true});
+  const users = useMunzeeRequest("user/find", { text: search }, true, undefined, true, {
+    keepPreviousData: true,
+  });
   const clans = useCuppaZeeRequest("clan/list", { format: "list" }, true, undefined, true, {
     keepPreviousData: true,
   });
@@ -38,16 +39,19 @@ export default function SearchScreen() {
       ),
     [clans.dataUpdatedAt, users.dataUpdatedAt]
   );
-  const results = React.useMemo(() => fuse.search(search, {limit: 50}), [fuse, search]);
+  const headerHeight = useHeaderHeight();
+  const results = React.useMemo(() => fuse.search(search, { limit: 50 }), [fuse, search]);
 
   return (
-    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} p={1} flex={1}>
+    <Box
+      bg="regularGray.100"
+      _dark={{ bg: "regularGray.900" }}
+      p={1}
+      flex={1}
+      style={{ paddingTop: headerHeight + 4 }}>
       <Box style={{ margin: 4, width: 400, maxWidth: "100%", alignSelf: "center" }}>
         <Heading fontSize="md">{t("search:search")}</Heading>
-        <Input
-          value={value}
-          onChangeText={onValue}
-        />
+        <Input value={value} onChangeText={onValue} />
       </Box>
 
       {!search && (

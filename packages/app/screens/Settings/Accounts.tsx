@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button, Layout, Text } from "@ui-kitten/components";
 import { useAtom } from "jotai";
 import * as React from "react";
@@ -68,12 +67,6 @@ export default function AccountsScreen() {
                       Object.entries(teakens.data).filter(t => t[0] !== i[0])
                     ),
                   });
-                  AsyncStorage.setItem(
-                    "CUPPAZEE_TEAKENS",
-                    JSON.stringify(
-                      Object.fromEntries(Object.entries(teakens.data).filter(t => t[0] !== i[0]))
-                    )
-                  );
                   if (Object.entries(teakens.data).filter(t => t[0] !== i[0]).length === 0) {
                     setReady(false);
                   }

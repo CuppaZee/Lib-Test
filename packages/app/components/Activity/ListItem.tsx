@@ -1,18 +1,17 @@
 import React from "react";
 import { Pressable, View } from "react-native";
-import useDay from "../../hooks/useDay";
 import TypeImage from "../Common/TypeImage";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { UserActivityItem } from "@cuppazee/utils";
 import { Box, Heading, Text } from "native-base";
 import { NavProp } from "../../navigation";
+import dayjs from "dayjs";
 
 export default React.memo(
   function UserActivityListItem(item: UserActivityItem) {
     const nav = useNavigation<NavProp>();
     const { t } = useTranslation();
-    const day = useDay();
     return (
       <Pressable
         onPress={() =>
@@ -84,10 +83,10 @@ export default React.memo(
           </View>
           <View style={{ paddingHorizontal: 4, paddingRight: 8 }}>
             <Text style={{ textAlign: "right" }} fontSize="sm">
-              {day(item.time).format("HH:mm")}
+              {dayjs(item.time).format("HH:mm")}
             </Text>
             <Text style={{ textAlign: "right" }} fontSize="md">
-              {day(item.time).mhq().format("HH:mm [MHQ]")}
+              {dayjs(item.time).mhq().format("HH:mm [MHQ]")}
             </Text>
           </View>
         </Box>

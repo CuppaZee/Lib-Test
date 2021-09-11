@@ -226,7 +226,13 @@ export function AutoMap({
         </Row>
         <Select
           m={1}
-          value={mapStyle}
+          p={1}
+          px={2}
+          value={
+            mapStyle === "monochrome" && theme.mapboxURL === "mapbox://styles/mapbox/streets-v11"
+              ? "streets"
+              : mapStyle
+          }
           onValueChange={(value: any) => setMapStyle(value)}
           options={[
             theme.mapboxURL === "mapbox://styles/mapbox/streets-v11"

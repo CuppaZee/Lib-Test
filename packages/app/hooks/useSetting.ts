@@ -4,8 +4,7 @@ import builds from "../builds";
 import {CuppaZeeDB} from "@cuppazee/db";
 import {atomWithStorage} from "jotai/utils";
 
-const store = new MMKV();
-
+export const store = new MMKV();
 
 const MergeStorage = (initialData: any) => ({
   getItem: (key: string) => {
@@ -64,12 +63,12 @@ export interface Setting<T> {
 }
 
 export const BuildAtom = settingAtom<number>(
-  "@cuppazee/build",
+  "@cz3/build",
   builds(new CuppaZeeDB([], [], []))[builds(new CuppaZeeDB([], [], [])).length - 1].build - 1
 );
 
 export const ThemeAtom = settingAtom<string>(
-  "@cuppazee/personalisation/theme",
+  "@cz3/personalisation/theme",
   "green_light"
 );
 
@@ -81,7 +80,7 @@ export const ClanPersonalisationAtom = settingAtom<{
   colours: string[];
   edited: boolean;
 }>(
-  "@cuppazee/personalisation/clan",
+  "@cz3/personalisation/clan",
   {
     style: 2,
     reverse: false,
@@ -115,7 +114,7 @@ export const ClansAtom = settingAtom<{
     shadow: boolean;
   };
 }>(
-  "@cuppazee/clans",
+  "@cz3/clans",
   {}
 );
 
@@ -125,17 +124,17 @@ export const TipsAtom = settingAtom<{
     count: number;
   };
 }>(
-  "@cuppazee/tips",
+  "@cz3/tips",
   {}
 );
 
 export const ReadyAtom = settingAtom<string | false>(
-  "@cuppazee/ready",
+  "@cz3/ready",
   false
 );
 
 export const LiveLocationErrorAtom = settingAtom<"" | "permission_failed" | "updated" | "updated_native">(
-  "@cuppazee/errors/live_location",
+  "@cz3/errors/live_location",
   ""
 );
 
@@ -143,7 +142,7 @@ export const DrawerAtom = settingAtom<{
   open?: boolean;
   collapsed: boolean;
 }>(
-  "@cuppazee/personalisation/drawer",
+  "@cz3/personalisation/drawer",
   {
     open: true,
     collapsed: false,
@@ -151,16 +150,16 @@ export const DrawerAtom = settingAtom<{
 );
 
 export const MapStyleAtom = settingAtom<"monochrome" | "streets" | "satellite">(
-  "@cuppazee/personalisation/maps",
+  "@cz3/personalisation/maps",
   "monochrome"
 );
 export const CumulativeRewardsAtom = settingAtom<boolean>(
-  "@cuppazee/clan/cumulative_rewards",
+  "@cz3/clan/cumulative_rewards",
   false
 );
 
 export const SkipDashboardAtom = settingAtom<boolean>(
-  "@cuppazee/skipdashboard",
+  "@cz3/skipdashboard",
   false
 );
 

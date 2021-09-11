@@ -1,10 +1,10 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinkingOptions } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 import * as Notifications from "expo-notifications";
 import { NotificationResponse } from "expo-notifications";
 import { Platform } from "react-native";
 
+// Get Main User
 const mainUser = { value: "sohcah" };
 
 export default function getConfig(notification?: NotificationResponse): LinkingOptions<any> {
@@ -104,14 +104,7 @@ export default function getConfig(notification?: NotificationResponse): LinkingO
       return;
     },
     subscribe(listener) {
-      const loadedMainuser = AsyncStorage.getItem("USER_BOOKMARKS").then(data => {
-        try {
-          const d = JSON.parse(data || "{}");
-          mainUser.value = d[0].username;
-        } catch {}
-      });
       const onReceiveURL = async ({ url }: { url: string }) => {
-        await loadedMainuser;
         listener(url);
       };
 
@@ -124,7 +117,6 @@ export default function getConfig(notification?: NotificationResponse): LinkingO
         const url = response.notification.request.content.data.url;
 
         if (path && typeof path === "string") {
-          await loadedMainuser;
           listener("uk.cuppazee.paper://" + path);
         }
 

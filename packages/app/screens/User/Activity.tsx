@@ -26,7 +26,7 @@ export default function PlayerActivityScreen() {
   });
   const route = useRoute<RouteProp<RootStackParamList, "Player_Activity">>();
   useTitle(
-    `${route.params.username} - ${t("pages:user_activity")} - ${dayjs(
+    `${route.params.username} - ${dayjs(
       route.params?.date ?? dayjs.mhqNow()
     ).format("L")}`
   );

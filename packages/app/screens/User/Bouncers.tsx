@@ -8,7 +8,6 @@ import { Pressable, ScrollView, View } from "react-native";
 import { UserDeploys } from "@cuppazee/api/user/deploys";
 import { MunzeeSpecialBouncer } from "@cuppazee/api/munzee/specials";
 import TypeImage from "../../components/Common/TypeImage";
-import useDay from "../../hooks/useDay";
 import Loading from "../../components/Loading";
 import { useTranslation } from "react-i18next";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
@@ -16,6 +15,7 @@ import useDB from "../../hooks/useDB";
 import { Box, Heading, Text } from "native-base";
 import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
+import dayjs from "dayjs";
 
 type Bouncer = NonNullable<UserDeploys["response"]["data"]>["munzees"][0] & {
   bouncer?: MunzeeSpecialBouncer & { hash: string };
@@ -35,7 +35,6 @@ export default function PlayerBouncersScreen() {
   const db = useDB();
   const { t } = useTranslation();
   const nav = useNavigation<NavProp>();
-  const day = useDay();
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_Bouncers">>();
   useTitle(`${route.params.username} - ${t("pages:user_bouncers")}`);
@@ -183,14 +182,14 @@ export default function PlayerBouncersScreen() {
                           {t("user_bouncers:location", {
                             town: i.location?.record?.name,
                             country: i.location?.record?.countryCode,
-                            times: i.timezone.map(t => day().tz(t).format("HH:mm")).join(", "),
+                            times: i.timezone.map(t => dayjs().tz(t).format("HH:mm")).join(", "),
                           })}
                         </Text>
                       )}
                       <Text fontSize="md">
                         {t("user_bouncers:captures", {
                           number: i.number_of_captures,
-                          date: i.last_captured_at ? day(i.last_captured_at).format("L LT") : "-",
+                          date: i.last_captured_at ? dayjs(i.last_captured_at).format("L LT") : "-",
                         })}
                       </Text>
                     </>

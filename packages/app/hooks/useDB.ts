@@ -1,6 +1,6 @@
-import { loadFromCache, loadFromArrayBuffer, loadFromLzwJson, CuppaZeeDB } from "@cuppazee/db";
+import { loadFromCache, loadFromLzwJson, CuppaZeeDB } from "@cuppazee/db";
 import { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { store } from "./useSetting";
 
 const dbCache: { value: CuppaZeeDB; onLoad: Set<() => void>; running: boolean } = {
   value: new CuppaZeeDB([], [], []),
@@ -28,7 +28,7 @@ async function loadDB2(cacheVersion: number) {
       dbLoadLog.push("Parsed from lzw, Succeeded.");
       dbCache.value = db;
       dbCache.onLoad.forEach(i => i());
-      await AsyncStorage.setItem("@czexpress/dbcache", JSON.stringify(cache));
+      store.set("@cz3/dbcache", JSON.stringify(cache));
     } else {
       dbLoadLog.push("Nothing to load from lzw, Suspended.");
     }
@@ -42,7 +42,7 @@ async function loadDBBase() {
   dbLoadLog.push("Loading...");
   let cacheVersion = 0;
   try {
-    const cacheData = await Promise.race([AsyncStorage.getItem("@czexpress/dbcache"), new Promise<string | null>((_, r) => setTimeout(r, 1000))]);
+    const cacheData = store.getString("@cz3/dbcache");
     if (cacheData) {
       dbLoadLog.push("Loaded from cache, Continuing.");
       const data = JSON.parse(cacheData);

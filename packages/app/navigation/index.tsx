@@ -4,7 +4,6 @@ import {
   DarkTheme,
   getPathFromState,
 } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import * as Notifications from "expo-notifications";
 import { ColorSchemeName } from "react-native";
@@ -16,7 +15,7 @@ import * as Analytics from "expo-firebase-analytics";
 import lazy from "../components/lazy";
 import Sidebar from "./Sidebar";
 import { Box, HStack, useColorModeValue, useToken, VStack } from "native-base";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { HeaderTitle, LoadIcon } from "./Header";
 import Tabs from "./Tabs";
 
@@ -72,7 +71,7 @@ const BlastScreen = lazy(() => import("../screens/Tools/Blast"));
 const WelcomeScreen = lazy(() => import("../screens/Welcome"));
 
 export type NavProp<T extends keyof RootStackParamList = keyof RootStackParamList> =
-  StackNavigationProp<RootStackParamList, T>;
+  NativeStackNavigationProp<RootStackParamList, T>;
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -176,7 +175,10 @@ function RootNavigator() {
       <Stack.Screen name="Player_Rooms" component={PlayerRoomsScreen} />
       <Stack.Screen name="Player_LotterZee" component={PlayerLotterZeeScreen} />
 
-      <Stack.Screen name="Tools_Search" component={SearchScreen} />
+      <Stack.Screen
+        name="Tools_Search"
+        component={SearchScreen}
+      />
 
       <Stack.Screen name="Tools_Calendar" component={CalendarScreen} />
       <Stack.Screen name="Tools_EvoPlanner" component={EvoPlannerScreen} />

@@ -1,17 +1,24 @@
 import i18n from "i18next";
-import { initReactI18next, Resources } from "react-i18next";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { initReactI18next } from "react-i18next";
 
 // the translations
 // (tip move them in a JSON file and import them)
 import {langs} from "./data";
 import dayjs from "dayjs";
+import { store } from "../hooks/useSetting";
+
+let language = store.getString("@cz3/lang") ?? "en-GB"
+if (language === "en-US") {
+  language = "en";
+  store.set("@cz3/lang", "en");
+}
+dayjs.locale(language === "test" ? "x-pseudo" : language.toLowerCase())
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources: langs,
-    lng: "en-GB",
+    lng: language,
     fallbackLng: "en-GB",
     defaultNS: "main",
     nsSeparator: "__",
@@ -24,20 +31,9 @@ i18n
   });
 
 i18n.on("languageChanged", (lang) => {
-  AsyncStorage.setItem("LANG", lang);
+  store.set("@cz3/lang", lang);
   dayjs.locale(lang === "test" ? "x-pseudo" : lang.toLowerCase());
 })
-
-AsyncStorage.getItem("LANG", (e, r) => {
-  if (r === "en-US") {
-    i18n.changeLanguage("en");
-    AsyncStorage.setItem("LANG", "en");
-  } else if (r) {
-    i18n.changeLanguage(r);
-  } else {
-    dayjs.locale("en-gb");
-  }
-});
 
 export const LANGS = [
   ["cs", "Čeština"],
