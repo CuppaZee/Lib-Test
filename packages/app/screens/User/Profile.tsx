@@ -56,7 +56,6 @@ export const UserPagesNow = [
 export default function TabOneScreen() {
   const db = useDB();
   const { t } = useTranslation();
-  const nav = useNavigation<NavProp>();
   const route = useRoute<RouteProp<RootStackParamList, "User_Profile">>();
   useTitle(`☕ ${route.params.username}`);
 
@@ -168,7 +167,7 @@ export default function TabOneScreen() {
                   key={i.screen}
                   title={"title" in i ? t(`pages:${i.title}` as const) : i.nontranslatedtitle}
                   icon={i.icon}
-                  link={[`User_${i.screen}`, { username: route.params.username }]}
+                  link={[`User_${i.screen}` as const, { username: route.params.username }]}
                 />
               ))}
               {!!user.data?.data?.clan ? (

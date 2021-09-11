@@ -101,6 +101,9 @@ static void InitializeFlipper(UIApplication *application) {
 
 // Linking API
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  if ([url.host containsString:@"munzeeblog.com"]) {
+    [application openURL:url options:@{} completionHandler:nil];
+  }
   return [RCTLinkingManager application:application openURL:url options:options];
 }
 

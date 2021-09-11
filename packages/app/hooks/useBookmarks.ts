@@ -1,4 +1,4 @@
-import useSetting, { atom, Setting } from "./useSetting";
+import useSetting, {settingAtom} from "./useSetting";
 
 export type ClanBookmark = {
   clan_id: number;
@@ -11,17 +11,15 @@ export type UserBookmark = {
   username: string;
 };
 
-export const ClanBookmarksAtom = atom<Setting<ClanBookmark[]>>({
-  data: [],
-  loaded: false,
-  key: "CLAN_BOOKMARKS",
-});
+export const ClanBookmarksAtom = settingAtom<ClanBookmark[]>(
+  "CLAN_BOOKMARKS",
+  []
+);
 
-export const UserBookmarksAtom = atom<Setting<UserBookmark[]>>({
-  data: [],
-  loaded: false,
-  key: "USER_BOOKMARKS",
-});
+export const UserBookmarksAtom = settingAtom<UserBookmark[]>(
+  "USER_BOOKMARKS",
+  []
+);
 
 export function useUserBookmarks() {
   return useSetting(UserBookmarksAtom);

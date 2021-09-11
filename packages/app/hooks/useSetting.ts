@@ -1,42 +1,86 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
-import { atom as jotaiAtom, useAtom, WritableAtom } from "jotai";
+import {useEffect} from "react";
+import {atom as jotaiAtom, PrimitiveAtom, useAtom, WritableAtom} from "jotai";
 import builds from "../builds";
-import { CuppaZeeDB } from "@cuppazee/db";
+import {CuppaZeeDB} from "@cuppazee/db";
+import {atomWithStorage} from "jotai/utils";
+import {TeakenData} from "./useToken";
 
-export function atom<T>(initial: T) {
-  return jotaiAtom<T>(initial);
+
+const MergeStorage = (initialData: any) => ({
+  getItem: async (key: string) => {
+    const jsonString = await AsyncStorage.getItem(key);
+    if (!jsonString) return {data: initialData, loaded: true};
+    try {
+      const data = JSON.parse(jsonString);
+      return {data: {...initialData, ...data}, loaded: true};
+    } catch {
+      return {data: initialData, loaded: true};
+    }
+  },
+  setItem: async (key: string, data: any) => {
+    await AsyncStorage.setItem(key, JSON.stringify(data.data))
+  },
+  delayInit: true,
+});
+
+const ReplaceStorage = (initialData: any) => ({
+  getItem: async (key: string) => {
+    const jsonString = await AsyncStorage.getItem(key);
+    if (!jsonString) return {data: initialData, loaded: true};
+    try {
+      const data = JSON.parse(jsonString);
+      return {data: data, loaded: true};
+    } catch {
+      return {data: initialData, loaded: true};
+    }
+  },
+  setItem: async (key: string, data: any) => {
+    await AsyncStorage.setItem(key, JSON.stringify(data.data))
+  },
+  delayInit: true,
+});
+
+export function settingAtom<T>(key: string, initialData: T, loadMethod?: "merge" | "replace") {
+  const method = loadMethod ?? ((typeof initialData === "object" && !Array.isArray(initialData)) ? "merge" : "replace");
+  return atomWithStorage<{
+    data: T;
+    loaded: boolean;
+  }>(
+    key,
+    {
+      data: initialData,
+      loaded: false,
+    },
+    (method === "merge" ? MergeStorage : ReplaceStorage)(initialData),
+  )
 }
 
 export interface Setting<T> {
   data: T;
   loaded: boolean;
-  key: string;
 }
 
-export const BuildAtom = atom<Setting<number>>({
-  data: builds(new CuppaZeeDB([], [], []))[builds(new CuppaZeeDB([], [], [])).length - 1].build - 1,
-  loaded: false,
-  key: "@cuppazee/build",
-});
+export const BuildAtom = settingAtom<number>(
+  "@cuppazee/build",
+  builds(new CuppaZeeDB([], [], []))[builds(new CuppaZeeDB([], [], [])).length - 1].build - 1
+);
 
-export const ThemeAtom = atom<Setting<string>>({
-  data: "green_light",
-  loaded: false,
-  key: "@cuppazee/personalisation/theme",
-});
+export const ThemeAtom = settingAtom<string>(
+  "@cuppazee/personalisation/theme",
+  "green_light"
+);
 
-export const ClanPersonalisationAtom = atom<
-  Setting<{
-    style: number;
-    reverse: boolean;
-    single_line: boolean;
-    full_background: boolean;
-    colours: string[];
-    edited: boolean;
-  }>
->({
-  data: {
+export const ClanPersonalisationAtom = settingAtom<{
+  style: number;
+  reverse: boolean;
+  single_line: boolean;
+  full_background: boolean;
+  colours: string[];
+  edited: boolean;
+}>(
+  "@cuppazee/personalisation/clan",
+  {
     style: 2,
     reverse: false,
     single_line: false,
@@ -59,86 +103,62 @@ export const ClanPersonalisationAtom = atom<
       "#B0FC8D",
     ],
   },
-  loaded: false,
-  key: "@cuppazee/personalisation/clan",
-});
+);
 
-export const ClansAtom = atom<
-  Setting<{
-    [clan_id: string]: {
-      level: number;
-      share: boolean;
-      subtract: boolean;
-      shadow: boolean;
-    };
-  }>
->({
-  data: {},
-  loaded: false,
-  key: "@cuppazee/clans",
-});
+export const ClansAtom = settingAtom<{
+  [clan_id: string]: {
+    level: number;
+    share: boolean;
+    subtract: boolean;
+    shadow: boolean;
+  };
+}>(
+  "@cuppazee/clans",
+  {}
+);
 
-export const TipsAtom = atom<
-  Setting<{
-    [id: string]: {
-      time: number;
-      count: number;
-    };
-  }>
->({
-  data: {},
-  loaded: false,
-  key: "@cuppazee/tips",
-});
+export const TipsAtom = settingAtom<{
+  [id: string]: {
+    time: number;
+    count: number;
+  };
+}>(
+  "@cuppazee/tips",
+  {}
+);
 
-export const ReadyAtom = atom<Setting<string | false>>({
-  data: false,
-  loaded: false,
-  key: "@cuppazee/ready",
-});
+export const ReadyAtom = settingAtom<string | false>(
+  "@cuppazee/ready",
+  false
+);
 
-export const LiveLocationErrorAtom = atom<Setting<"" | "permission_failed" | "updated" | "updated_native">>({
-  data: "",
-  loaded: false,
-  key: "@cuppazee/errors/live_location",
-});
+export const LiveLocationErrorAtom = settingAtom<"" | "permission_failed" | "updated" | "updated_native">(
+  "@cuppazee/errors/live_location",
+  ""
+);
 
-export const DrawerAtom = atom<Setting<{
+export const DrawerAtom = settingAtom<{
   open?: boolean;
-}>>({
-  data: {
+  collapsed: boolean;
+}>(
+  "@cuppazee/personalisation/drawer",
+  {
     open: true,
-  },
-  loaded: false,
-  key: "@cuppazee/personalisation/drawer",
-});
+    collapsed: false,
+  }
+);
 
-export const MapStyleAtom = atom<Setting<"monochrome" | "streets" | "satellite">>({
-  data: "monochrome",
-  loaded: false,
-  key: "@cuppazee/personalisation/maps",
-});
+export const MapStyleAtom = settingAtom<"monochrome" | "streets" | "satellite">(
+  "@cuppazee/personalisation/maps",
+  "monochrome"
+);
 
-export default function useSetting<T>(atom: WritableAtom<Setting<T>, Setting<T>> & {loading?: number}) {
+export default function useSetting<T>(atom: PrimitiveAtom<Setting<T>>) {
   const [value, setValue] = useAtom(atom);
-  useEffect(() => {
-    if (!value.loaded && (!atom.loading || atom.loading < Date.now() - 10000)) {
-      atom.loading = Date.now();
-      AsyncStorage.getItem(value.key).then(data => {
-        const jsonData = JSON.parse(data || "null");
-        if (typeof value.data === "object" && !Array.isArray(value.data)) {
-          setValue({ data: { ...value.data, ...(jsonData || {}) }, loaded: true, key: value.key });
-        } else {
-          setValue({ data: jsonData || value.data, loaded: true, key: value.key });
-        }
-      });
-    }
-  }, [value.loaded]);
   return [
     value.data,
     (data: T) => {
-      setValue({ ...value, data });
-      return AsyncStorage.setItem(value.key, JSON.stringify(data));
+      setValue({...value, data});
     },
     value.loaded,
   ] as const;

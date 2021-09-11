@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Image, PixelRatio, View } from "react-native";
 import {
   DataCell,
@@ -114,11 +114,11 @@ export default React.memo(
       !clan_data.data ||
       (!shadow_data.data && [-1, 1349, 1441, 457, 1902, 2042, 1870, 3224].includes(actual_clan_id))
     ) {
-      return (
+      return useMemo(() => (
         <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} flexGrow={1} onLayout={onLayout}>
           <Loading data={[clan_data, requirements_data, shadow_data]} />
         </Box>
-      );
+      ), [0, 0, 0, 0, 0, 0, 0]);
     }
 
     const levelCount = Object.keys(requirements_data.data?.data?.data.levels ?? {}).length;
@@ -161,282 +161,285 @@ export default React.memo(
       | ClanStatsData
       | { type: "group" | "individual" | "share"; level: number }
     )[];
-    return (
-      <Box
-        onLayout={onLayout}
-        bg="coolGray.200"
-        _dark={{ bg: "coolGray.800" }}
-        style={{ margin: 4, borderRadius: 8 }}>
+    return useMemo(() => {
+      console.log("CLAN: " + clan_id);
+      return (
         <Box
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            height: 48 * fontScale,
-            padding: 4,
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-          }}
-          bg="coolGray.300"
-          _dark={{ bg: "coolGray.700" }}>
-          <Image
-            style={{ height: 32, width: 32, borderRadius: 16, marginRight: 8 }}
-            source={{
-              uri: `https://munzee.global.ssl.fastly.net/images/clan_logos/${clan_id.toString(
-                36
-              )}.png`,
-            }}
-          />
-          <View style={{ flex: 1 }}>
-            <Heading numberOfLines={1} fontSize="lg">
-              {clan_data.data.data?.details.name}
-            </Heading>
-            <Heading numberOfLines={1} fontSize="md">
-              {clan_data.data.data?.details.tagline}
-            </Heading>
-          </View>
-          <Button.Group size="sm" isAttached>
-            <Button
-              bg={options[actual_clan_id]?.subtract ? "primary.700" : "primary.400"}
-              borderRightRadius={0}
-              onPress={() =>
-                setOptions({
-                  ...options,
-                  [actual_clan_id]: {
-                    ...options[actual_clan_id],
-                    subtract: false,
-                  },
-                })
-              }>
-              Achieved
-            </Button>
-            <Button
-              bg={options[actual_clan_id]?.subtract ? "primary.400" : "primary.700"}
-              borderLeftRadius={0}
-              onPress={() =>
-                setOptions({
-                  ...options,
-                  [actual_clan_id]: {
-                    ...options[actual_clan_id],
-                    subtract: true,
-                  },
-                })
-              }>
-              Remaining
-            </Button>
-          </Button.Group>
-          <Button
-            ml={2}
-            bg={options[actual_clan_id]?.shadow ? "primary.400" : "primary.700"}
-            startIcon={<Icon colorBlank style={{ height: 24, width: 24 }} name="coffee" />}
-            size="xs"
-            onPress={() =>
-              setOptions({
-                ...options,
-                [actual_clan_id]: {
-                  ...options[actual_clan_id],
-                  shadow: !(options[actual_clan_id]?.shadow ?? true),
-                },
-              })
-            }
-          />
-          <Button
-            bg="transparent"
-            startIcon={<Icon style={{ height: 24, width: 24 }} name="cog" />}
-            onPress={() => setModalVisible(true)}
-          />
-        </Box>
-        <Modal
-          // backdropStyle={{ backgroundColor: "#00000077" }}
-          isOpen={modalVisible}
-          onClose={() => setModalVisible(false)}>
-          <ClanSettingsModal
-            levels={levels}
-            close={() => setModalVisible(false)}
-            clan_id={actual_clan_id}
-          />
-        </Modal>
-        {requirements.isAprilFools && (
-          <Text style={{ padding: 4 }}>
-            Please be aware that the Munzee API is still returning April Fools requirements. I have
-            tried my best to manually input the real reqirements here, however there may be a few
-            typos. Once Munzee disables the April Fools requirements, CuppaZee will return back to
-            using the accurate data provided by Munzee automatically.
-          </Text>
-        )}
-        <View style={{ flexDirection: "row" }}>
-          {showSidebar && (
-            <View
-              key="sidebar"
-              style={{
-                alignSelf: "flex-start",
-                width: sidebarWidth,
-                flexGrow: size.width < minTableWidth ? undefined : 1,
-                borderRightWidth: 2,
-                borderColor,
-              }}>
-              <View
-                style={{
-                  borderBottomWidth: 2,
-                  borderColor,
-                }}>
-                <TitleCell key="header" clan={clan_data.data} shadow={shadow_data.data} />
-              </View>
-              {main_rows.map(row =>
-                typeof row === "number" ? (
-                  <RequirementCell
-                    key={row}
-                    task_id={row}
-                    requirements={requirements}
-                    onPress={() => setSortBy(sortBy === row ? -row : row)}
-                    sortBy={sortBy}
-                  />
-                ) : "type" in row ? (
-                  <View
-                    key={`${row.level}_${row.type}`}
-                    style={{
-                      [style.reverse
-                        ? row.type === "group"
-                          ? "borderLeftWidth"
-                          : "borderRightWidth"
-                        : row.type === "group"
-                        ? "borderTopWidth"
-                        : "borderBottomWidth"]: 2,
-                      borderColor,
-                    }}>
-                    <LevelCell
-                      levels={levels}
-                      clan_id={actual_clan_id}
-                      level={row.level}
-                      type={row.type}
-                    />
-                  </View>
-                ) : (
-                  <UserCell key={"user_id" in row ? row.user_id : "Clan Total"} user={row} />
-                )
-              )}
-            </View>
-          )}
-          <SyncScrollView
-            controller={scrollViewController}
+          onLayout={onLayout}
+          bg="coolGray.200"
+          _dark={{ bg: "coolGray.800" }}
+          style={{ margin: 4, borderRadius: 8 }}>
+          <Box
             style={{
-              alignSelf: "flex-start",
-              flexGrow: (reverse
-                ? [...Object.values(stats.users).sort(sort), stats]
-                : requirements.all
-              ).length,
+              flexDirection: "row",
+              alignItems: "center",
+              height: 48 * fontScale,
+              padding: 4,
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
             }}
-            contentContainerStyle={{ flexGrow: 1, alignItems: "flex-start" }}
-            horizontal={true}
-            pagingEnabled={size.width < 720 || size.width < minTableWidth}
-            snapToInterval={columnWidth === 400 && size.width < 400 ? undefined : columnWidth}
-            snapToAlignment={showSidebar || !reverse ? "start" : "center"}>
-            {main_columns.map(column => (
+            bg="coolGray.300"
+            _dark={{ bg: "coolGray.700" }}>
+            <Image
+              style={{ height: 32, width: 32, borderRadius: 16, marginRight: 8 }}
+              source={{
+                uri: `https://munzee.global.ssl.fastly.net/images/clan_logos/${clan_id.toString(
+                  36
+                )}.png`,
+              }}
+            />
+            <View style={{ flex: 1 }}>
+              <Heading numberOfLines={1} fontSize="lg">
+                {clan_data.data?.data?.details.name}
+              </Heading>
+              <Heading numberOfLines={1} fontSize="md">
+                {clan_data.data?.data?.details.tagline}
+              </Heading>
+            </View>
+            <Button.Group size="sm" isAttached>
+              <Button
+                bg={options[actual_clan_id]?.subtract ? "primary.700" : "primary.400"}
+                borderRightRadius={0}
+                onPress={() =>
+                  setOptions({
+                    ...options,
+                    [actual_clan_id]: {
+                      ...options[actual_clan_id],
+                      subtract: false,
+                    },
+                  })
+                }>
+                Achieved
+              </Button>
+              <Button
+                bg={options[actual_clan_id]?.subtract ? "primary.400" : "primary.700"}
+                borderLeftRadius={0}
+                onPress={() =>
+                  setOptions({
+                    ...options,
+                    [actual_clan_id]: {
+                      ...options[actual_clan_id],
+                      subtract: true,
+                    },
+                  })
+                }>
+                Remaining
+              </Button>
+            </Button.Group>
+            {!!shadow_data.data?.data?.data && <Button
+              ml={2}
+              bg={options[actual_clan_id]?.shadow ? "primary.400" : "primary.700"}
+              startIcon={<Icon colorBlank style={{ height: 24, width: 24 }} name="coffee" />}
+              size="xs"
+              onPress={() =>
+                setOptions({
+                  ...options,
+                  [actual_clan_id]: {
+                    ...options[actual_clan_id],
+                    shadow: !(options[actual_clan_id]?.shadow ?? true),
+                  },
+                })
+              }
+            />}
+            <Button
+              bg="transparent"
+              startIcon={<Icon style={{ height: 24, width: 24 }} name="cog" />}
+              onPress={() => setModalVisible(true)}
+            />
+          </Box>
+          <Modal
+            // backdropStyle={{ backgroundColor: "#00000077" }}
+            isOpen={modalVisible}
+            onClose={() => setModalVisible(false)}>
+            <ClanSettingsModal
+              levels={levels}
+              close={() => setModalVisible(false)}
+              clan_id={actual_clan_id}
+            />
+          </Modal>
+          {requirements.isAprilFools && (
+            <Text style={{ padding: 4 }}>
+              Please be aware that the Munzee API is still returning April Fools requirements. I have
+              tried my best to manually input the real reqirements here, however there may be a few
+              typos. Once Munzee disables the April Fools requirements, CuppaZee will return back to
+              using the accurate data provided by Munzee automatically.
+            </Text>
+          )}
+          <View style={{ flexDirection: "row" }}>
+            {showSidebar && (
               <View
-                key={
-                  typeof column === "number"
-                    ? column
-                    : "user_id" in column
-                    ? column.user_id
-                    : "type" in column
-                    ? `${column.level}_${column.type}`
-                    : "Clan Stats"
-                }
+                key="sidebar"
                 style={{
-                  width: columnWidth,
-                  flexGrow: 1,
-                  maxWidth: size?.width,
+                  alignSelf: "flex-start",
+                  width: sidebarWidth,
+                  flexGrow: size.width < minTableWidth ? undefined : 1,
+                  borderRightWidth: 2,
+                  borderColor,
                 }}>
                 <View
                   style={{
                     borderBottomWidth: 2,
                     borderColor,
                   }}>
-                  {typeof column === "number" ? (
+                  <TitleCell key="header" clan={clan_data.data ?? undefined} shadow={shadow_data.data} />
+                </View>
+                {main_rows.map(row =>
+                  typeof row === "number" ? (
                     <RequirementCell
-                      key="Header"
-                      task_id={column}
-                      stack={headerStack}
+                      key={row}
+                      task_id={row}
                       requirements={requirements}
-                      onPress={() => setSortBy(sortBy === column ? -column : column)}
+                      onPress={() => setSortBy(sortBy === row ? -row : row)}
                       sortBy={sortBy}
                     />
-                  ) : "type" in column ? (
+                  ) : "type" in row ? (
                     <View
+                      key={`${row.level}_${row.type}`}
                       style={{
                         [style.reverse
-                          ? column.type === "group"
+                          ? row.type === "group"
                             ? "borderLeftWidth"
                             : "borderRightWidth"
-                          : column.type === "group"
-                          ? "borderTopWidth"
-                          : "borderBottomWidth"]: 2,
+                          : row.type === "group"
+                            ? "borderTopWidth"
+                            : "borderBottomWidth"]: 2,
                         borderColor,
                       }}>
                       <LevelCell
                         levels={levels}
                         clan_id={actual_clan_id}
-                        key={`${column.level}_${column.type}`}
-                        level={column.level}
-                        type={column.type}
-                        stack={headerStack}
+                        level={row.level}
+                        type={row.type}
                       />
                     </View>
                   ) : (
-                    <UserCell key="Header" user={column} stack={headerStack} />
-                  )}
-                </View>
-                {main_rows.map(row => {
-                  const user =
-                    typeof row !== "number" ? row : typeof column !== "number" ? column : null;
-                  const task_id =
-                    typeof row === "number" ? row : typeof column === "number" ? column : null;
-                  const key =
-                    typeof row === "number"
-                      ? row
-                      : "user_id" in row
-                      ? row.user_id
-                      : "type" in row
-                      ? `${row.level}_${row.type}`
-                      : "Clan Stats";
-                  if (!user || !task_id) return null;
-                  return "type" in user ? (
-                    <View
-                      key={key}
-                      style={{
-                        [style.reverse
-                          ? user.type === "group"
-                            ? "borderLeftWidth"
-                            : "borderRightWidth"
-                          : user.type === "group"
-                          ? "borderTopWidth"
-                          : "borderBottomWidth"]: 2,
-                        borderColor,
-                      }}>
-                      <RequirementDataCell
-                        members={Object.keys(stats.users).length}
-                        task={task_id}
-                        level={user.level}
-                        type={user.type}
-                        requirements={requirements}
-                      />
-                    </View>
-                  ) : (
-                    <DataCell
-                      levelCount={levelCount}
-                      clan_id={actual_clan_id}
-                      requirements={requirements}
-                      key={key}
-                      user={user}
-                      task_id={task_id}
-                    />
-                  );
-                })}
+                    <UserCell key={"user_id" in row ? row.user_id : "Clan Total"} user={row} />
+                  )
+                )}
               </View>
-            ))}
-          </SyncScrollView>
-        </View>
-      </Box>
-    );
+            )}
+            <SyncScrollView
+              controller={scrollViewController}
+              style={{
+                alignSelf: "flex-start",
+                flexGrow: (reverse
+                  ? [...Object.values(stats.users).sort(sort), stats]
+                  : requirements.all
+                ).length,
+              }}
+              contentContainerStyle={{ flexGrow: 1, alignItems: "flex-start" }}
+              horizontal={true}
+              pagingEnabled={size.width < 720 || size.width < minTableWidth}
+              snapToInterval={columnWidth === 400 && size.width < 400 ? undefined : columnWidth}
+              snapToAlignment={showSidebar || !reverse ? "start" : "center"}>
+              {main_columns.map(column => (
+                <View
+                  key={
+                    typeof column === "number"
+                      ? column
+                      : "user_id" in column
+                        ? column.user_id
+                        : "type" in column
+                          ? `${column.level}_${column.type}`
+                          : "Clan Stats"
+                  }
+                  style={{
+                    width: columnWidth,
+                    flexGrow: 1,
+                    maxWidth: size?.width,
+                  }}>
+                  <View
+                    style={{
+                      borderBottomWidth: 2,
+                      borderColor,
+                    }}>
+                    {typeof column === "number" ? (
+                      <RequirementCell
+                        key="Header"
+                        task_id={column}
+                        stack={headerStack}
+                        requirements={requirements}
+                        onPress={() => setSortBy(sortBy === column ? -column : column)}
+                        sortBy={sortBy}
+                      />
+                    ) : "type" in column ? (
+                      <View
+                        style={{
+                          [style.reverse
+                            ? column.type === "group"
+                              ? "borderLeftWidth"
+                              : "borderRightWidth"
+                            : column.type === "group"
+                              ? "borderTopWidth"
+                              : "borderBottomWidth"]: 2,
+                          borderColor,
+                        }}>
+                        <LevelCell
+                          levels={levels}
+                          clan_id={actual_clan_id}
+                          key={`${column.level}_${column.type}`}
+                          level={column.level}
+                          type={column.type}
+                          stack={headerStack}
+                        />
+                      </View>
+                    ) : (
+                      <UserCell key="Header" user={column} stack={headerStack} />
+                    )}
+                  </View>
+                  {main_rows.map(row => {
+                    const user =
+                      typeof row !== "number" ? row : typeof column !== "number" ? column : null;
+                    const task_id =
+                      typeof row === "number" ? row : typeof column === "number" ? column : null;
+                    const key =
+                      typeof row === "number"
+                        ? row
+                        : "user_id" in row
+                          ? row.user_id
+                          : "type" in row
+                            ? `${row.level}_${row.type}`
+                            : "Clan Stats";
+                    if (!user || !task_id) return null;
+                    return "type" in user ? (
+                      <View
+                        key={key}
+                        style={{
+                          [style.reverse
+                            ? user.type === "group"
+                              ? "borderLeftWidth"
+                              : "borderRightWidth"
+                            : user.type === "group"
+                              ? "borderTopWidth"
+                              : "borderBottomWidth"]: 2,
+                          borderColor,
+                        }}>
+                        <RequirementDataCell
+                          members={Object.keys(stats.users).length}
+                          task={task_id}
+                          level={user.level}
+                          type={user.type}
+                          requirements={requirements}
+                        />
+                      </View>
+                    ) : (
+                      <DataCell
+                        levelCount={levelCount}
+                        clan_id={actual_clan_id}
+                        requirements={requirements}
+                        key={key}
+                        user={user}
+                        task_id={task_id}
+                      />
+                    );
+                  })}
+                </View>
+              ))}
+            </SyncScrollView>
+          </View>
+        </Box>
+      )
+    }, [clan_data.data, requirements, stats, options[actual_clan_id], sortBy, size.width, modalVisible]);
   },
   (prev, now) => prev.clan_id === now.clan_id && prev.game_id === now.game_id
 );

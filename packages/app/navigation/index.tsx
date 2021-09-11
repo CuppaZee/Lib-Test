@@ -4,19 +4,21 @@ import {
   DarkTheme,
   getPathFromState,
 } from "@react-navigation/native";
-import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack";
+import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import * as Notifications from "expo-notifications";
-import { ColorSchemeName, Platform } from "react-native";
+import { ColorSchemeName } from "react-native";
 
 import SomewhereWithoutCoffeeScreen from "../screens/SomewhereWithoutCoffee";
 import { RootStackParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import * as Analytics from "expo-firebase-analytics";
 import lazy from "../components/lazy";
-import Header from "./Header";
 import Sidebar from "./Sidebar";
-import { Box, HStack } from "native-base";
+import {Box, HStack, VStack} from "native-base";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import Header from "./Header";
+import Tabs from "./Tabs";
 
 // Clan
 const ClanStatsScreen = lazy(() => import("../screens/Clan/Stats"));
@@ -66,6 +68,8 @@ const ActivityWidgetScreen = lazy(() => import("../screens/Tools/WidgetConfigure
 const UniversalScreen = lazy(() => import("../screens/Tools/Universal"));
 const BlastScreen = lazy(() => import("../screens/Tools/Blast"));
 
+const WelcomeScreen = lazy(() => import("../screens/Welcome"));
+
 export type NavProp = StackNavigationProp<RootStackParamList>;
 
 // If you are not familiar with React Navigation, we recommend going through the
@@ -86,19 +90,22 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
         Analytics.setCurrentScreen(currentScreen);
       }}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <HStack flex={1}>
-        <Sidebar />
-        <Box flex={2}>
-          <RootNavigator />
-        </Box>
-      </HStack>
+      <VStack flex={1}>
+        <HStack flex={1}>
+          <Sidebar />
+          <Box flex={2}>
+            <RootNavigator />
+          </Box>
+        </HStack>
+        <Tabs />
+      </VStack>
     </NavigationContainer>
   );
 }
 
 // A root stack navigator is often used for displaying modals on top of all other content
 // Read more here: https://reactnavigation.org/docs/modal
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
@@ -106,9 +113,9 @@ function RootNavigator() {
       screenOptions={{
         header: props => <Header {...props} />,
         // headerShown: false,
-        cardStyle: {
-          maxHeight: Platform.OS === "web" ? "100vh" : undefined,
-        },
+        // cardStyle: {
+        //   maxHeight: Platform.OS === "web" ? "100vh" : undefined,
+        // },
       }}>
       <Stack.Screen name="Clan_Bookmarks" component={ClanBookmarksScreen} />
       <Stack.Screen name="Clan_Cuppa" component={CuppaManagerScreen} />
@@ -191,6 +198,12 @@ function RootNavigator() {
       <Stack.Screen name="Settings_Accounts" component={AccountsScreen} />
       <Stack.Screen name="Settings_Notifications" component={NotificationScreen} />
       <Stack.Screen name="Settings_Bookmarks" component={BookmarksScreen} />
+
+      <Stack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{ title: "Welcome" }}
+      />
 
       <Stack.Screen
         name="somewherewithoutcoffee"

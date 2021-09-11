@@ -1,11 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
-import { Button, Layout, Text, useTheme } from "@ui-kitten/components";
+import { useTheme } from "@ui-kitten/components";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { Image } from "react-native";
 import Icon from "../components/Common/Icon";
 import useTitle from "../hooks/useTitle";
 import { NavProp } from "../navigation";
+import {Box, Button, Heading} from "native-base";
 
 export default function SomewhereWithoutCoffeeScreen() {
   const { t } = useTranslation();
@@ -13,7 +14,7 @@ export default function SomewhereWithoutCoffeeScreen() {
   const theme = useTheme();
   const nav = useNavigation<NavProp>();
   return (
-    <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <Box bg="coolGray.100" _dark={{bg: "coolGray.900"}} style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Image
         source={
           theme.style === "dark"
@@ -22,15 +23,14 @@ export default function SomewhereWithoutCoffeeScreen() {
         }
         style={{ width: 300, height: 100 }}
       />
-      <Text category="h1">{t("404:title")}</Text>
-      <Text category="h4">{t("404:subtitle")}</Text>
+      <Heading fontSize="lg">{t("404:title")}</Heading>
+      <Heading fontSize="md">{t("404:subtitle")}</Heading>
       <Button
         onPress={() => nav.navigate("User_Profile", {username: "_"})}
-        appearance="outline"
-        size="large"
-        accessoryLeft={props => <Icon {...props} name="home" />}>
+        size="lg"
+        startIcon={<Icon colorBlank style={{ height: 24 }} name="home" />}>
         {t("404:home")}
       </Button>
-    </Layout>
+    </Box>
   );
 }

@@ -1,4 +1,4 @@
-import { StackHeaderProps } from "@react-navigation/stack";
+import {NativeStackHeaderProps} from "@react-navigation/native-stack/lib/typescript/src/types";
 import React, { useEffect, useReducer, useState } from "react";
 import { useIsFetching, useQueryClient } from "react-query";
 import day from "dayjs";
@@ -13,7 +13,7 @@ function LoadIcon() {
   return (
     <Button
       size="sm"
-      bg="none"
+      bg="transparent"
       startIcon={
         loading ? (
           <ActivityIndicator color={theme.colors.coolGray[500]} size={24} />
@@ -44,22 +44,21 @@ function Time() {
   return <>{day.mhqNow().format("L LT [MHQ]")}</>;
 }
 
-export default function Header(props: StackHeaderProps) {
+export default function Header(props: NativeStackHeaderProps) {
   const title = props.options.headerTitle?.toString() ?? props.route.name;
   return (
     <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} safeAreaTop>
       <HStack alignItems="center" p={1}>
-        <Button
+        {!!props.back && <Button
           size="sm"
-          bg="none"
+          bg="transparent"
           style={{ opacity: props.navigation.canGoBack() ? 1 : 0.4 }}
           startIcon={<Icon style={{ height: 24 }} name="arrow-left" />}
           onPress={() => props.navigation.goBack()}
-          disabled={!props.navigation.canGoBack()}
-        />
-        <Box flex={1}>
-          <Heading fontSize="lg">{title}</Heading>
-          <Text fontSize="sm">
+        />}
+        <Box pl={props.back ? 0 : 2} flex={1}>
+          <Heading numberOfLines={1} fontSize="lg">{title}</Heading>
+          <Text numberOfLines={1} fontSize="sm">
             <Time />
           </Text>
         </Box>

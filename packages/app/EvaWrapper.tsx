@@ -5,7 +5,7 @@ import { ApplicationProvider } from "@ui-kitten/components";
 import * as themes from "./themes";
 import { Platform } from "react-native";
 
-const disabled = true;
+const disabled = false;
 
 export default disabled ? (({ children }: PropsWithChildren<{}>) => <>{children}</>) : function EvaWrapper({ children, dark }: PropsWithChildren<{dark?: boolean}>) {
   const [themeValue] = useSetting(ThemeAtom);

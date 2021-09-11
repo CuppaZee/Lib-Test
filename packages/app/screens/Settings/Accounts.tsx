@@ -15,7 +15,8 @@ export default function AccountsScreen() {
   useTitle(`☕ ${t("pages:settings")} - ${t("pages:settings_accounts")}`);
   const [, login, ready] = useLogin("settings/accounts");
   useTeakens();
-  const [teakens, setTeakens] = useAtom(teakensAtom);
+  const [teakens] = useAtom(teakensAtom);
+  const setTeakens: any = () => { };
   const [, setReady] = useSetting(ReadyAtom);
   return (
     <Layout style={{ flex: 1 }}>

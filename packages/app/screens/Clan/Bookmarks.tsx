@@ -54,7 +54,7 @@ export default function ClanBookmarksScreen() {
               scrollViewController={style.reverse ? undefined : scrollViewController}
             />
           </View>
-          {clans?.map(i => (
+          {clans?.slice(0,1).map(i => (
             <View
               key={i.clan_id}
               style={{

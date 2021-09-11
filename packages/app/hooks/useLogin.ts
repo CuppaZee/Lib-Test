@@ -43,7 +43,8 @@ export default function useLogin(
 
   var config = configs[application];
   const { loaded } = useTeakens();
-  const [teakens, setTeakens] = useAtom(teakensAtom);
+  const [teakens, _setTeakens] = useAtom(teakensAtom);
+  const setTeakens: any = () => { };
   const nav = useNavigation<NavProp>();
   const [users, setUsers] = useUserBookmarks();
 
@@ -54,14 +55,16 @@ export default function useLogin(
   
   React.useEffect(() => {
     async function checkClipboard() {
-      const string = await ExpoClipboard.getStringAsync();
-      if (string?.startsWith("czlogin:")) {
-        const s = string.split(":");
-        handleLogin({
-          teaken: s[1],
-          username: s[2],
-          user_id: s[3],
-        });
+      if(Platform.OS === "android") {
+        const string = await ExpoClipboard.getStringAsync();
+        if (string?.startsWith("czlogin:")) {
+          const s = string.split(":");
+          handleLogin({
+            teaken: s[1],
+            username: s[2],
+            user_id: s[3],
+          });
+        }
       }
     }
     AppState.addEventListener("change", checkClipboard);

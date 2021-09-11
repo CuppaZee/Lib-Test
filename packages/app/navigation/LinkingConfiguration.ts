@@ -77,7 +77,7 @@ export default function getConfig(notification?: NotificationResponse): LinkingO
         Settings_Accounts: "settings/accounts",
         Settings_Notifications: "settings/notifications",
         Settings_Bookmarks: "settings/bookmarks",
-        Welcome: "settings/welcome",
+        Welcome: "welcome",
         somewherewithoutcoffee: "*",
       },
     },

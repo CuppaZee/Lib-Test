@@ -78,13 +78,13 @@ struct NewsWidgetEntryView : View {
       VStack(
         alignment: .leading,
         content: {
-          Link(destination: URL(string: entry.newsEntries[0].blog_url)!) {HStack(content: {
+          Link(destination: URL(string: entry.newsEntries[1].blog_url) ?? URL(string: "https://munzeeblog.com")!) {HStack(content: {
             NetworkImage(url: URL(string: entry.newsEntries[0].image_url))
               .frame(width: 48.0, height: 48.0)
             Text(entry.newsEntries[0].title).lineLimit(2).padding(.leading)
           })}
           if(entry.newsEntries.endIndex > 0) {
-            Link(destination: URL(string: entry.newsEntries[1].blog_url)!) {HStack(content: {
+            Link(destination: URL(string: entry.newsEntries[1].blog_url) ?? URL(string: "https://munzeeblog.com")!) {HStack(content: {
               NetworkImage(url: URL(string: entry.newsEntries[1].image_url))
                 .frame(width: 48.0, height: 48.0)
               Text(entry.newsEntries[1].title).lineLimit(2).padding(.leading)

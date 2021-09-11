@@ -1,5 +1,5 @@
 import { ListItem, Popover } from "@ui-kitten/components";
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, useMemo, useState } from "react";
 import {
   Image,
   ImageSourcePropType,
@@ -25,9 +25,18 @@ import useSetting, { ClanPersonalisationAtom, ClansAtom } from "../../hooks/useS
 import Icon, { IconName } from "../Common/Icon";
 import useDB from "../../hooks/useDB";
 import { NavProp } from "../../navigation";
-import { Box, Text, useTheme } from "native-base";
+import {
+  Box,
+  Text
+} from "native-base";
 
 const textColorCache = new Map<string, boolean>();
+
+let cellCount = 0;
+
+setInterval(() => {
+  console.log(cellCount);
+}, 10000);
 
 export function pickTextColor(
   bgColor: string,
@@ -35,18 +44,18 @@ export function pickTextColor(
   darkColor: string = "#000"
 ) {
   if(!textColorCache.has(bgColor)) {
-    var color = bgColor.charAt(0) === "#" ? bgColor.substring(1, 7) : bgColor;
-    var r = parseInt(color.substring(0, 2), 16); // hexToR
-    var g = parseInt(color.substring(2, 4), 16); // hexToG
-    var b = parseInt(color.substring(4, 6), 16); // hexToB
-    var uicolors = [r / 255, g / 255, b / 255];
-    var c = uicolors.map(col => {
+    const color = bgColor.charAt(0) === "#" ? bgColor.substring(1, 7) : bgColor;
+    const r = parseInt(color.substring(0, 2), 16); // hexToR
+    const g = parseInt(color.substring(2, 4), 16); // hexToG
+    const b = parseInt(color.substring(4, 6), 16); // hexToB
+    const uiColors = [r / 255, g / 255, b / 255];
+    const c = uiColors.map(col => {
       if (col <= 0.03928) {
         return col / 12.92;
       }
       return Math.pow((col + 0.055) / 1.055, 2.4);
     });
-    var L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    const L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
     textColorCache.set(bgColor, L > 0.179);
   }
   return textColorCache.get(bgColor) ? darkColor : lightColor;
@@ -68,14 +77,30 @@ export interface CommonCellProps {
   titleBold?: boolean;
   titleIcon?: IconName;
   subtitle?: string;
-  clanStyle?: typeof ClanPersonalisationAtom["init"]["data"];
+  clanStyle?: any;
   onPress?: () => void;
 }
 
-export const CommonCell = React.memo(function (props: CommonCellProps) {
+const ColorStyleCache: Map<string, any> = new Map();
+
+function colorStyles(color: string) {
+  if(!ColorStyleCache.has(color)) {
+    const c = color ?? "#cccccc";
+    ColorStyleCache.set(color, StyleSheet.create({
+      BackgroundFull: {backgroundColor: c},
+      Background: {backgroundColor: c + "22"},
+    }))
+  }
+  return ColorStyleCache.get(color)
+}
+
+
+
+export const CommonCell = function (props: CommonCellProps) {
   const [styleValue] = useSetting(ClanPersonalisationAtom);
   const style = props.clanStyle ?? styleValue;
-  const theme = useTheme();
+
+  cellCount++;
 
   const fontScale = PixelRatio.getFontScale();
 
@@ -102,19 +127,18 @@ export const CommonCell = React.memo(function (props: CommonCellProps) {
           bg: isCompact ? undefined : "coolGray.800",
         }}
         style={[
-          isCompact ? {} : styles.card,
+          isCompact ? undefined : styles.card,
           {
             height,
             flexDirection: isStack ? "column" : "row",
             alignItems: "center",
             opacity: props.color === -1 && !style.full_background ? 0.4 : 1,
           },
-          props.color !== undefined && style.full_background
-            ? { backgroundColor: style.colours[props.color] ?? "#aaaaaa" }
-            : props.color !== undefined
-            ? { backgroundColor: (style.colours[props.color] ?? "#aaaaaa") + "22" }
-            : undefined,
-        ]}>
+          props.color !== undefined ? (
+            colorStyles(style.colours[props.color])[style.full_background ? "BackgroundFull" : "Background"]
+          ) : undefined,
+        ]}
+      >
         {props.color !== undefined && !isStack && !style.full_background && (
           <View
             style={{
@@ -166,7 +190,8 @@ export const CommonCell = React.memo(function (props: CommonCellProps) {
             flex: 1,
             alignItems: isStack ? "center" : "stretch",
             maxWidth: "100%",
-          }}>
+          }}
+        >
           {props.title && (
             <View
               style={{
@@ -174,7 +199,8 @@ export const CommonCell = React.memo(function (props: CommonCellProps) {
                 alignItems: "baseline",
                 justifyContent: !!props.subtitle ? "flex-start" : "center",
                 maxWidth: "100%",
-              }}>
+              }}
+            >
               <Text
                 style={[
                   props.color !== undefined && style.full_background
@@ -237,7 +263,7 @@ export const CommonCell = React.memo(function (props: CommonCellProps) {
       </Box>
     </PressWrapper>
   );
-});
+};
 
 export interface DataCellProps {
   user: ClanStatsUser | ClanStatsData | null;
@@ -256,8 +282,8 @@ export function DataCell(props: DataCellProps) {
 
   const { level: gLevel, ...opt } = options[props.clan_id];
   const goalLevel = Math.min(Math.max(gLevel, 0), props.levelCount);
-  let text;
-  let level;
+  let text: string;
+  let level: number | undefined;
   if (
     props.user?.requirements[props.task_id]?.value === undefined ||
     props.user?.requirements[props.task_id]?.value === null ||
@@ -283,42 +309,45 @@ export function DataCell(props: DataCellProps) {
   }
 
   if (style.style === 0) {
-    return (
-      <CommonCell
-        type="data"
-        color={level}
-        icon={!props.user || "username" in props.user ? undefined : "shield-half-full"}
-        image={
-          !props.user || "username" in props.user
-            ? {
-                uri:
-                  props.user && "username" in props.user
-                    ? `https://munzee.global.ssl.fastly.net/images/avatars/ua${props.user.user_id.toString(
-                        36
-                      )}.png`
-                    : `https://server.cuppazee.app/requirements/${props.task_id}.png`,
-              }
-            : undefined
-        }
-        title={
-          style.reverse
-            ? `${db.getClanRequirement(props.task_id).top} ${
-                db.getClanRequirement(props.task_id).bottom
-              }`
-            : props.user && "username" in props.user
-            ? props.user.username ?? ""
-            : t("clan:group_total")
-        }
-        titleBold={users.some(i =>
-          props.user && "user_id" in props.user
-            ? i.user_id === props.user?.user_id.toString()
-            : false
-        )}
-        subtitle={text}
-      />
+    return useMemo(
+      () => (
+        <CommonCell
+          type="data"
+          color={level}
+          icon={!props.user || "username" in props.user ? undefined : "shield-half-full"}
+          image={
+            !props.user || "username" in props.user
+              ? {
+                  uri:
+                    props.user && "username" in props.user
+                      ? `https://munzee.global.ssl.fastly.net/images/avatars/ua${props.user.user_id.toString(
+                          36
+                        )}.png`
+                      : `https://server.cuppazee.app/requirements/${props.task_id}.png`,
+                }
+              : undefined
+          }
+          title={
+            style.reverse
+              ? `${db.getClanRequirement(props.task_id).top} ${
+                  db.getClanRequirement(props.task_id).bottom
+                }`
+              : props.user && "username" in props.user
+              ? props.user.username ?? ""
+              : t("clan:group_total")
+          }
+          titleBold={users.some(i =>
+            props.user && "user_id" in props.user
+              ? i.user_id === props.user?.user_id.toString()
+              : false
+          )}
+          subtitle={text}
+        />
+      ),
+      [level, text, users, props.user, style, props.task_id, db]
     );
   }
-  return (
+  return useMemo(() => (
     <CommonCell
       type="data"
       color={level}
@@ -327,7 +356,7 @@ export function DataCell(props: DataCellProps) {
         props.user && "user_id" in props.user ? i.user_id === props.user?.user_id.toString() : false
       )}
     />
-  );
+  ), [level, text, users, props.user, 0, 0, 0]);
 }
 
 export interface RequirementDataCellProps {
@@ -496,7 +525,7 @@ export function LevelCell(props: LevelCellProps) {
         {open &&
           props.levels.map(i => (
             <ListItem
-              title={t("clan:level", { level: i })}
+              title={t("clan:level", { level: i }).toString()}
               onPress={() => {
                 setOptions({
                   ...options,
@@ -514,7 +543,7 @@ export function LevelCell(props: LevelCellProps) {
 }
 
 export type TitleCellProps = {
-  clan: ClanV2["response"];
+  clan?: ClanV2["response"];
   shadow?: { data?: ClanShadowData };
 };
 
@@ -524,12 +553,12 @@ export function TitleCell(props: TitleCellProps) {
     <CommonCell
       type="title"
       image={{
-        uri: `https://munzee.global.ssl.fastly.net/images/clan_logos/${props.clan.data?.details.clan_id.toString(
+        uri: `https://munzee.global.ssl.fastly.net/images/clan_logos/${props.clan?.data?.details.clan_id.toString(
           36
         )}.png`,
       }}
-      title={props.clan.data?.details.name ?? t("clan:loading")}
-      subtitle={`#${props.clan.data?.result.rank}`}
+      title={props.clan?.data?.details.name ?? t("clan:loading")}
+      subtitle={`#${props.clan?.data?.result.rank}`}
     />
   );
 }

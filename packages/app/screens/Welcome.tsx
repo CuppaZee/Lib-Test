@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Pressable, StyleSheet, View, Image, Linking, Platform } from "react-native";
-import { Button, Layout, Spinner, Text } from "@ui-kitten/components";
+import {Button, Spinner, Text, Heading, Box} from "native-base";
 import useLogin from "../hooks/useLogin";
 import { ScrollView } from "react-native-gesture-handler";
 import useTitle from "../hooks/useTitle";
@@ -45,13 +45,13 @@ export default function WelcomeScreen() {
   }
 
   if (loading) {
-    return <Layout style={[styles.page, { justifyContent: "center", alignItems: "center" }]}>
+    return <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={[styles.page, { justifyContent: "center", alignItems: "center" }]}>
       <Spinner />
-    </Layout>
+    </Box>
   }
 
   return (
-    <Layout style={styles.page}>
+    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={styles.page}>
       <ScrollView
         style={{ flex: 1, alignSelf: "stretch" }}
         contentContainerStyle={{
@@ -63,49 +63,47 @@ export default function WelcomeScreen() {
           flexGrow: 1,
         }}>
         {fb ? (
-          <Layout level="3" style={{ margin: 4, padding: 4, borderRadius: 8 }}>
-            <Text category="h6">
+          <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} style={{ margin: 4, padding: 4, borderRadius: 8 }}>
+            <Heading fontSize="lg">
               {messenger ? t("welcome:messenger_title") : t("welcome:facebook_title")}
-            </Text>
+            </Heading>
             {messengeriOS ? (
-              <Text category="p1">
+              <Text fontSize="md">
                 <Trans i18nKey="welcome:messenger_ios_description">
                   <Icon name="open-in-new" style={{ height: 24, width: 24 }} />
                 </Trans>
               </Text>
             ) : (
-              <Text category="p1">
+              <Text fontSize="md">
                 <Trans i18nKey="welcome:facebook_description">
                   <Icon name="dots-horizontal" style={{ height: 24, width: 24 }} />
                 </Trans>
               </Text>
             )}
-          </Layout>
+          </Box>
         ) : (
           <>
-            <Text category="h2" style={{ textAlign: "center" }}>
+            <Heading fontSize="lg" style={{ textAlign: "center" }}>
               {t("welcome:title")}
-            </Text>
-            <Text category="p1" style={{ textAlign: "center" }}>
+            </Heading>
+            <Text fontSize="md" style={{ textAlign: "center" }}>
               {t("welcome:continuing_policy")}
             </Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", alignSelf: "stretch" }}>
               <Button
                 style={{ margin: 4, flex: 1 }}
-                accessoryLeft={props => <Icon {...props} name="file-document-outline" />}
-                appearance="ghost"
+                startIcon={<Icon style={{height: 24}} colorBlank name="file-document-outline" />}
                 onPress={() => Linking.openURL("https://server.cuppazee.app/terms")}>
                 {t("welcome:terms")}
               </Button>
               <Button
                 style={{ margin: 4, flex: 1 }}
-                accessoryLeft={props => <Icon {...props} name="shield-key-outline" />}
-                appearance="ghost"
+                startIcon={<Icon style={{height: 24}} colorBlank name="shield-key-outline" />}
                 onPress={() => Linking.openURL("https://server.cuppazee.app/privacy")}>
                 {t("welcome:privacy")}
               </Button>
             </View>
-            <Text category="h6" style={{ textAlign: "center", marginTop: 16 }}>
+            <Text fontSize="lg" style={{ textAlign: "center", marginTop: 16 }}>
               {t("welcome:theme")}
             </Text>
             <View
@@ -130,9 +128,9 @@ export default function WelcomeScreen() {
                   </Pressable>
                 ))}
             </View>
-            <Text category="h6" style={{ textAlign: "center", marginTop: 16 }}>
+            <Heading fontSize="lg" style={{ textAlign: "center", marginTop: 16 }}>
               {t("welcome:language")}
-            </Text>
+            </Heading>
             <Select
               style={{ margin: 4 }}
               value={i18n.language}
@@ -144,12 +142,13 @@ export default function WelcomeScreen() {
                 label: i[1],
               }))}
             />
-            <Text category="h6" style={{ textAlign: "center", marginTop: 16 }}>
+            <Heading fontSize="lg" style={{ textAlign: "center", marginTop: 16 }}>
               {t("welcome:accounts")}
-            </Text>
+            </Heading>
             {Object.entries(teakens).map(i => (
-              <Layout
-                level="3"
+              <Box
+                bg="coolGray.200"
+                _dark={{ bg: "coolGray.800" }}
                 style={{
                   margin: 4,
                   borderRadius: 8,
@@ -168,14 +167,13 @@ export default function WelcomeScreen() {
                       ).toString(36)}.png`,
                     }}
                   />
-                  <Text category="h6">{i[1].username}</Text>
+                  <Text fontSize="md">{i[1].username}</Text>
                 </View>
-              </Layout>
+              </Box>
             ))}
             <Button
               style={{ margin: 4 }}
-              accessoryLeft={props => <Icon {...props} name="account-plus" />}
-              appearance="outline"
+              startIcon={<Icon colorBlank style={{ height: 24 }} name="account-plus" />}
               disabled={!ready}
               onPress={login}>
               {Object.keys(teakens).length > 0
@@ -185,8 +183,7 @@ export default function WelcomeScreen() {
             {Object.keys(teakens).length > -0 && (
               <Button
                 style={{ margin: 4 }}
-                accessoryLeft={props => <Icon {...props} name="home" />}
-                appearance="outline"
+                startIcon={<Icon colorBlank style={{height: 24 }} name="home" />}
                 onPress={async () => {
                   setLoading(true);
                   const shouldRestart = await updatesStatusRef.current;
@@ -202,7 +199,7 @@ export default function WelcomeScreen() {
           </>
         )}
       </ScrollView>
-    </Layout>
+    </Box>
   );
 }
 

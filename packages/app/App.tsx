@@ -5,10 +5,7 @@ import "react-native-gesture-handler";
 import * as TaskManager from "expo-task-manager";
 import { LocationObject } from "expo-location";
 import { getExpoPushTokenAsync } from "expo-notifications";
-import { LogBox } from "react-native";
 import baseURL from "./baseURL";
-
-LogBox?.ignoreLogs(["Setting a timer"]);
 
 TaskManager.defineTask("BACKGROUND_LOCATION", async ({ data, error }) => {
   if (error) {
