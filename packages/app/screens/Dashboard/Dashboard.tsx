@@ -1,5 +1,5 @@
 import { CuppaZeeDB } from "@cuppazee/db";
-import { useNavigation } from "@react-navigation/core";
+import { useIsFocused, useNavigation } from "@react-navigation/core";
 import { Box, Button, Heading, Tabs, Text } from "native-base";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,11 @@ import builds from "../../builds";
 import Icon from "../../components/Common/Icon";
 import { useClanBookmarks, useUserBookmarks } from "../../hooks/useBookmarks";
 import useComponentSize from "../../hooks/useComponentSize";
-import useSetting, { BuildAtom, LiveLocationErrorAtom } from "../../hooks/useSetting";
+import useSetting, {
+  BuildAtom,
+  LiveLocationErrorAtom,
+  SkipDashboardAtom,
+} from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
 import { NavProp } from "../../navigation";
 import ChangesDashCard from "./Changes";
@@ -70,7 +74,7 @@ export default function DashboardScreen() {
     };
   }>({});
   const position = React.useRef<number>();
-  const [build,,buildLoaded] = useSetting(BuildAtom);
+  const [build, , buildLoaded] = useSetting(BuildAtom);
   const [opacity, setOpacity] = React.useState(Platform.OS === "web" ? 0 : 1);
   const [users] = useUserBookmarks();
   const [touched, setTouched] = React.useState<number[]>([pageOffset]);
@@ -82,6 +86,16 @@ export default function DashboardScreen() {
 
   useTitle(`☕ ${t("pages:dashboard_dashboard")}`);
 
+  const [skipDashboard] = useSetting(SkipDashboardAtom);
+  const isFocused = useIsFocused();
+  React.useEffect(() => {
+    if (skipDashboard && users.length > 0 && isFocused) {
+      nav.navigate("User_Profile", {
+        username: users[0]?.username,
+      });
+    }
+  }, [skipDashboard, users, isFocused]);
+
   const dashCards = [
     { nonUser: "tools" },
     ...(clans.length > 2 ? [{ nonUser: "clan" }] : []),
@@ -90,6 +104,10 @@ export default function DashboardScreen() {
       : []),
     ...users,
   ];
+
+  if (skipDashboard) {
+    return null;
+  }
   return (
     <Box
       onLayout={onLayout}

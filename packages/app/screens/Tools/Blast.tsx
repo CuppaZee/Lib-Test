@@ -1,4 +1,4 @@
-import { Button, Layout, Text } from "@ui-kitten/components";
+import { Button, CheckBox, Layout, Text } from "@ui-kitten/components";
 import * as React from "react";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useMunzeeRequest from "../../hooks/useMunzeeRequest";
@@ -39,6 +39,7 @@ interface BlastInfo {
 export default function BlastPlannerScreen() {
   const { t } = useTranslation();
   const [size, onLayout] = useComponentSize();
+  const [includeTemps, setIncludeTemps] = React.useState(false);
   const [blastInfo, setBlastInfo] = React.useState<BlastInfo>();
   const pos = React.useRef<Omit<BlastInfo, "amount">>();
   const [username, props] = useUsernameSelect();
@@ -53,6 +54,7 @@ export default function BlastPlannerScreen() {
     {
       user_id: user.data?.data?.user_id,
       ...blastInfo,
+      includeTemps: includeTemps ? "TRUE" : "FALSE"
     },
     user.data?.data?.user_id !== undefined && blastInfo !== undefined
   );
@@ -102,6 +104,15 @@ export default function BlastPlannerScreen() {
               {`${l} (${n.toString()})`}
             </Button>
           ))}
+        </View>
+        <View style={{ padding: 4 }}>
+          <CheckBox checked={!includeTemps} onChange={() => setIncludeTemps(i => !i)}>
+            Hide Current Temporary Items (Scatters, Bouncers, etc.)
+          </CheckBox>
+          <Text category="p2">
+            It might be useful to disable this if you are running a blast check for planning a blast
+            for the future.
+          </Text>
         </View>
         {data.data ? (
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>

@@ -634,11 +634,14 @@ export interface RewardDataCellProps {
   level: number;
   reward_id: number;
   type: "individual" | "group";
+  cumulative: boolean;
 }
 
 export function RewardDataCell(props: RewardDataCellProps) {
   const [style] = useSetting(ClanPersonalisationAtom);
   const { t } = useTranslation();
+
+  const count = props.rewards?.levels.slice(props.cumulative ? 0 : props.level - 1, props.level).reduce((a, b) => a + (b[props.reward_id] ?? 0), 0);
 
   if (style.style === 0) {
     return (
@@ -660,7 +663,7 @@ export function RewardDataCell(props: RewardDataCellProps) {
             ? props.rewards.rewards[props.reward_id]?.name
             : t(`clan:${props.type}_level` as const, { level: props.level })
         }
-        subtitle={props.rewards.levels[props.level - 1][props.reward_id]?.toString() ?? "-"}
+        subtitle={count === 0 ? "-" : count.toLocaleString()}
       />
     );
   }
@@ -669,7 +672,7 @@ export function RewardDataCell(props: RewardDataCellProps) {
     <CommonCell
       type="data"
       color={props.level}
-      title={props.rewards?.levels[props.level - 1][props.reward_id]?.toString() ?? "-"}
+      title={count === 0 ? "-" : count.toLocaleString()}
     />
   );
 }

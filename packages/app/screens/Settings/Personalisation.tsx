@@ -1,4 +1,4 @@
-import { Button, CheckBox, Layout, Modal, Radio, RadioGroup, Text } from "@ui-kitten/components";
+import { Button, CheckBox, Layout, Modal, Radio, RadioGroup, Text, Toggle } from "@ui-kitten/components";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, View } from "react-native";
@@ -8,7 +8,7 @@ import Icon from "../../components/Common/Icon";
 import Select from "../../components/Common/Select";
 import useDB from "../../hooks/useDB";
 import useModalSafeArea from "../../hooks/useModalSafeArea";
-import useSetting, { ClanPersonalisationAtom, ThemeAtom } from "../../hooks/useSetting";
+import useSetting, { ClanPersonalisationAtom, SkipDashboardAtom, ThemeAtom } from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
 import { LANGS } from "../../lang/i18n";
 
@@ -353,6 +353,7 @@ export default function PersonalisationScreen() {
   const [clanSettings, setClanSettings] = React.useState<ClanStyle>();
   const [theme, setTheme] = useSetting(ThemeAtom);
   const [saved, setSaved] = React.useState(false);
+  const [skipDashboard, setSkipDashboard] = useSetting(SkipDashboardAtom);
   const themeRef = React.useRef("");
   React.useEffect(() => {
     setClanSettings({ ...storedClanSettings });
@@ -485,6 +486,18 @@ export default function PersonalisationScreen() {
                 label: i[1],
               }))}
             />
+
+            <View style={{ flexDirection: "row", alignItems: "center", padding: 4 }}>
+              <View style={{ flex: 1, marginRight: 8 }}>
+                <Text category="h6">
+                  Disable Dashboard
+                </Text>
+                <Text category="p1">
+                  This may give some improvements on app loading time, but will prevent you from accessing that page.
+                </Text>
+              </View>
+              <CheckBox checked={skipDashboard} onChange={() => setSkipDashboard(!skipDashboard)} />
+            </View>
           </Layout>
         </View>
 

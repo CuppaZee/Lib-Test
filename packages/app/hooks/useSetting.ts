@@ -152,6 +152,15 @@ export const MapStyleAtom = settingAtom<"monochrome" | "streets" | "satellite">(
   "@cuppazee/personalisation/maps",
   "monochrome"
 );
+export const CumulativeRewardsAtom = settingAtom<boolean>(
+  "@cuppazee/clan/cumulative_rewards",
+  false
+);
+
+export const SkipDashboardAtom = settingAtom<boolean>(
+  "@cuppazee/skipdashboard",
+  false
+);
 
 export default function useSetting<T>(atom: PrimitiveAtom<Setting<T>>) {
   const [value, setValue] = useAtom(atom);

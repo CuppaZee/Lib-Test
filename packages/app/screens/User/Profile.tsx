@@ -47,6 +47,11 @@ export const UserPagesNow = [
     screen: "Cubimals",
   },
   {
+    icon: "clock",
+    nontranslatedtitle: "LotterZEE Balls",
+    screen: "LotterZee",
+  },
+  {
     icon: "door-open",
     nontranslatedtitle: "Expiring Rooms",
     screen: "Rooms",

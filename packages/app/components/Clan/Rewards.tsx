@@ -10,7 +10,7 @@ import {
 } from "./Cell";
 import useComponentSize from "../../hooks/useComponentSize";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
-import useSetting, { ClanPersonalisationAtom } from "../../hooks/useSetting";
+import useSetting, {ClanPersonalisationAtom, CumulativeRewardsAtom} from "../../hooks/useSetting";
 import Icon from "../Common/Icon";
 import { ClanRewardsData, GameID } from "@cuppazee/utils/lib";
 import { Box, Heading, Spinner, Text, useColorMode, useTheme } from "native-base";
@@ -38,6 +38,7 @@ export default React.memo(
     const [size, onLayout] = useComponentSize();
     const fontScale = PixelRatio.getFontScale();
     const [style] = useSetting(ClanPersonalisationAtom);
+    const [cumulative, setCumulative] = useSetting(CumulativeRewardsAtom);
     const reverse = style.reverse;
     const compact = style.style;
 
@@ -119,6 +120,7 @@ export default React.memo(
             <Heading fontSize="lg">{t("clan:clan_rewards")}</Heading>
             <Heading fontSize="sm">{dayjs(new GameID(game_id).date).format("MMMM YYYY")}</Heading>
           </View>
+          {/* TODO: Add Cumulative/Individual Selector */}
         </Box>
         {!Object.values(rewards.levels[0]).some(i => i !== 1) && (
           <Text style={{ padding: 4 }}>
@@ -210,6 +212,7 @@ export default React.memo(
                         level={row.level}
                         type={row.type}
                         rewards={rewards}
+                        cumulative={cumulative}
                       />
                     );
                   }
@@ -221,6 +224,7 @@ export default React.memo(
                         level={column.level}
                         type={column.type}
                         rewards={rewards}
+                        cumulative={cumulative}
                       />
                     );
                   }

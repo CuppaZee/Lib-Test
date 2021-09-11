@@ -12,6 +12,7 @@ export type RootStackParamList = {
   User_Cubimals: { username: string };
   User_QRates: { username: string };
   User_Rooms: { username: string };
+  User_LotterZee: { username: string };
 
   Clan_Cuppa: undefined;
   Clan_Requirements: { year?: number; month?: number };
