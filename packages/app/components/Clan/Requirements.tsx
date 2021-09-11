@@ -128,7 +128,7 @@ export default React.memo(
     const columnWidth = showSidebar
       ? (compact ? (headerStack ? 68 : 90) : headerStack ? 80 : 120) * fontScale
       : 400;
-    const minTableWidth = requirements.all.length * columnWidth + sidebarWidth;
+    const minTableWidth = (reverse ? sidebarLevels : requirements.all).length * columnWidth + sidebarWidth;
 
     const requirements_rows = (reverse ? requirements.all : sidebarLevels) as (
       | number

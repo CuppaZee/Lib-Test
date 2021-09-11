@@ -1,6 +1,13 @@
 import { CuppaZeeDB } from "@cuppazee/db";
-import { useNavigation } from "@react-navigation/core";
-import { BottomNavigation, BottomNavigationTab, Button, Layout, Text, useTheme } from "@ui-kitten/components";
+import { useIsFocused, useNavigation } from "@react-navigation/core";
+import {
+  BottomNavigation,
+  BottomNavigationTab,
+  Button,
+  Layout,
+  Text,
+  useTheme,
+} from "@ui-kitten/components";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -17,7 +24,11 @@ import builds from "../../builds";
 import Icon from "../../components/Common/Icon";
 import { useClanBookmarks, useUserBookmarks } from "../../hooks/useBookmarks";
 import useComponentSize from "../../hooks/useComponentSize";
-import useSetting, { BuildAtom, LiveLocationErrorAtom } from "../../hooks/useSetting";
+import useSetting, {
+  BuildAtom,
+  LiveLocationErrorAtom,
+  SkipDashboardAtom,
+} from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
 import ChangesDashCard from "./Changes";
 import ClansDashCard from "./Clans";
@@ -69,7 +80,7 @@ export default function DashboardScreen() {
     };
   }>({});
   const position = React.useRef<number>();
-  const [build,,buildLoaded] = useSetting(BuildAtom);
+  const [build, , buildLoaded] = useSetting(BuildAtom);
   const [opacity, setOpacity] = React.useState(Platform.OS === "web" ? 0 : 1);
   const [users] = useUserBookmarks();
   const [touched, setTouched] = React.useState<number[]>([pageOffset]);
@@ -81,6 +92,19 @@ export default function DashboardScreen() {
 
   useTitle(`☕ ${t("pages:dashboard_dashboard")}`);
 
+  const [skipDashboard] = useSetting(SkipDashboardAtom);
+  const isFocused = useIsFocused();
+  React.useEffect(() => {
+    if (skipDashboard && users.length > 0 && isFocused) {
+      nav.navigate("User", {
+        screen: "Profile",
+        params: {
+          username: users[0]?.username,
+        },
+      });
+    }
+  }, [skipDashboard, users, isFocused]);
+
   const dashCards = [
     { nonUser: "tools" },
     ...(clans.length > 2 ? [{ nonUser: "clan" }] : []),
@@ -89,6 +113,10 @@ export default function DashboardScreen() {
       : []),
     ...users,
   ];
+
+  if (skipDashboard) {
+    return null;
+  }
   return (
     <Layout onLayout={onLayout} style={{ flex: 1, marginTop: -4 }}>
       {liveLocationError === "permission_failed" && (
@@ -264,7 +292,10 @@ export default function DashboardScreen() {
         }}>
         {dashCards.map((card, cardIndex) => (
           <BottomNavigationTab
-            key={("nonUser" in card ? card.nonUser : card.user_id) + (cardIndex === index ? "true" : "false")}
+            key={
+              ("nonUser" in card ? card.nonUser : card.user_id) +
+              (cardIndex === index ? "true" : "false")
+            }
             icon={props => {
               if ("nonUser" in card) {
                 return (

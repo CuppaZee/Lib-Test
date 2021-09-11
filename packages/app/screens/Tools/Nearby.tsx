@@ -40,9 +40,35 @@ interface NearbySettings {
   accuracy: number | null;
 }
 
+async function getLocation() {
+  let locationCoords: Location.LocationObject | null = null;
+
+  let getcurrentLocationRetries = 0;
+  while (getcurrentLocationRetries < 5) {
+    try {
+      locationCoords = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
+      break;
+    } catch {
+      locationCoords = await Location.getLastKnownPositionAsync({
+        maxAge: 5000,
+      });
+      if (locationCoords === null) {
+        getcurrentLocationRetries++;
+        await new Promise(r => setTimeout(r, 1000));
+      } else break;
+    }
+  }
+  if (!locationCoords) throw "";
+
+  return locationCoords;
+}
+
 export default function NearbyScreen() {
   const { t } = useTranslation();
   const nav = useNavigation();
+  const [error, setError] = React.useState("");
   const locationRef = React.useRef<{ latitude: number; longitude: number } | null>(null);
   const [size, onLayout] = useComponentSize();
   const theme = useTheme();
@@ -57,54 +83,54 @@ export default function NearbyScreen() {
 
   React.useEffect(() => {
     (async () => {
-      let perm;
       try {
-        perm = await Promise.race([
-          Location.requestForegroundPermissionsAsync(),
-          new Promise<any>((_, rej) => setTimeout(rej, 2000))
-        ]);
-        if (perm.status === Location.PermissionStatus.DENIED) {
+        let perm;
+        try {
+          perm = await Promise.race([
+            Location.requestForegroundPermissionsAsync(),
+            new Promise<any>((_, rej) => setTimeout(rej, 5000))
+          ]);
+          if (perm.status === Location.PermissionStatus.DENIED) {
+            setPermissionError(true);
+          }
+        } catch (e) {
           setPermissionError(true);
         }
-      } catch (e) {
-        setPermissionError(true);
+        const loc = perm?.granted
+          ? await getLocation()
+          : {
+              coords: {
+                latitude: 0,
+                longitude: 0,
+                accuracy: 6378000,
+              },
+            };
+        let token;
+        if (Platform.OS !== "web") {
+          try {
+            token = (
+              await Promise.race([
+                Notifications.getExpoPushTokenAsync({
+                  experienceId: "@sohcah/PaperZee",
+                }),
+                new Promise<null>((_, rej) => setTimeout(rej, 2000))
+              ]))?.data;
+          } catch (e) {}
+        }
+        setSettings({
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+          accuracy: loc.coords.accuracy,
+          token,
+        });
+      } catch(e) {
+        setError(e.toString());
+        setSettings({
+          latitude: 0,
+          longitude: 0,
+          accuracy: 6378000,
+        });
       }
-      const loc = perm?.granted
-        ? await Promise.race([
-          Location.getCurrentPositionAsync(),
-          new Promise<any>((res) => setTimeout(res, 2000, {
-            coords: {
-              latitude: 0,
-              longitude: 0,
-              accuracy: 6378000,
-            },
-          }))
-        ])
-        : {
-            coords: {
-              latitude: 0,
-              longitude: 0,
-              accuracy: 6378000,
-            },
-          };
-      let token;
-      if (Platform.OS !== "web") {
-        try {
-          token = (
-            await Promise.race([
-              Notifications.getExpoPushTokenAsync({
-                experienceId: "@sohcah/PaperZee",
-              }),
-              new Promise<null>((_, rej) => setTimeout(rej, 2000))
-            ]))?.data;
-        } catch (e) {}
-      }
-      setSettings({
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-        accuracy: loc.coords.accuracy,
-        token,
-      });
     })();
   }, []);
 
@@ -112,6 +138,24 @@ export default function NearbyScreen() {
     return (
       <Layout style={{ flex: 1 }} onLayout={onLayout}>
         <Text category="h6">You must accept location permissions to use this page.</Text>
+      </Layout>
+    );
+  }
+
+  if (!size) {
+    return (
+      <Layout style={{ flex: 1 }} onLayout={onLayout}>
+        <Loading data={[data]} />
+        <Text>Loading Size...</Text>
+      </Layout>
+    );
+  }
+
+  if (!settings) {
+    return (
+      <Layout style={{ flex: 1 }} onLayout={onLayout}>
+        <Loading data={[data]} />
+        <Text>Loading Settings...</Text>
       </Layout>
     );
   }
@@ -161,6 +205,23 @@ export default function NearbyScreen() {
                 {settings.accuracy === null || settings.accuracy < 5000000
                   ? `CuppaZee couldn't get a very accurate location. You can drag the location marker, use the "Search" tool, or the "Move Location Here" button to pick a better location.`
                   : `CuppaZee was unable to get your location. You can drag the location marker, use the "Search" tool, or the "Move Location Here" button to pick a location.`}
+              </Text>
+            </Layout>
+          </Layout>
+        )}
+        {!!error && (
+          <Layout style={{ margin: 4, width: "100%" }}>
+            <Layout
+              level="2"
+              style={{
+                padding: 4,
+                borderRadius: 8,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Text category="h6" style={{ textAlign: "center", maxWidth: "100%" }}>
+                Something went a bit wrong: {error}
               </Text>
             </Layout>
           </Layout>

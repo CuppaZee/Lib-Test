@@ -125,6 +125,12 @@ export const CumulativeRewardsAtom = atom<Setting<boolean>>({
   key: "@cuppazee/clan/cumulative_rewards",
 });
 
+export const SkipDashboardAtom = atom<Setting<boolean>>({
+  data: false,
+  loaded: false,
+  key: "@cuppazee/skipdashboard",
+});
+
 export default function useSetting<T>(atom: WritableAtom<Setting<T>, Setting<T>> & {loading?: number}) {
   const [value, setValue] = useAtom(atom);
   useEffect(() => {
