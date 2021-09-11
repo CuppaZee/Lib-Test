@@ -1,22 +1,22 @@
-import {NativeStackHeaderProps} from "@react-navigation/native-stack/lib/typescript/src/types";
-import React, { useEffect, useReducer, useState } from "react";
+import { NativeStackHeaderProps } from "@react-navigation/native-stack/lib/typescript/src/types";
+import React, { useEffect, useReducer } from "react";
 import { useIsFetching, useQueryClient } from "react-query";
 import day from "dayjs";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, Platform } from "react-native";
 import Icon from "../components/Common/Icon";
 import { Box, Button, Heading, HStack, Text, useTheme } from "native-base";
 
-function LoadIcon() {
+export function LoadIcon() {
   const loading = useIsFetching();
   const queryClient = useQueryClient();
   const theme = useTheme();
   return (
     <Button
       size="sm"
-      bg="transparent"
+      variant="ghost"
       startIcon={
         loading ? (
-          <ActivityIndicator color={theme.colors.coolGray[500]} size={24} />
+          <ActivityIndicator color={theme.colors.regularGray[500]} size={24} />
         ) : (
           <Icon style={{ height: 24 }} name="refresh" />
         )
@@ -28,6 +28,22 @@ function LoadIcon() {
         })
       }
     />
+  );
+}
+
+export function HeaderTitle(props: { title: string }) {
+  return (
+    <Box>
+      <Heading
+        textAlign={Platform.OS === "ios" ? "center" : "left"}
+        numberOfLines={1}
+        fontSize="lg">
+        {props.title}
+      </Heading>
+      <Text textAlign={Platform.OS === "ios" ? "center" : "left"} numberOfLines={1} fontSize="sm">
+        <Time />
+      </Text>
+    </Box>
   );
 }
 
@@ -47,20 +63,19 @@ function Time() {
 export default function Header(props: NativeStackHeaderProps) {
   const title = props.options.headerTitle?.toString() ?? props.route.name;
   return (
-    <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} safeAreaTop>
+    <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} safeAreaTop>
       <HStack alignItems="center" p={1}>
-        {!!props.back && <Button
-          size="sm"
-          bg="transparent"
-          style={{ opacity: props.navigation.canGoBack() ? 1 : 0.4 }}
-          startIcon={<Icon style={{ height: 24 }} name="arrow-left" />}
-          onPress={() => props.navigation.goBack()}
-        />}
+        {!!props.back && (
+          <Button
+            size="sm"
+            variant="ghost"
+            style={{ opacity: props.navigation.canGoBack() ? 1 : 0.4 }}
+            startIcon={<Icon style={{ height: 24 }} name="arrow-left" />}
+            onPress={() => props.navigation.goBack()}
+          />
+        )}
         <Box pl={props.back ? 0 : 2} flex={1}>
-          <Heading numberOfLines={1} fontSize="lg">{title}</Heading>
-          <Text numberOfLines={1} fontSize="sm">
-            <Time />
-          </Text>
+          <HeaderTitle title={title} />
         </Box>
         <LoadIcon />
       </HStack>

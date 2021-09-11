@@ -19,6 +19,7 @@ import { UserActivityData } from "@cuppazee/utils/lib";
 import { Box, Button } from "native-base";
 import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export default function UserActivityList({
   d,
@@ -32,14 +33,15 @@ export default function UserActivityList({
   const { t } = useTranslation();
   const route = useRoute<RouteProp<RootStackParamList, "Player_Activity">>();
   const nav = useNavigation<NavProp>();
+  const headerHeight = useHeaderHeight();
   return (
     <FlatList
       style={{ flex: 1 }}
-      contentContainerStyle={{ padding: 8, alignItems: "stretch" }}
+      contentContainerStyle={{ padding: 8, paddingTop: 8 + headerHeight, alignItems: "stretch" }}
       ListHeaderComponent={() => (
         <Box
-          bg="coolGray.200"
-          _dark={{ bg: "coolGray.800" }}
+          bg="regularGray.200"
+          _dark={{ bg: "regularGray.800" }}
           style={{
             margin: 4,
             borderRadius: 4,

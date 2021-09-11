@@ -125,7 +125,7 @@ export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) 
   const nav = useNavigation<NavProp>();
   const [clans] = useClanBookmarks();
   return (
-    <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} style={[styles.card, { flex: 1 }]}>
+    <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} style={[styles.card, { flex: 1 }]}>
       <ScrollView onLayout={props.onOuterLayout} style={{ flex: 1 }}>
         <View onLayout={props.onInnerLayout} style={{ padding: 4 }}>
           {clans.length <= 2 && (

@@ -14,6 +14,7 @@ import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 import { Box, Heading, Text } from "native-base";
 import { Item } from "../../components/Common/Item";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export const UserPagesNow = [
   {
@@ -62,13 +63,14 @@ export default function TabOneScreen() {
   const db = useDB();
   const { t } = useTranslation();
   const route = useRoute<RouteProp<RootStackParamList, "Player_Profile">>();
-  useTitle(`☕ ${route.params.username}`);
+  useTitle(`${route.params.username}`);
 
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },
     route.params?.username !== undefined
   );
+  const headerHeight = useHeaderHeight();
 
   if (!user.data?.data) {
     return (
@@ -79,8 +81,8 @@ export default function TabOneScreen() {
   }
 
   return (
-    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} flex={1}>
-      <ScrollView style={{ flex: 1 }}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} flex={1}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: headerHeight }}>
         <View
           style={{
             width: 1000,
@@ -90,7 +92,7 @@ export default function TabOneScreen() {
             alignSelf: "center",
           }}>
           <View style={{ padding: 4, width: 1000, maxWidth: "100%", flexGrow: 1 }}>
-            <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} m={1} borderRadius={4}>
+            <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} m={1} borderRadius={4}>
               <Item
                 chevron
                 title={t("pages:user_activity")}
@@ -106,8 +108,8 @@ export default function TabOneScreen() {
 
           <View style={{ padding: 4, width: 400, maxWidth: "100%", flexGrow: 1 }}>
             <Box
-              bg="coolGray.200"
-              _dark={{ bg: "coolGray.800" }}
+              bg="regularGray.200"
+              _dark={{ bg: "regularGray.800" }}
               m={1}
               borderRadius={4}
               flexGrow={1}>
@@ -196,8 +198,8 @@ export default function TabOneScreen() {
 
           <View style={{ padding: 4, width: 400, maxWidth: "100%", flexGrow: 1 }}>
             <Box
-              bg="coolGray.200"
-              _dark={{ bg: "coolGray.800" }}
+              bg="regularGray.200"
+              _dark={{ bg: "regularGray.800" }}
               m={1}
               borderRadius={4}
               flexGrow={1}>
@@ -208,11 +210,13 @@ export default function TabOneScreen() {
                   <Item
                     title={c.name}
                     typeImage={c.icon}
-                    link={["Player_Captures", {
-                      username: route.params.username,
-                      category: c.id,
-                    }]
-                    }
+                    link={[
+                      "Player_Captures",
+                      {
+                        username: route.params.username,
+                        category: c.id,
+                      },
+                    ]}
                   />
                 ))}
             </Box>

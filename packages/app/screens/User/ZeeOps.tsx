@@ -13,7 +13,7 @@ import { RootStackParamList } from "../../types";
 export default function PlayerActivityScreen() {
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_ZeeOps">>();
-  useTitle(`☕ ${route.params.username} - ZeeOps`);
+  useTitle(`${route.params.username} - ZeeOps`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },

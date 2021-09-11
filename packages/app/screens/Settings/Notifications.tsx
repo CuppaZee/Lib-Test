@@ -390,7 +390,7 @@ export default function NotificationScreen() {
 
     return [Types, Tags] as const;
   }, [db]);
-  useTitle(`☕ ${t("pages:settings")} - ${t("pages:settings_notifications")}`);
+  useTitle(`${t("pages:settings")} - ${t("pages:settings_notifications")}`);
   const [settings, setSettings] = React.useState<DeviceNotificationSettings>();
   const [token, setToken] = React.useState<string>();
   const [saved, setSaved] = React.useState(0);

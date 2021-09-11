@@ -20,7 +20,7 @@ export default function WelcomeScreen() {
     (window.navigator.userAgent.match(/FBAN/) || window.navigator.userAgent.match(/FBAV/));
   const messenger = fb && window.navigator.userAgent.match(/Messenger/);
   const messengeriOS = messenger && window.navigator.userAgent.match(/iOS/);
-  useTitle(`☕ ${t("welcome:title")}`);
+  useTitle(`${t("welcome:title")}`);
   const [readySetting, setReadySetting] = useSetting(ReadyAtom);
   const [theme, setTheme] = useSetting(ThemeAtom);
   const [loading, setLoading] = React.useState(false);
@@ -45,13 +45,13 @@ export default function WelcomeScreen() {
   }
 
   if (loading) {
-    return <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={[styles.page, { justifyContent: "center", alignItems: "center" }]}>
+    return <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} style={[styles.page, { justifyContent: "center", alignItems: "center" }]}>
       <Spinner />
     </Box>
   }
 
   return (
-    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={styles.page}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} style={styles.page}>
       <ScrollView
         style={{ flex: 1, alignSelf: "stretch" }}
         contentContainerStyle={{
@@ -63,7 +63,7 @@ export default function WelcomeScreen() {
           flexGrow: 1,
         }}>
         {fb ? (
-          <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} style={{ margin: 4, padding: 4, borderRadius: 8 }}>
+          <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} style={{ margin: 4, padding: 4, borderRadius: 8 }}>
             <Heading fontSize="lg">
               {messenger ? t("welcome:messenger_title") : t("welcome:facebook_title")}
             </Heading>
@@ -147,8 +147,8 @@ export default function WelcomeScreen() {
             </Heading>
             {Object.entries(teakens).map(i => (
               <Box
-                bg="coolGray.200"
-                _dark={{ bg: "coolGray.800" }}
+                bg="regularGray.200"
+                _dark={{ bg: "regularGray.800" }}
                 style={{
                   margin: 4,
                   borderRadius: 8,

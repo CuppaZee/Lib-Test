@@ -1,15 +1,16 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useEffect} from "react";
-import {atom as jotaiAtom, PrimitiveAtom, useAtom, WritableAtom} from "jotai";
+import { MMKV } from "./mmkv/index";
+import {PrimitiveAtom, useAtom} from "jotai";
 import builds from "../builds";
 import {CuppaZeeDB} from "@cuppazee/db";
 import {atomWithStorage} from "jotai/utils";
-import {TeakenData} from "./useToken";
+
+const store = new MMKV();
 
 
 const MergeStorage = (initialData: any) => ({
-  getItem: async (key: string) => {
-    const jsonString = await AsyncStorage.getItem(key);
+  getItem: (key: string) => {
+    console.log(key);
+    const jsonString = store.getString(key);
     if (!jsonString) return {data: initialData, loaded: true};
     try {
       const data = JSON.parse(jsonString);
@@ -18,15 +19,16 @@ const MergeStorage = (initialData: any) => ({
       return {data: initialData, loaded: true};
     }
   },
-  setItem: async (key: string, data: any) => {
-    await AsyncStorage.setItem(key, JSON.stringify(data.data))
+  setItem: (key: string, data: any) => {
+    store.set(key, JSON.stringify(data.data))
   },
   delayInit: true,
 });
 
 const ReplaceStorage = (initialData: any) => ({
-  getItem: async (key: string) => {
-    const jsonString = await AsyncStorage.getItem(key);
+  getItem: (key: string) => {
+    console.log(key);
+    const jsonString = store.getString(key);
     if (!jsonString) return {data: initialData, loaded: true};
     try {
       const data = JSON.parse(jsonString);
@@ -35,8 +37,8 @@ const ReplaceStorage = (initialData: any) => ({
       return {data: initialData, loaded: true};
     }
   },
-  setItem: async (key: string, data: any) => {
-    await AsyncStorage.setItem(key, JSON.stringify(data.data))
+  setItem: (key: string, data: any) => {
+    store.set(key, JSON.stringify(data.data))
   },
   delayInit: true,
 });
@@ -102,7 +104,7 @@ export const ClanPersonalisationAtom = settingAtom<{
       "#DFF77E",
       "#B0FC8D",
     ],
-  },
+  }
 );
 
 export const ClansAtom = settingAtom<{

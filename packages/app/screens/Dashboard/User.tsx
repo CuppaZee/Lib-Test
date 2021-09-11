@@ -26,7 +26,7 @@ export default React.memo(
     const nav = useNavigation<NavProp>();
     const user = useMunzeeRequest("user", { username: item.username }, touched);
     return (
-      <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} style={[styles.card, { flex: 1 }]}>
+      <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} style={[styles.card, { flex: 1 }]}>
         <ScrollView onLayout={onOuterLayout} style={{ flex: 1 }}>
           <View onLayout={onInnerLayout}>
             <Pressable onPress={() => nav.navigate("Player_Profile", { username: item.username })}>

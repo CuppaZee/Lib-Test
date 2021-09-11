@@ -1,6 +1,6 @@
 import { useLinkBuilder, useNavigation, useNavigationState } from "@react-navigation/native";
 import {Box, Heading, HStack, Image, Link, Pressable, VStack} from "native-base";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -129,9 +129,30 @@ export function Item(props: ItemProps) {
 export function TabItem(props: ItemProps) {
   const buildLink = useLinkBuilder();
   const link = buildLink(props.link[0], props.link[1]);
-  const nav = useNavigation<NavProp>();
+  const nav = useNavigation<any>();
   const state = useNavigationState(state => state?.routes?.[(state?.routes?.length ?? 0) - 1]);
   const matches = props.checkMatch && checkMatch([state ?? {}, props.link]);
+  const n = useCallback(() => {
+    if (props.navMethod === "reset" && Platform.OS !== "web") {
+      nav.reset({
+        routes: [
+          {
+            name: "__root",
+            state: {
+              routes: [
+                {
+                  name: props.link[0],
+                  params: props.link[1]
+                }
+              ]
+            }
+          }
+        ]
+      })
+    } else {
+      nav.navigate(props.link[0], props.link[1]);
+    }
+  }, [link]);
   return useMemo(
     () => (
       <Pressable
@@ -139,36 +160,12 @@ export function TabItem(props: ItemProps) {
         // @ts-expect-error
         onClick={ev => {
           ev?.preventDefault?.();
-          if (props.navMethod === "reset" && Platform.OS !== "web") {
-            nav.reset({
-              routes: [
-                {
-                  name: props.link[0],
-                  params: props.link[1],
-                },
-              ],
-            });
-          } else {
-            nav.navigate(props.link[0], props.link[1]);
-          }
+          n();
         }}
-        onPress={() => {
-          if (props.navMethod === "reset") {
-            nav.reset({
-              routes: [
-                {
-                  name: props.link[0],
-                  params: props.link[1],
-                },
-              ],
-            });
-          } else {
-            nav.push(props.link[0], props.link[1]);
-          }
-        }}
+        onPress={n}
         _hover={{ opacity: 0.8 }}
-        bg={matches ? "blue.500" : "blueGray.200"}
-        _dark={{bg: matches ? "blue.500" : "blueGray.800"}}
+        bg={matches ? "blue.500" : "regularGray.200"}
+        _dark={{ bg: matches ? "blue.500" : "regularGray.800" }}
         href={Platform.OS === "web" ? link : undefined}>
         <VStack flex={1} justifyContent="center" alignItems="center" space={1}>
           {!!props.icon && (

@@ -122,9 +122,9 @@ export const CommonCell = function (props: CommonCellProps) {
   return (
     <PressWrapper onPress={props.onPress}>
       <Box
-        bg={isCompact ? undefined : "coolGray.200"}
+        bg={isCompact ? undefined : "regularGray.200"}
         _dark={{
-          bg: isCompact ? undefined : "coolGray.800",
+          bg: isCompact ? undefined : "regularGray.800",
         }}
         style={[
           isCompact ? undefined : styles.card,

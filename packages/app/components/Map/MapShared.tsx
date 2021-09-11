@@ -19,7 +19,7 @@ export function MapSearchModal({ select }: MapSearchModalProps) {
     return await response.json();
   })
   return (
-    <Box bg="coolGray.300" _dark={{ bg: "coolGray.700" }} borderRadius={8}>
+    <Box bg="regularGray.300" _dark={{ bg: "regularGray.700" }} borderRadius={8}>
       <Column space={2} p={2}>
         <Box>
           <Heading mb={1} size="md">

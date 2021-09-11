@@ -9,11 +9,13 @@ import ClanStatsTable from "../../components/Clan/Stats";
 import { useSyncScrollViewController } from "../../components/Clan/SyncScrollView";
 import Select from "../../components/Common/Select";
 import Tip from "../../components/Common/Tip";
+import useMunzeeRequest from "../../hooks/useMunzeeRequest";
 import useSetting, { ClanPersonalisationAtom } from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
 import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 import { ClanPersonalisationModal } from "../Settings/Personalisation";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export default function ClanStatsScreen2() {
   const [style] = useSetting(ClanPersonalisationAtom);
@@ -27,11 +29,13 @@ export default function ClanStatsScreen2() {
       ).game_id
     : new GameID().game_id;
   const clan_id = Number(route.params.clanid);
-  useTitle(`☕ ${clan_id}`);
+  const clan_data = useMunzeeRequest("clan/v2", { clan_id });
+  const headerHeight = useHeaderHeight();
+  useTitle(`${clan_data.data?.data?.details?.name ?? clan_id}`);
   return (
-    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={{ flex: 1 }}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} style={{ flex: 1 }}>
       <ClanPersonalisationModal />
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 4 }}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 4, paddingTop: 4 + headerHeight }}>
         <Tip
           wrapperStyle={{ margin: 4, width: 400, maxWidth: "100%", alignSelf: "center" }}
           id="clan_stats_customisation"

@@ -112,7 +112,7 @@ const options = [
 
 export default function SearchScreen() {
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:tools_evo_planner")}`);
+  useTitle(`${t("pages:tools_evo_planner")}`);
   const [date, setDate] = React.useState(Date.now());
   const [level, setLevel] = React.useState(0);
   const [type, setType] = React.useState("farm");

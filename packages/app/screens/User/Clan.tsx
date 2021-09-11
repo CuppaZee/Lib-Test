@@ -24,7 +24,7 @@ export default function PlayerClanScreen() {
   const [style] = useSetting(ClanPersonalisationAtom);
   const game_id = new GameID().game_id;
   const nav = useNavigation<NavProp>();
-  useTitle(`☕ ${route.params.username} - ${t("pages:user_clan_progress")}`);
+  useTitle(`${route.params.username} - ${t("pages:user_clan_progress")}`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },

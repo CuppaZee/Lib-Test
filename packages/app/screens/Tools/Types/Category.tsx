@@ -13,7 +13,7 @@ export default function SearchScreen() {
   const route = useRoute<RouteProp<RootStackParamList, "Tools_TypeCategory">>();
   const category =
     db.getCategory(route.params.category) ?? db.getCategory("root") ?? db.categories[0];
-  useTitle(`☕ ${category?.name || ""}`);
+  useTitle(`${category?.name || ""}`);
   const nav = useNavigation<NavProp>();
 
   return (

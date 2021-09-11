@@ -20,7 +20,7 @@ export default function PlayerBouncersScreen() {
   const nav = useNavigation<NavProp>();
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_Rooms">>();
-  useTitle(`☕ ${route.params.username} - Rooms`);
+  useTitle(`${route.params.username} - Rooms`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },

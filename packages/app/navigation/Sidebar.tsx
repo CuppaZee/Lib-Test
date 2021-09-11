@@ -19,28 +19,28 @@ export default function Drawer() {
   return (
     <Column
       borderRightWidth={1}
-      borderRightColor="coolGray.500"
+      borderRightColor="regularGray.500"
       style={{
         minWidth: drawerSettings.collapsed ? 56  : 200,
         maxWidth: drawerSettings.collapsed ? 56 : 300,
         flex: drawerSettings.collapsed ? 0 : 1
       }}
-      bg="coolGray.100"
-      _dark={{ bg: "coolGray.900" }}>
+      bg="regularGray.100"
+      _dark={{ bg: "regularGray.900" }}>
       <Box
-        bg="coolGray.200"
+        bg="regularGray.200"
         height="48px"
         justifyContent="center"
         alignItems="center"
-        _dark={{ bg: "coolGray.800" }}>
+        _dark={{ bg: "regularGray.800" }}>
         {!drawerSettings.collapsed && <Heading fontSize="lg">CuppaZee Max</Heading>}
       </Box>
       <ScrollView flexGrow={1} contentContainerStyle={{ flexGrow: 1 }}>
         <Column flexGrow={1} py={2} px={2} space={2}>
-          <Box borderRadius={4} bg="coolGray.200" _dark={{ bg: "coolGray.800" }}>
+          <Box borderRadius={4} bg="regularGray.200" _dark={{ bg: "regularGray.800" }}>
             <Item checkMatch collapsed={drawerSettings.collapsed} navMethod="reset" icon="magnify" title={t("pages:tools_search")} link={["Tools_Search"]} />
           </Box>
-          <Box borderRadius={4} bg="coolGray.200" _dark={{ bg: "coolGray.800" }}>
+          <Box borderRadius={4} bg="regularGray.200" _dark={{ bg: "regularGray.800" }}>
             {users.map(i => (
               <Item
                 checkMatch collapsed={drawerSettings.collapsed} navMethod="reset"
@@ -53,7 +53,7 @@ export default function Drawer() {
               />
             ))}
           </Box>
-          <Box borderRadius={4} bg="coolGray.200" _dark={{ bg: "coolGray.800" }}>
+          <Box borderRadius={4} bg="regularGray.200" _dark={{ bg: "regularGray.800" }}>
             <Item checkMatch collapsed={drawerSettings.collapsed} navMethod="reset" icon="map-marker-radius" title={t("pages:tools_nearby")} link={["Tools_Nearby"]} />
             <Item checkMatch collapsed={drawerSettings.collapsed} navMethod="reset"
               icon="map-marker"
@@ -66,7 +66,7 @@ export default function Drawer() {
               link={["Tools_BouncersExpiring"]}
             />
           </Box>
-          <Box borderRadius={4} bg="coolGray.200" _dark={{ bg: "coolGray.800" }}>
+          <Box borderRadius={4} bg="regularGray.200" _dark={{ bg: "regularGray.800" }}>
             <Item checkMatch collapsed={drawerSettings.collapsed} navMethod="reset" icon="bomb" title={t("pages:tools_blastplanner")} link={["Tools_Blast"]} />
             <Item checkMatch collapsed={drawerSettings.collapsed} navMethod="reset"
               icon="map-marker-circle"
@@ -80,7 +80,7 @@ export default function Drawer() {
             />
             <Item checkMatch collapsed={drawerSettings.collapsed} navMethod="reset" icon="dna" title={t("pages:tools_evo_planner")} link={["Tools_EvoPlanner"]} />
           </Box>
-          <Box borderRadius={4} bg="coolGray.200" _dark={{ bg: "coolGray.800" }}>
+          <Box borderRadius={4} bg="regularGray.200" _dark={{ bg: "regularGray.800" }}>
             <Item checkMatch collapsed={drawerSettings.collapsed} navMethod="reset" icon="calendar" title={t("pages:tools_calendar")} link={["Tools_Calendar"]} />
             <Item checkMatch collapsed={drawerSettings.collapsed} navMethod="reset" icon="earth" title={t("pages:tools_universal")} link={["Tools_Universal"]} />
             <Item checkMatch collapsed={drawerSettings.collapsed} navMethod="reset"

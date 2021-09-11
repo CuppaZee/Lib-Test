@@ -44,7 +44,7 @@ const UserActivityOverviewItem = React.memo(
             </Box>
           </Pressable>
         )}>
-        <Popover.Content bg="coolGray.400" _dark={{ bg: "coolGray.600" }} style={{ padding: 4 }}>
+        <Popover.Content bg="regularGray.400" _dark={{ bg: "regularGray.600" }} style={{ padding: 4 }}>
           <Heading style={{ textAlign: "center" }} fontSize="lg">
             {data.count.toLocaleString()}x {db.getType(icon)?.name || db.strip(icon)}
           </Heading>
@@ -94,7 +94,7 @@ export default function UserActivityOverview({
     [data.dataUpdatedAt, activityData]
   );
   if (!data.isFetched || !d) {
-    return <Loading bg="coolGray.200" darkBg="coolGray.800" data={[data]} />;
+    return <Loading bg="regularGray.200" darkBg="regularGray.800" data={[data]} />;
   }
   return (
     <View style={{ padding: 4 }}>

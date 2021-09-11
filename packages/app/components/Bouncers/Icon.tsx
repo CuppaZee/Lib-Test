@@ -19,7 +19,7 @@ export function BouncerIcon({ type, count, icon }: BouncerIconProps) {
       {
         type: type.icon
       })) : null}>
-      <Box bg="coolGray.200" _dark={{bg: "coolGray.800"}} style={[styles.card, { opacity: count > 0 ? 1 : 0.2 }]}>
+      <Box bg="regularGray.200" _dark={{bg: "regularGray.800"}} style={[styles.card, { opacity: count > 0 ? 1 : 0.2 }]}>
         <TypeImage icon={type?.icon ?? icon ?? ""} style={{ size: 32 }} />
         <Heading numberOfLines={1} ellipsizeMode="tail" fontSize="sm">
           {type?.name ?? icon ?? ""}

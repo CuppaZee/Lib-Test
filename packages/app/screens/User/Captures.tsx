@@ -28,7 +28,7 @@ export default function PlayerCapturesScreen() {
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_Captures">>();
   const nav = useNavigation<NavProp>();
-  useTitle(`☕ ${route.params.username} - ${t("pages:user_captures")} - ${route.params.category}`);
+  useTitle(`${route.params.username} - ${t("pages:user_captures")} - ${route.params.category}`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },

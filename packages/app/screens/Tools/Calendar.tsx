@@ -1,9 +1,11 @@
-import { Button, Layout, Popover, Text, useTheme } from "@ui-kitten/components";
+import { useTheme } from "@ui-kitten/components";
 import dayjs, { Dayjs } from "dayjs";
+import { Box, Button, Popover, Pressable, Text } from "native-base";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Pressable, ScrollView, View } from "react-native";
+import { Image, ScrollView, View } from "react-native";
 import Icon from "../../components/Common/Icon";
+import useDB from "../../hooks/useDB";
 import useTitle from "../../hooks/useTitle";
 
 const egyptianTimes: [number, string][] = ([
@@ -60,14 +62,15 @@ type CalendarData = {
   qrewzee: boolean;
 };
 
-function Date(date: Dayjs): CalendarData {
+function useDate(date: Dayjs): CalendarData {
   const dm = (date.month() + 1) * 100 + date.date();
   const western = westernTimes.find(i => i[0] <= dm)?.[1] || "zodiac";
   const egyptian = egyptianTimes.find(i => i[0] <= dm)?.[1] || "egyptianzodiacsun";
+  const db = useDB();
   return {
     date,
     western,
-    egyptian: ["nile", "amon-ra", "osiris", "thoth"].includes(egyptian)
+    egyptian: db.getType(egyptian)
       ? egyptian
       : "egyptianzodiacsun",
     qrewzee: date.date() % 3 === 0,
@@ -76,18 +79,16 @@ function Date(date: Dayjs): CalendarData {
 
 function CalendarCell({ date }: { date: Dayjs }) {
   const { t } = useTranslation();
-  const data = Date(date);
+  const data = useDate(date);
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
   return (
-    <View style={{ width: 68, padding: 2, flexGrow: 1 }}>
+    <View style={{ width: 52, padding: 2, flexGrow: 1 }}>
       <Popover
-        visible={open}
-        onBackdropPress={() => setOpen(false)}
-        anchor={() => (
-          <Pressable onPress={() => setOpen(true)}>
-            <Layout
-              level="3"
+        trigger={triggerProps => (
+          <Pressable {...triggerProps}>
+            <Box
+              bg="regularGray.300"
+              _dark={{ bg: "regularGray.800" }}
               style={{
                 borderRadius: 8,
                 flexDirection: "row",
@@ -97,8 +98,8 @@ function CalendarCell({ date }: { date: Dayjs }) {
               }}>
               <View
                 style={{
-                  height: 32,
-                  width: 32,
+                  height: 24,
+                  width: 24,
                   justifyContent: "center",
                   alignItems: "center",
                 }}>
@@ -111,8 +112,8 @@ function CalendarCell({ date }: { date: Dayjs }) {
                   }}
                   style={{
                     height: 28,
+                    marginHorizontal: -2,
                     width: 28,
-                    margin: 2,
                     opacity: data.qrewzee ? 1 : 0.1,
                   }}
                 />
@@ -147,8 +148,8 @@ function CalendarCell({ date }: { date: Dayjs }) {
                   }}
                   style={{
                     height: 28,
+                    marginHorizontal: -2,
                     width: 28,
-                    margin: 2,
                     opacity: data.egyptian === "egyptianzodiacsun" ? 0.1 : 1,
                   }}
                 />
@@ -173,23 +174,26 @@ function CalendarCell({ date }: { date: Dayjs }) {
                 source={{
                   uri: `https://munzee.global.ssl.fastly.net/images/pins/${data.western}.png`,
                 }}
-                style={{ height: 28, width: 28, margin: 2 }}
+                style={{ height: 28, width: 28, marginHorizontal: -2 }}
               />
-            </Layout>
+            </Box>
           </Pressable>
         )}>
-        <Layout level="4" style={{ borderRadius: 8, padding: 4, alignItems: "center" }}>
-          <Text category="s1">{date.format("D MMMM")}</Text>
-          <Text category="s2">
+        <Popover.Content
+          bg="regularGray.300"
+          _dark={{ bg: "regularGray.700" }}
+          style={{ borderRadius: 8, padding: 4, alignItems: "center" }}>
+          <Text fontSize="md">{date.format("D MMMM")}</Text>
+          <Text fontSize="sm">
             {data.qrewzee ? t("calendar:qrewzees_on") : t("calendar:qrewzees_off")}
           </Text>
-          <Text category="s2">
+          <Text fontSize="sm">
             {t("calendar:egyptian_status", { type: data.egyptian.toUpperCase() })}
           </Text>
-          <Text category="s2">
+          <Text fontSize="sm">
             {t("calendar:western_status", { type: data.western.toUpperCase() })}
           </Text>
-        </Layout>
+        </Popover.Content>
       </Popover>
     </View>
   );
@@ -208,14 +212,13 @@ function DayCell({ day }: { day: number }) {
   ][day];
   const [open, setOpen] = React.useState(false);
   return (
-    <View style={{ width: 68, padding: 2, flexGrow: 1 }}>
+    <View style={{ width: 52, padding: 2, flexGrow: 1 }}>
       <Popover
-        visible={open}
-        onBackdropPress={() => setOpen(false)}
-        anchor={() => (
-          <Pressable onPress={() => setOpen(true)}>
-            <Layout
-              level="3"
+        trigger={triggerProps => (
+          <Pressable {...triggerProps}>
+            <Box
+              bg="regularGray.200"
+              _dark={{ bg: "regularGray.800" }}
               style={{
                 borderRadius: 8,
                 flexDirection: "row",
@@ -242,21 +245,22 @@ function DayCell({ day }: { day: number }) {
                   style={{ height: 28, width: 28, marginHorizontal: -4 }}
                 />
               ))}
-            </Layout>
+            </Box>
           </Pressable>
         )}>
-        <Layout
-          level="4"
+        <Popover.Content
+          bg="regularGray.200"
+          _dark={{ bg: "regularGray.800" }}
           style={{
             borderRadius: 8,
             padding: 4,
             alignItems: "center",
           }}>
-          <Text category="s1">{dayjs.weekdays()[day]}</Text>
-          <Text category="s2">
+          <Text fontSize="md">{dayjs.weekdays()[day]}</Text>
+          <Text fontSize="sm">
             {t("calendar:chinese_status", { types: chinese.join(", ").toUpperCase() })}
           </Text>
-        </Layout>
+        </Popover.Content>
       </Popover>
     </View>
   );
@@ -264,7 +268,7 @@ function DayCell({ day }: { day: number }) {
 
 export default function CalendarScreen() {
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:tools_calendar")}`);
+  useTitle(`${t("pages:tools_calendar")}`);
   const [month, setMonth] = React.useState(dayjs().format());
   const monthStart = dayjs(month).set("date", 1);
   const monthEnd = dayjs(month).set("date", 1).add(1, "month").subtract(1, "day");
@@ -274,7 +278,7 @@ export default function CalendarScreen() {
     array.push(date);
   }
   return (
-    <Layout style={{ flex: 1 }}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} style={{ flex: 1 }}>
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
@@ -285,40 +289,41 @@ export default function CalendarScreen() {
             alignSelf: "center",
             padding: 4,
           }}>
-          <Layout
-            level="3"
+          <Box
+            bg="regularGray.200"
+            _dark={{ bg: "regularGray.800" }}
             style={{
               borderRadius: 8,
               flexDirection: "row",
               alignItems: "center",
             }}>
             <Button
-              appearance="ghost"
-              accessoryLeft={props => <Icon {...props} name="chevron-left" />}
+              variant="ghost"
+              startIcon={<Icon style={{ height: 24, width: 24 }} name="chevron-left" />}
               onPress={() => {
                 setMonth(dayjs(month).subtract(1, "month").format());
               }}
             />
-            <Text category="h5" style={{ textAlign: "center", flex: 1 }}>
+            <Text fontSize="xl" style={{ textAlign: "center", flex: 1 }}>
               {dayjs(month).format("MMMM YYYY")}
             </Text>
             <Button
-              appearance="ghost"
-              accessoryLeft={props => <Icon {...props} name="chevron-right" />}
+              variant="ghost"
+              startIcon={<Icon style={{ height: 24, width: 24 }} name="chevron-right" />}
               onPress={() => {
                 setMonth(dayjs(month).add(1, "month").format());
               }}
             />
-          </Layout>
+          </Box>
         </View>
         <ScrollView
-          style={{ width: 490, maxWidth: "100%", alignSelf: "center", flexGrow: 0 }}
+          style={{ width: 380, maxWidth: "100%", alignSelf: "center", flexGrow: 0 }}
           horizontal={true}
           contentContainerStyle={{
             flexDirection: "row",
             flexWrap: "wrap",
-            minWidth: 476,
-            width: 490,
+            minWidth: 364,
+            width: 380,
             maxWidth: "100%",
             alignSelf: "center",
           }}>
@@ -329,16 +334,16 @@ export default function CalendarScreen() {
               <DayCell day={i} />
             ))}
           {new Array((monthStart.day() + offset) % 7).fill(1).map(_ => (
-            <View style={{ width: 68, flexGrow: 1 }} />
+            <View style={{ width: 52, flexGrow: 1 }} />
           ))}
           {array.map(i => (
             <CalendarCell date={i} />
           ))}
           {new Array((6 + 7 - monthEnd.day() - offset) % 7).fill(1).map(_ => (
-            <View style={{ width: 68, flexGrow: 1 }} />
+            <View style={{ width: 52, flexGrow: 1 }} />
           ))}
         </ScrollView>
       </ScrollView>
-    </Layout>
+    </Box>
   );
 }

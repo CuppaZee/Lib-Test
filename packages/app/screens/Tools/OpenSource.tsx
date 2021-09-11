@@ -103,7 +103,7 @@ const libs: any[] = dependencies.data.body
 
 export default function OpenSourceScreen() {
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:tools_open_source")}`);
+  useTitle(`${t("pages:tools_open_source")}`);
   return (
     <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <List

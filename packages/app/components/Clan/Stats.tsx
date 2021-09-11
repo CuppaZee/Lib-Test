@@ -55,7 +55,7 @@ export default React.memo(
     const {colorMode} = useColorMode()
     const theme = useTheme();
     const borderColor =
-      (colorMode === "dark" ? theme.colors.coolGray[400] : theme.colors.coolGray[600])
+      (colorMode === "dark" ? theme.colors.regularGray[400] : theme.colors.regularGray[600])
         .replace("rgb(", "rgba(")
         .slice(0, -1) + ", 0.3)";
 
@@ -100,7 +100,7 @@ export default React.memo(
 
     if (title)
       useTitle(
-        `☕ ${
+        `${
           shadow_data.data?.data?.details.name ??
           clan_data.data?.data?.details.name ??
           actual_clan_id
@@ -115,7 +115,7 @@ export default React.memo(
       (!shadow_data.data && [-1, 1349, 1441, 457, 1902, 2042, 1870, 3224].includes(actual_clan_id))
     ) {
       return useMemo(() => (
-        <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} flexGrow={1} onLayout={onLayout}>
+        <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} flexGrow={1} onLayout={onLayout}>
           <Loading data={[clan_data, requirements_data, shadow_data]} />
         </Box>
       ), [0, 0, 0, 0, 0, 0, 0]);
@@ -166,8 +166,8 @@ export default React.memo(
       return (
         <Box
           onLayout={onLayout}
-          bg="coolGray.200"
-          _dark={{ bg: "coolGray.800" }}
+          bg="regularGray.200"
+          _dark={{ bg: "regularGray.800" }}
           style={{ margin: 4, borderRadius: 8 }}>
           <Box
             style={{
@@ -178,8 +178,8 @@ export default React.memo(
               borderTopLeftRadius: 8,
               borderTopRightRadius: 8,
             }}
-            bg="coolGray.300"
-            _dark={{ bg: "coolGray.700" }}>
+            bg="regularGray.300"
+            _dark={{ bg: "regularGray.700" }}>
             <Image
               style={{ height: 32, width: 32, borderRadius: 16, marginRight: 8 }}
               source={{
@@ -242,7 +242,7 @@ export default React.memo(
               }
             />}
             <Button
-              bg="transparent"
+              variant="ghost"
               startIcon={<Icon style={{ height: 24, width: 24 }} name="cog" />}
               onPress={() => setModalVisible(true)}
             />

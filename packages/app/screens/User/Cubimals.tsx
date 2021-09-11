@@ -12,7 +12,7 @@ import { RootStackParamList } from "../../types";
 export default function PlayerCubimalsScreen() {
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_Cubimals">>();
-  useTitle(`☕ ${route.params.username} - Cubimals`);
+  useTitle(`${route.params.username} - Cubimals`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },

@@ -19,7 +19,7 @@ export default function BouncersMapScreen() {
   const [markers, setMarkers] = React.useState<{ lat: number; lng: number; type: string }[]>([]);
   const [selectedMarker, setSelectedMarker] = React.useState<number>();
   const center = React.useRef<{ lat: number; lng: number }>();
-  useTitle(`☕ POI Planner`);
+  useTitle(`POI Planner`);
   const [location, setLocation] = React.useState<
     MapBoundingboxV4["request"]["params"]["points"]["main"]
   >();

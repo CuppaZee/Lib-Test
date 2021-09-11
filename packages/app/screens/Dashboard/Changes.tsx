@@ -12,8 +12,8 @@ function BuildCard(build: Build) {
   const db = useDB();
   return (
     <Box
-      bg="coolGray.300"
-      _dark={{ bg: "coolGray.700" }}
+      bg="regularGray.300"
+      _dark={{ bg: "regularGray.700" }}
       style={{ margin: 4, padding: 4, borderRadius: 8 }}>
       <Heading fontSize="xl" style={{ textAlign: "center" }}>
         Build {build.build}
@@ -135,7 +135,7 @@ export default React.memo(function ChangesDashCard(props: DashCardProps<unknown>
   const db = useDB();
   const buildsList = React.useMemo(() => builds(db), [db]);
   return (
-    <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} style={[styles.card, { flex: 1 }]}>
+    <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} style={[styles.card, { flex: 1 }]}>
       <ScrollView onLayout={props.onOuterLayout} style={{ flex: 1 }}>
         <View onLayout={props.onInnerLayout} style={{ padding: 4 }}>
           <Heading style={{ marginLeft: 4, textAlign: "center" }} fontSize="lg">

@@ -162,8 +162,8 @@ export function AutoMap({
         />
       </Modal>
       <Box
-        bg="coolGray.200"
-        _dark={{ bg: "coolGray.800" }}
+        bg="regularGray.200"
+        _dark={{ bg: "regularGray.800" }}
         style={{ position: "absolute", top: 0, right: 0, padding: 4, borderBottomLeftRadius: 8 }}>
         <Row p={1} space={1}>
           <Button

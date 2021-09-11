@@ -26,7 +26,7 @@ export default function PlayerActivityScreen() {
   });
   const route = useRoute<RouteProp<RootStackParamList, "Player_Activity">>();
   useTitle(
-    `☕ ${route.params.username} - ${t("pages:user_activity")} - ${dayjs(
+    `${route.params.username} - ${t("pages:user_activity")} - ${dayjs(
       route.params?.date ?? dayjs.mhqNow()
     ).format("L")}`
   );
@@ -48,15 +48,15 @@ export default function PlayerActivityScreen() {
 
   if (!user.isFetched || !data.isFetched || !d || !size) {
     return (
-      <Box bg="coolGray.100" _dark={{bg: "coolGray.900" }} style={{ flex: 1 }} onLayout={onLayout}>
+      <Box bg="regularGray.100" _dark={{bg: "regularGray.900" }} style={{ flex: 1 }} onLayout={onLayout}>
         <Loading data={[user, data]} />
       </Box>
     );
   }
   return (
     <Box
-      bg="coolGray.100"
-      _dark={{ bg: "coolGray.900" }}
+      bg="regularGray.100"
+      _dark={{ bg: "regularGray.900" }}
       onLayout={onLayout}
       style={{ flex: 1, flexDirection: "row" }}>
       <UserActivityList
@@ -65,7 +65,7 @@ export default function PlayerActivityScreen() {
         user_id={user.data?.data?.user_id ?? 0}
       />
       {(size?.width || 0) > 720 ? (
-        <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} style={{ width: 300 }}>
+        <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} style={{ width: 300 }}>
           <UserActivityFilter d={d} filters={filters} setFilters={setFilters} />
         </Box>
       ) : (
@@ -74,8 +74,8 @@ export default function PlayerActivityScreen() {
           // backdropStyle={{ backgroundColor: "#0007" }}
           onClose={() => setVisible(false)}>
           <Box
-            bg="coolGray.200"
-            _dark={{ bg: "coolGray.800" }}
+            bg="regularGray.200"
+            _dark={{ bg: "regularGray.800" }}
             style={[modalSafeArea, { width: 300, borderRadius: 8 }]}>
             <UserActivityFilter
               d={d}

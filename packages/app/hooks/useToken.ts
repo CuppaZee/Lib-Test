@@ -1,9 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "react-query";
 import { useAtom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
 import baseURL from "../baseURL";
 import {useRef} from "react";
+import { settingAtom } from "./useSetting";
 
 const getToken = async (teaken: string, user_id: number) => {
   const response = await fetch(
@@ -19,29 +18,12 @@ export type TeakenData = {
   username: string;
 };
 
-const DefaultStorage = {
-  getItem: async (key: string) => {
-    const data = await AsyncStorage.getItem(key);
-    return { data: JSON.parse(data ?? "null") ?? {}, loaded: true };
-  },
-  setItem: async (key: string, data: any) => {
-    await AsyncStorage.setItem(key, JSON.stringify(data.data))
-  },
-  delayInit: true,
-};
 
-
-export const teakensAtom = atomWithStorage<{
-  data: {
-    [user_id: string]: TeakenData;
-  }; loaded: boolean
+export const teakensAtom = settingAtom<{
+  [user_id: string]: TeakenData;
 }>(
   "CUPPAZEE_TEAKENS",
-  {
-    data: {},
-    loaded: false,
-  },
-  DefaultStorage
+  {}
 );
 
 export function useTeakens() {

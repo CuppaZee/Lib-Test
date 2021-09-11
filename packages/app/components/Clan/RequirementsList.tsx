@@ -55,20 +55,20 @@ export default React.memo(
 
     if (!requirements || !size || !rewards) {
       return (
-        <Box bg="coolGray.100" _dark={{ bg: "coolGray.900"}} style={{ flexGrow: 1 }} onLayout={onLayout}>
+        <Box bg="regularGray.100" _dark={{ bg: "regularGray.900"}} style={{ flexGrow: 1 }} onLayout={onLayout}>
           <Loading data={[requirements_data, rewards_data]} />
         </Box>
       );
     }
     return (
       <Box
-        bg="coolGray.200"
-        _dark={{ bg: "coolGray.800" }}
+        bg="regularGray.200"
+        _dark={{ bg: "regularGray.800" }}
         onLayout={onLayout}
         style={{ margin: 4, borderRadius: 8 }}>
         <Box
-          bg="coolGray.300"
-          _dark={{ bg: "coolGray.700" }}
+          bg="regularGray.300"
+          _dark={{ bg: "regularGray.700" }}
           style={{
             flexDirection: "row",
             alignItems: "center",

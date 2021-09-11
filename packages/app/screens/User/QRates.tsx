@@ -14,7 +14,7 @@ import { RootStackParamList } from "../../types";
 export default function PlayerCubimalsScreen() {
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_QRates">>();
-  useTitle(`☕ ${route.params.username} - QRates`);
+  useTitle(`${route.params.username} - QRates`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },

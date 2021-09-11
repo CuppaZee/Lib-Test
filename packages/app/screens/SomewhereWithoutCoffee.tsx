@@ -14,7 +14,7 @@ export default function SomewhereWithoutCoffeeScreen() {
   const theme = useTheme();
   const nav = useNavigation<NavProp>();
   return (
-    <Box bg="coolGray.100" _dark={{bg: "coolGray.900"}} style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <Box bg="regularGray.100" _dark={{bg: "regularGray.900"}} style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Image
         source={
           theme.style === "dark"

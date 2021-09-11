@@ -61,3 +61,7 @@ export type RootStackParamList = {
 //   Settings: MainDrawerParams<SettingsStackParamList>;
 //   Welcome: undefined;
 // };
+
+export type WrapperStackParamList = {
+  __root: undefined;
+}

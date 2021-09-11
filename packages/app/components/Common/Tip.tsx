@@ -47,8 +47,8 @@ export default function Tip({ id, tip, wrapperStyle, small }: TipProps) {
   return (
     <View style={wrapperStyle}>
       <Box
-        bg="coolGray.300"
-        _dark={{ bg: "coolGray.700" }}
+        bg="regularGray.300"
+        _dark={{ bg: "regularGray.700" }}
         style={{
           borderRadius: 8,
           padding: 4,
@@ -62,7 +62,7 @@ export default function Tip({ id, tip, wrapperStyle, small }: TipProps) {
               {t("tips:title")}
             </Heading>
             <Button
-              bg="transparent"
+              variant="ghost"
               style={{ height: 24, width: 24 }}
               startIcon={<Icon name="close" style={{ height: 24, width: 24 }} />}
               size="xs"

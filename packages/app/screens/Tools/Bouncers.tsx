@@ -15,7 +15,7 @@ import { NavProp } from "../../navigation";
 
 export default function BouncersScreen() {
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:tools_bouncers")}`);
+  useTitle(`${t("pages:tools_bouncers")}`);
   const nav = useNavigation<NavProp>();
   const data = useCuppaZeeRequest<{
     data: any;

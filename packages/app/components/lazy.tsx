@@ -17,8 +17,8 @@ export default function lazy(
         }
         return () => (
           <Box
-            bg="coolGray.100"
-            _dark={{ bg: "coolGray.900" }}
+            bg="regularGray.100"
+            _dark={{ bg: "regularGray.900" }}
             flex={1}
             justifyContent="center"
             alignItems="center">
@@ -30,8 +30,8 @@ export default function lazy(
     {
       fallback: (
         <Box
-          bg="coolGray.100"
-          _dark={{ bg: "coolGray.900" }}
+          bg="regularGray.100"
+          _dark={{ bg: "regularGray.900" }}
           flex={1}
           justifyContent="center"
           alignItems="center">

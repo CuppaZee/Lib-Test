@@ -265,7 +265,7 @@ export default function UniversalScreen() {
   const [reportModal, setReportModal] = React.useState(false);
   const [submitModal, setSubmitModal] = React.useState(false);
   const [username, props] = useUsernameSelect();
-  useTitle(`☕ ${t("pages:user_universal_capper")}`);
+  useTitle(`${t("pages:user_universal_capper")}`);
   const user = useMunzeeRequest(
     "user",
     { username: username || "" },

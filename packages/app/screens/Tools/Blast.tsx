@@ -43,7 +43,7 @@ export default function BlastPlannerScreen() {
   const [blastInfo, setBlastInfo] = React.useState<BlastInfo>();
   const pos = React.useRef<Omit<BlastInfo, "amount">>();
   const [username, props] = useUsernameSelect();
-  useTitle(`☕ Blast Planner`);
+  useTitle(`Blast Planner`);
   const user = useMunzeeRequest(
     "user",
     { username: username || "" },

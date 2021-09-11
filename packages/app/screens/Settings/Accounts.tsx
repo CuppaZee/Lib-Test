@@ -12,7 +12,7 @@ import { teakensAtom, useTeakens } from "../../hooks/useToken";
 
 export default function AccountsScreen() {
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:settings")} - ${t("pages:settings_accounts")}`);
+  useTitle(`${t("pages:settings")} - ${t("pages:settings_accounts")}`);
   const [, login, ready] = useLogin("settings/accounts");
   useTeakens();
   const [teakens] = useAtom(teakensAtom);

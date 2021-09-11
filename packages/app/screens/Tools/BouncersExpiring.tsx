@@ -12,7 +12,7 @@ import { NavProp } from "../../navigation";
 export default function BouncersExpiringScreen() {
   const { t } = useTranslation();
   const db = useDB();
-  useTitle(`☕ Bouncing Soon`);
+  useTitle(`Bouncing Soon`);
   const bouncers = useCuppaZeeRequest<{
     data: any;
     endpointsDown: { label: string; endpoint: string }[];

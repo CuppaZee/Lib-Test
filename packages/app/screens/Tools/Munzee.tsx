@@ -28,7 +28,7 @@ export default function MunzeeScreen() {
     route.params?.a !== undefined
   );
   useTitle(
-    `☕ ${munzee.data?.data?.creator_username ?? "Loading..."} - ${
+    `${munzee.data?.data?.creator_username ?? "Loading..."} - ${
       munzee.data?.data?.friendly_name ?? "Loading..."
     }`
   );

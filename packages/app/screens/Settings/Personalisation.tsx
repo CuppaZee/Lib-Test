@@ -348,7 +348,7 @@ export function ClanPersonalisationModal() {
 
 export default function PersonalisationScreen() {
   const { t, i18n } = useTranslation();
-  useTitle(`☕ ${t("pages:settings")} - ${t("pages:settings_personalisation")}`);
+  useTitle(`${t("pages:settings")} - ${t("pages:settings_personalisation")}`);
   const [storedClanSettings, setStoredClanSettings] = useSetting(ClanPersonalisationAtom);
   const [clanSettings, setClanSettings] = React.useState<ClanStyle>();
   const [theme, setTheme] = useSetting(ThemeAtom);

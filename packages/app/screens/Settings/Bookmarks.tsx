@@ -71,7 +71,7 @@ function ClanSearchModal({ close }: ClanSearchModalProps) {
 
 export default function AccountsScreen() {
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:settings")} - ${t("pages:settings_bookmarks")}`);
+  useTitle(`${t("pages:settings")} - ${t("pages:settings_bookmarks")}`);
   const [userBookmarks, setUserBookmarks] = useUserBookmarks();
   const [clanBookmarks, setClanBookmarks] = useClanBookmarks();
   const [addUserModal, setAddUserModal] = React.useState(false);

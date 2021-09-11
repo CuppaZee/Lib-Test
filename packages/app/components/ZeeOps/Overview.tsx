@@ -20,7 +20,7 @@ export default function ZeeOpsOverview({ user_id }: ZeeOpsOverviewProps) {
   const data = useMunzeeRequest("ops/zeeops/status", { user_id }, true, user_id);
   if (data.tokenStatus.status !== "valid") return null;
   if (!data.data?.data) {
-    return <Loading bg="coolGray.200" darkBg="coolGray.800" data={[data]} />;
+    return <Loading bg="regularGray.200" darkBg="regularGray.800" data={[data]} />;
   }
   const d = data.data.data;
   let current = d.missions.find(i => i.id === d.currentMission);
@@ -40,7 +40,7 @@ export default function ZeeOpsOverview({ user_id }: ZeeOpsOverviewProps) {
           <Text category="s1" style={{ padding: 4 }}>
             Week Complete!
           </Text>
-          <Box bg="coolGray.300" _dark={{ bg: "coolGray.700" }} style={{ borderRadius: 8 }}>
+          <Box bg="regularGray.300" _dark={{ bg: "regularGray.700" }} style={{ borderRadius: 8 }}>
             <LinearGradient
               start={[0, 0.5]}
               end={[1, 0.5]}
@@ -92,7 +92,7 @@ export default function ZeeOpsOverview({ user_id }: ZeeOpsOverviewProps) {
         <Text category="s1" style={{ padding: 4 }}>
           {current?.description}
         </Text>
-        <Box bg="coolGray.300" _dark={{ bg: "coolGray.700" }} style={{ borderRadius: 8 }}>
+        <Box bg="regularGray.300" _dark={{ bg: "regularGray.700" }} style={{ borderRadius: 8 }}>
           <LinearGradient
             start={[0, 0.5]}
             end={[1, 0.5]}

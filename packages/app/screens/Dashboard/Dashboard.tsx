@@ -84,7 +84,7 @@ export default function DashboardScreen() {
 
   const [liveLocationError, setLiveLocationError] = useSetting(LiveLocationErrorAtom);
 
-  useTitle(`☕ ${t("pages:dashboard_dashboard")}`);
+  useTitle(`${t("pages:dashboard_dashboard")}`);
 
   const [skipDashboard] = useSetting(SkipDashboardAtom);
   const isFocused = useIsFocused();
@@ -112,13 +112,13 @@ export default function DashboardScreen() {
     <Box
       onLayout={onLayout}
       style={{ flex: 1, marginTop: -4 }}
-      bg="coolGray.100"
-      _dark={{ bg: "coolGray.900" }}>
+      bg="regularGray.100"
+      _dark={{ bg: "regularGray.900" }}>
       {liveLocationError === "permission_failed" && (
         <Box
           style={{ margin: 8, borderRadius: 8, padding: 4 }}
-          bg="coolGray.200"
-          _dark={{ bg: "coolGray.800" }}>
+          bg="regularGray.200"
+          _dark={{ bg: "regularGray.800" }}>
           <Heading fontSize="xl">It seems that CuppaZee no longer has Live Location access</Heading>
           <Text fontSize="md">
             Please head to CuppaZee's Notifications Settings page to disable Live Location, or save
@@ -136,8 +136,8 @@ export default function DashboardScreen() {
       {liveLocationError === "updated" && (
         <Box
           style={{ margin: 8, borderRadius: 8, padding: 4 }}
-          bg="coolGray.200"
-          _dark={{ bg: "coolGray.800" }}>
+          bg="regularGray.200"
+          _dark={{ bg: "regularGray.800" }}>
           <Text fontSize="xl">CuppaZee has updated your Live Location settings</Text>
           <Text fontSize="md">
             These changes should help to prevent battery drain, and ensure that CuppaZee continues
@@ -151,8 +151,8 @@ export default function DashboardScreen() {
       {liveLocationError === "updated_native" && (
         <Box
           style={{ margin: 8, borderRadius: 8, padding: 4 }}
-          bg="coolGray.200"
-          _dark={{ bg: "coolGray.800" }}>
+          bg="regularGray.200"
+          _dark={{ bg: "regularGray.800" }}>
           <Text fontSize="xl">CuppaZee has switch you to the Native Live Location system</Text>
           <Text fontSize="md">
             These changes should help to prevent battery drain, and ensure that CuppaZee continues

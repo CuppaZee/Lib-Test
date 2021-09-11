@@ -76,7 +76,7 @@ export default function NearbyScreen() {
   const [settings, setSettings] = React.useState<NearbySettings>();
   const [permissionError, setPermissionError] = React.useState(false);
   const db = useDB();
-  useTitle(`☕ ${t("pages:tools_nearby")}`);
+  useTitle(`${t("pages:tools_nearby")}`);
   const data = useCuppaZeeRequest<{
     data: Bouncer[];
     endpointsDown: { label: string; endpoint: string }[];

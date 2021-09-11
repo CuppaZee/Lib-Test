@@ -22,7 +22,7 @@ export default function BouncersMapScreen() {
   const route = useRoute<RouteProp<RootStackParamList, "Tools_BouncersMap">>();
   const nav = useNavigation<NavProp>();
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:tools_bouncers")} - ${route.params.type.split(",").join(", ")}`);
+  useTitle(`${t("pages:tools_bouncers")} - ${route.params.type.split(",").join(", ")}`);
   const data = useCuppaZeeRequest<{ data: BouncerListData }>("bouncers/list", {
     list: route.params.type,
   });

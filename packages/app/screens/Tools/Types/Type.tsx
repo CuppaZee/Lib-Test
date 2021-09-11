@@ -14,7 +14,7 @@ export default function SearchScreen() {
   const route = useRoute<RouteProp<RootStackParamList, "Tools_TypeMunzee">>();
   const db = useDB();
   const type = db.getType(route.params.type);
-  useTitle(`☕ ${type?.name || ""}`);
+  useTitle(`${type?.name || ""}`);
   const nav = useNavigation<NavProp>();
   if (!type) {
     nav.goBack();

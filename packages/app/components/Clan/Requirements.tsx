@@ -55,8 +55,8 @@ function Countdown({ time }: { time: number }) {
         | "seconds"
       )[]).map(i => (
         <Box
-          bg="coolGray.300"
-          _dark={{ bg: "coolGray.700" }}
+          bg="regularGray.300"
+          _dark={{ bg: "regularGray.700" }}
           style={{
             height: 80,
             width: 80,
@@ -91,7 +91,7 @@ export default React.memo(
     const { colorMode } = useColorMode();
     const theme = useTheme();
     const borderColor =
-      (colorMode === "dark" ? theme.colors.coolGray[400] : theme.colors.coolGray[600])
+      (colorMode === "dark" ? theme.colors.regularGray[400] : theme.colors.regularGray[600])
         .replace("rgb(", "rgba(")
         .slice(0, -1) + ", 0.3)";
 
@@ -118,7 +118,7 @@ export default React.memo(
 
     if (!requirements || !size) {
       return (
-        <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} flexGrow={1} onLayout={onLayout}>
+        <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} flexGrow={1} onLayout={onLayout}>
           <Loading data={[requirements_data]} />
         </Box>
       );
@@ -141,10 +141,10 @@ export default React.memo(
       | { type: "group" | "individual"; level: number }
     )[];
     return (
-      <Box bg="coolGray.200" _dark={{ bg: "coolGray.800" }} onLayout={onLayout} style={{ margin: 4, borderRadius: 8 }}>
+      <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} onLayout={onLayout} style={{ margin: 4, borderRadius: 8 }}>
         <Box
-          bg="coolGray.300"
-          _dark={{ bg: "coolGray.700" }}
+          bg="regularGray.300"
+          _dark={{ bg: "regularGray.700" }}
           style={{
             flexDirection: "row",
             alignItems: "center",

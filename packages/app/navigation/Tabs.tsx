@@ -16,12 +16,12 @@ export default function Tabs() {
   return (
     <HStack
       borderTopWidth={1}
-      borderTopColor="coolGray.500"
+      borderTopColor="regularGray.500"
       style={{
         height: 56,
       }}
-      bg="coolGray.100"
-      _dark={{ bg: "coolGray.900" }}>
+      bg="regularGray.100"
+      _dark={{ bg: "regularGray.900" }}>
       <TabItem checkMatch navMethod="reset" icon="magnify" title={t("pages:tools_search")} link={["Tools_Search"]} />
       <TabItem
         checkMatch navMethod="reset"
@@ -35,14 +35,14 @@ export default function Tabs() {
       <TabItem
         checkMatch navMethod="reset"
         image={`https://munzee.global.ssl.fastly.net/images/clan_logos/${Number(
-          clans[0]?.clan_id
+          clans?.[0]?.clan_id
         ).toString(36)}.png`}
         imageRounded
-        title={clans[0]?.name}
-        link={["Clan_Stats", { clanid: clans[0]?.clan_id }]}
+        title={clans?.[0]?.name}
+        link={["Clan_Stats", { clanid: clans?.[0]?.clan_id }]}
       />
       <TabItem checkMatch navMethod="reset" icon="shield-half-full" title="Clans" link={["Clan_Bookmarks"]} />
-      <TabItem checkMatch navMethod="reset" icon="more" title="More" link={["Tools_Donate"]} />
+      <TabItem checkMatch navMethod="reset" icon="view-grid" title="More" link={["Tools_Donate"]} />
     </HStack>
   );
 }

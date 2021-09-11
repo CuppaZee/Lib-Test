@@ -90,7 +90,7 @@ export default function PlayerClanScreen() {
   const theme = useTheme();
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_QRew">>();
-  useTitle(`☕ ${route.params.username} - ${t("pages:user_qrew_checker")}`);
+  useTitle(`${route.params.username} - ${t("pages:user_qrew_checker")}`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },

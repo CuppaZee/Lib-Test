@@ -10,14 +10,14 @@ import * as Notifications from "expo-notifications";
 import { ColorSchemeName } from "react-native";
 
 import SomewhereWithoutCoffeeScreen from "../screens/SomewhereWithoutCoffee";
-import { RootStackParamList } from "../types";
+import { RootStackParamList, WrapperStackParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import * as Analytics from "expo-firebase-analytics";
 import lazy from "../components/lazy";
 import Sidebar from "./Sidebar";
-import {Box, HStack, VStack} from "native-base";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import Header from "./Header";
+import { Box, HStack, useColorModeValue, useToken, VStack } from "native-base";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { HeaderTitle, LoadIcon } from "./Header";
 import Tabs from "./Tabs";
 
 // Clan
@@ -71,7 +71,8 @@ const BlastScreen = lazy(() => import("../screens/Tools/Blast"));
 
 const WelcomeScreen = lazy(() => import("../screens/Welcome"));
 
-export type NavProp = StackNavigationProp<RootStackParamList>;
+export type NavProp<T extends keyof RootStackParamList = keyof RootStackParamList> =
+  StackNavigationProp<RootStackParamList, T>;
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -95,7 +96,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
         <HStack flex={1}>
           <Sidebar />
           <Box flex={2}>
-            <RootNavigator />
+            <WrapperNavigator />
           </Box>
         </HStack>
         <Tabs />
@@ -106,17 +107,34 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 
 // A root stack navigator is often used for displaying modals on top of all other content
 // Read more here: https://reactnavigation.org/docs/modal
+const Wrapper = createNativeStackNavigator<WrapperStackParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+function WrapperNavigator() {
+  return (
+    <Wrapper.Navigator screenOptions={{ animation: "none", headerShown: false }}>
+      <Wrapper.Screen name="__root" getId={p => (p.params as any)?.id} component={RootNavigator} />
+    </Wrapper.Navigator>
+  );
+}
+
 function RootNavigator() {
+  const darkToken = useToken("colors", "regularGray.800");
+  const lightToken = useToken("colors", "regularGray.200");
+  const token = useColorModeValue(lightToken, darkToken);
   return (
     <Stack.Navigator
       screenOptions={{
-        header: props => <Header {...props} />,
-        // headerShown: false,
-        // cardStyle: {
-        //   maxHeight: Platform.OS === "web" ? "100vh" : undefined,
-        // },
+        headerStyle: {
+          backgroundColor: token + "88",
+          // @ts-ignore
+          height: 48,
+        },
+        headerTintColor: token === darkToken ? "#ffffff" : undefined,
+        headerRight: () => <LoadIcon />,
+        headerTransparent: true,
+        headerBlurEffect: token === darkToken ? "dark" : "light",
+        headerTitle: props => <HeaderTitle title={props.children} />,
       }}>
       <Stack.Screen name="Clan_Bookmarks" component={ClanBookmarksScreen} />
       <Stack.Screen name="Clan_Cuppa" component={CuppaManagerScreen} />

@@ -22,8 +22,8 @@ export default React.memo(
           })
         }>
         <Box
-          bg="coolGray.200"
-          _dark={{ bg: "coolGray.800" }}
+          bg="regularGray.200"
+          _dark={{ bg: "regularGray.800" }}
           style={{
             margin: 4,
             borderRadius: 4,

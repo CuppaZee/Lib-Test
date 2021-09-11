@@ -1,7 +1,12 @@
-import { useLinkBuilder, useRoute } from "@react-navigation/native";
+import {
+  useLinkBuilder,
+  useLinkProps,
+  useRoute,
+  useNavigationContainerRef,
+} from "@react-navigation/native";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Image, View } from "react-native";
+import { ActivityIndicator, Image, Platform, View } from "react-native";
 import { QueryObserverResult } from "react-query";
 import useComponentSize from "../hooks/useComponentSize";
 import useLogin from "../hooks/useLogin";
@@ -11,9 +16,7 @@ import baseURL from "../baseURL";
 import { Box, Button, Heading, Text, useColorMode, useTheme } from "native-base";
 
 function LoginError({ children }: { children: (login: () => void) => React.ReactElement }) {
-  const buildLink = useLinkBuilder();
-  const route = useRoute();
-  const [, login] = useLogin(buildLink(route.name, route.params) || "");
+  const [, login] = useLogin(Platform.OS === "web" ? window.location.pathname.replace(/^\//, "") : "");
   return children(login);
 }
 
@@ -51,8 +54,8 @@ export default function Loading({
   if (data?.some(i => i.tokenStatus?.status === "missing")) {
     return (
       <Box
-        bg={bg === false ? undefined : bg ?? "coolGray.100"}
-        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
+        bg={bg === false ? undefined : bg ?? "regularGray.100"}
+        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "regularGray.900" }}
         onLayout={onLayout}
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
@@ -78,7 +81,7 @@ export default function Loading({
             <Button
               onPress={login}
               style={{ margin: 4 }}
-              color="success"
+              color="success.500"
               startIcon={<Icon colorBlank name="account-plus" style={{ height: 24 }} />}>
               {t("error:user_device_add_account")}
             </Button>
@@ -91,8 +94,8 @@ export default function Loading({
   if (data?.some(i => i.tokenStatus?.status === "failed")) {
     return (
       <Box
-        bg={bg === false ? undefined : bg ?? "coolGray.100"}
-        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
+        bg={bg === false ? undefined : bg ?? "regularGray.100"}
+        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "regularGray.900" }}
         onLayout={onLayout}
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
@@ -132,8 +135,8 @@ export default function Loading({
   ) {
     return (
       <Box
-        bg={bg === false ? undefined : bg ?? "coolGray.100"}
-        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
+        bg={bg === false ? undefined : bg ?? "regularGray.100"}
+        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "regularGray.900" }}
         onLayout={onLayout}
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
@@ -162,7 +165,7 @@ export default function Loading({
             <Button
               onPress={login}
               style={{ margin: 4 }}
-              color="success"
+              color="success.500"
               startIcon={<Icon colorBlank name="account-plus" style={{ height: 24 }} />}>
               {t("error:user_expired_log_in")}
             </Button>
@@ -174,8 +177,8 @@ export default function Loading({
   if (customErrors?.length || data?.some(i => i.isError)) {
     return (
       <Box
-        bg={bg === false ? undefined : bg ?? "coolGray.100"}
-        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
+        bg={bg === false ? undefined : bg ?? "regularGray.100"}
+        _dark={{ bg: darkBg === false ? undefined : darkBg ?? "regularGray.900" }}
         onLayout={onLayout}
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
@@ -194,10 +197,10 @@ export default function Loading({
         <Heading fontSize="md">{t("error:error_description")}</Heading>
         {sentReport ? (
           <View>
-            <Heading color="success" style={{ textAlign: "center" }} fontSize="md">
+            <Heading color="success.500" style={{ textAlign: "center" }} fontSize="md">
               {t("error:error_report_sent_title")}
             </Heading>
-            <Text color="success" style={{ textAlign: "center" }} fontSize="md">
+            <Text color="success.500" style={{ textAlign: "center" }} fontSize="md">
               {t("error:error_report_sent_description")}
             </Text>
           </View>
@@ -215,7 +218,7 @@ export default function Loading({
               setSentReport(true);
             }}
             style={{ margin: 4 }}
-            color="warning"
+            color="warning.500"
             startIcon={<Icon colorBlank name="message-alert" style={{ height: 24 }} />}>
             {t("error:error_report")}
           </Button>
@@ -226,8 +229,8 @@ export default function Loading({
 
   return (
     <Box
-      bg={bg === false ? undefined : bg ?? "coolGray.100"}
-      _dark={{ bg: darkBg === false ? undefined : darkBg ?? "coolGray.900" }}
+      bg={bg === false ? undefined : bg ?? "regularGray.100"}
+      _dark={{ bg: darkBg === false ? undefined : darkBg ?? "regularGray.900" }}
       onLayout={onLayout}
       style={Skeleton ? { flex: 1 } : { flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ActivityIndicator color={theme.colors.primary[500]} size={24} />

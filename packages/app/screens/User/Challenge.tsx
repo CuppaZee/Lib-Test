@@ -22,7 +22,7 @@ export default function PlayerChallengesScreen() {
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_Challenge">>();
   useTitle(
-    `☕ ${route.params.username} - ${t("pages:user_challenges")} - ${dayjs(
+    `${route.params.username} - ${t("pages:user_challenges")} - ${dayjs(
       route.params?.date ?? dayjs.mhqNow()
     ).format("L")}`
   );

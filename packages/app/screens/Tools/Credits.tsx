@@ -96,7 +96,7 @@ function CreditsCircles({ width, height }: PackProps) {
 export default function CreditsScreen() {
   const [size, onLayout] = useComponentSize();
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:tools_credits")}`);
+  useTitle(`${t("pages:tools_credits")}`);
   return (
     <Layout style={{ flex: 1 }} onLayout={onLayout}>
       {size && <CreditsCircles width={size.width} height={size.height} />}

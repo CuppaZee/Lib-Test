@@ -38,7 +38,7 @@ export default function PlayerBouncersScreen() {
   const day = useDay();
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_Bouncers">>();
-  useTitle(`☕ ${route.params.username} - ${t("pages:user_bouncers")}`);
+  useTitle(`${route.params.username} - ${t("pages:user_bouncers")}`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },
@@ -57,15 +57,15 @@ export default function PlayerBouncersScreen() {
 
   if (!data.data || !size) {
     return (
-      <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={{ flex: 1 }} onLayout={onLayout}>
+      <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} style={{ flex: 1 }} onLayout={onLayout}>
         <Loading data={[user, data]} />
       </Box>
     );
   }
   return (
     <Box
-      bg="coolGray.100"
-      _dark={{ bg: "coolGray.900" }}
+      bg="regularGray.100"
+      _dark={{ bg: "regularGray.900" }}
       onLayout={onLayout}
       style={{ flex: 1, flexDirection: "row" }}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 4 }}>
@@ -91,8 +91,8 @@ export default function PlayerBouncersScreen() {
             </Box>
           ))}
         <Box
-          bg="coolGray.200"
-          _dark={{ bg: "coolGray.800" }}
+          bg="regularGray.200"
+          _dark={{ bg: "regularGray.800" }}
           style={{ height: 400, margin: 4, borderRadius: 8 }}>
           <AutoMap
             onPress={point => {
@@ -156,8 +156,8 @@ export default function PlayerBouncersScreen() {
                   : undefined
               }>
               <Box
-                bg="coolGray.200"
-                _dark={{ bg: "coolGray.800" }}
+                bg="regularGray.200"
+                _dark={{ bg: "regularGray.800" }}
                 style={{
                   margin: 4,
                   flexDirection: "row",

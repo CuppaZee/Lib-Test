@@ -38,13 +38,13 @@ export default function useLogin(
 ) {
   const redirectUri =
     Platform.OS === "web"
-      ? [window.location.origin, path].filter(Boolean).join("/")
+      ? [window.location.origin, path].filter(Boolean).join("/").replace(/\/\//g, "/")
       : `uk.cuppazee.paper://${path}`;
+  console.log(redirectUri);
 
   var config = configs[application];
   const { loaded } = useTeakens();
-  const [teakens, _setTeakens] = useAtom(teakensAtom);
-  const setTeakens: any = () => { };
+  const [teakens, setTeakens] = useAtom(teakensAtom);
   const nav = useNavigation<NavProp>();
   const [users, setUsers] = useUserBookmarks();
 
@@ -101,23 +101,26 @@ export default function useLogin(
           },
         },
       });
-      AsyncStorage.setItem(
-        "CUPPAZEE_TEAKENS",
-        JSON.stringify({
-          ...teakens.data,
-          [params.user_id]: {
-            username: params.username,
-            teaken: params.teaken,
-          },
-        })
-      );
+    
+    console.log(params);
+    
+      // // AsyncStorage.setItem(
+      // //   "CUPPAZEE_TEAKENS",
+      // //   JSON.stringify({
+      // //     ...teakens.data,
+      // //     [params.user_id]: {
+      // //       username: params.username,
+      // //       teaken: params.teaken,
+      // //     },
+      // //   })
+      // );
 
       if (!users.some(i => i.user_id === params.user_id)) {
         setUsers([...users, { user_id: params.user_id, username: params.username }]);
-        AsyncStorage.setItem(
-          "USER_BOOKMARKS",
-          JSON.stringify([...users, { user_id: params.user_id, username: params.username }])
-        );
+        // AsyncStorage.setItem(
+        //   "USER_BOOKMARKS",
+        //   JSON.stringify([...users, { user_id: params.user_id, username: params.username }])
+        // );
       }
 
       setRedirect(params.username);
@@ -166,6 +169,7 @@ export default function useLogin(
       if (response.type !== "success") {
         setLoading(false);
       } else {
+        console.log(response);
         const params = Object.fromEntries(
           response.url
             .split("?")?.[1]

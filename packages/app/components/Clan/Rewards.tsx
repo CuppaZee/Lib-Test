@@ -45,7 +45,7 @@ export default React.memo(
     const { colorMode } = useColorMode();
     const theme = useTheme();
     const borderColor =
-      (colorMode === "dark" ? theme.colors.coolGray[400] : theme.colors.coolGray[600])
+      (colorMode === "dark" ? theme.colors.regularGray[400] : theme.colors.regularGray[600])
         .replace("rgb(", "rgba(")
         .slice(0, -1) + ", 0.3)";
 
@@ -62,8 +62,8 @@ export default React.memo(
     if (!rewards || !size) {
       return (
         <Box
-          bg="coolGray.100"
-          _dark={{ bg: "coolGray.900" }}
+          bg="regularGray.100"
+          _dark={{ bg: "regularGray.900" }}
           onLayout={onLayout}
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
           <Spinner />
@@ -94,8 +94,8 @@ export default React.memo(
     return (
       <Box
         onLayout={onLayout}
-        bg="coolGray.200"
-        _dark={{ bg: "coolGray.800" }}
+        bg="regularGray.200"
+        _dark={{ bg: "regularGray.800" }}
         style={{ margin: 4, borderRadius: 8 }}>
         <Box
           style={{
@@ -106,8 +106,8 @@ export default React.memo(
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
           }}
-          bg="coolGray.300"
-          _dark={{ bg: "coolGray.700" }}>
+          bg="regularGray.300"
+          _dark={{ bg: "regularGray.700" }}>
           <Icon
             style={{
               height: 32 * fontScale,

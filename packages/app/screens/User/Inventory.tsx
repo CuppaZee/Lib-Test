@@ -19,7 +19,7 @@ export default function PlayerInventoryScreen() {
   const [groupByState, setGroupByState] = React.useState(false);
   const { t } = useTranslation();
   const route = useRoute<RouteProp<RootStackParamList, "Player_Inventory">>();
-  useTitle(`☕ ${route.params.username} - ${t("pages:user_inventory")}`);
+  useTitle(`${route.params.username} - ${t("pages:user_inventory")}`);
   const user = useMunzeeRequest("user", { username: route.params.username });
   const data = useCuppaZeeRequest<{ data: UserInventoryInputData }>(
     "user/inventory",
@@ -92,7 +92,7 @@ export default function PlayerInventoryScreen() {
   }
 
   return (
-    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={{ flex: 1 }}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
         <View style={{ flexDirection: "row", padding: 4 }}>
           <Checkbox
@@ -113,8 +113,8 @@ export default function PlayerInventoryScreen() {
         <View style={styles.grid}>
           {d.groups.filter(includeZeroes ? () => true : i => (i.total ?? 0) > 0).map(c => (
             <Box
-              bg="coolGray.200"
-              _dark={{ bg: "coolGray.800" }}
+              bg="regularGray.200"
+              _dark={{ bg: "regularGray.800" }}
               style={{
                 width: 400,
                 flexGrow: 1,
@@ -147,7 +147,7 @@ export default function PlayerInventoryScreen() {
                       }}
                       color={
                         ["primary", "success", "danger", "warning"].includes(i.color)
-                          ? i.color
+                          ? i.color + ".500"
                           : undefined
                       }
                       onPress={() => {
@@ -181,8 +181,8 @@ export default function PlayerInventoryScreen() {
         <View style={styles.grid}>
           {d?.history.map(c => (
             <Box
-              bg="coolGray.200"
-              _dark={{bg:"coolGray.800"}}
+              bg="regularGray.200"
+              _dark={{bg:"regularGray.800"}}
               style={{
                 width: 400,
                 flexGrow: 1,

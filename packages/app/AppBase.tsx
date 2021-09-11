@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import "./polyfill";
@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 import "expo-firebase-analytics";
 import * as Sentry from "sentry-expo";
 import EvaWrapper from "./EvaWrapper";
-import { extendTheme, NativeBaseProvider } from "native-base";
+import { extendTheme, NativeBaseProvider, useColorMode } from "native-base";
 
 Sentry.init({
   dsn: "https://7823a6409bf1417dafa6f3e3ab47b6ed@o444031.ingest.sentry.io/5418530",
@@ -36,6 +36,15 @@ const queryClient = new QueryClient({
   },
 });
 
+function ColorModeHandler() {
+  const colorScheme = useColorScheme();
+  const colorMode = useColorMode();
+  useEffect(() => {
+    colorMode.setColorMode(colorScheme);
+  }, [colorScheme]);
+  return null;
+}
+
 function AppBase() {
   const colorScheme = useColorScheme();
   const [liveLocationError, setLiveLocationError, liveLocationErrorLoaded] = useSetting(
@@ -48,15 +57,23 @@ function AppBase() {
     }
   }, [liveLocationErrorLoaded]);
   const { i18n } = useTranslation();
-  const nativeBaseTheme = extendTheme({
-    config: {
-      initialColorMode: "dark"
-    }
-  })
+  const theme = useMemo(() => {
+    const defaultTheme = extendTheme({});
+    return extendTheme({
+      config: {
+        initialColorMode: colorScheme,
+      },
+      colors: {
+        regularGray: defaultTheme.colors.blueGray,
+        primary: defaultTheme.colors.teal,
+      },
+    });
+  }, [colorScheme]);
 
   return (
     <>
-      <NativeBaseProvider theme={nativeBaseTheme}>
+      <NativeBaseProvider theme={theme}>
+        <ColorModeHandler />
         <EvaWrapper>
           <Navigation key={i18n.language} colorScheme={colorScheme} />
           <StatusBar />

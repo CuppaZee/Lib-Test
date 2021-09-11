@@ -20,7 +20,7 @@ import { ClanPersonalisationModal } from "../Settings/Personalisation";
 
 export default function ClanBookmarksScreen() {
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:clan_bookmarks")}`);
+  useTitle(`${t("pages:clan_bookmarks")}`);
   const [size, onLayout] = useComponentSize();
   const scrollViewController = useSyncScrollViewController();
   const route = useRoute<RouteProp<RootStackParamList, "Clan_Bookmarks">>();
@@ -32,9 +32,9 @@ export default function ClanBookmarksScreen() {
   const [style] = useSetting(ClanPersonalisationAtom);
   const [clans] = useClanBookmarks();
   const isFocused = useIsFocused();
-  if(!isFocused || !size) return <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} onLayout={onLayout} style={{ flex: 1 }} />
+  if(!isFocused || !size) return <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} onLayout={onLayout} style={{ flex: 1 }} />
   return (
-    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} onLayout={onLayout} style={{ flex: 1 }}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} onLayout={onLayout} style={{ flex: 1 }}>
       <ClanPersonalisationModal />
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 4 }}>
         <Tip
@@ -49,7 +49,7 @@ export default function ClanBookmarksScreen() {
             }}>
             <ClanRequirementsTable
               key="requirements"
-              clan_id={clans?.[0].clan_id}
+              clan_id={clans?.[0]?.clan_id}
               game_id={game_id}
               scrollViewController={style.reverse ? undefined : scrollViewController}
             />

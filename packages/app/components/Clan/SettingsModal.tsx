@@ -16,7 +16,7 @@ export default function ClanSettingsModal({ clan_id, close, levels }: ClanSettin
   const { t } = useTranslation();
   const goalLevel = Math.min(Math.max(options[clan_id].level, 0), levels.length);
   return (
-    <Box bg="coolGray.50" _dark={{ bg: "coolGray.900" }} style={{ borderRadius: 8, padding: 4 }}>
+    <Box bg="regularGray.50" _dark={{ bg: "regularGray.900" }} style={{ borderRadius: 8, padding: 4 }}>
       <UpdateWrapper>
         {update => (
           <Checkbox

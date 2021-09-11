@@ -13,73 +13,78 @@ export default function getConfig(notification?: NotificationResponse): LinkingO
       Platform.OS === "web" ? [Linking.makeUrl("/")] : ["cuppazee://", "uk.cuppazee.paper://"],
     config: {
       screens: {
-        ...Object.fromEntries(
-          Object.entries({
-            Player_Profile: "player/:username",
-            Player_Activity: "player/:username/activity/:date?",
-            Player_Inventory: "player/:username/inventory",
-            Player_ZeeOps: "player/:username/zeeops",
-            Player_Challenges: "player/:username/challenges/:date?",
-            Player_Challenge: "player/:username/challenge/:challenge/:date?",
-            Player_Captures: "player/:username/captures/:category?",
-            Player_Bouncers: "player/:username/bouncers",
-            Player_ClanProgress: "player/:username/clan",
-            Player_QRew: "player/:username/qrew",
-            Player_Cubimals: "player/:username/cubimals",
-            Player_QRates: "player/:username/qrates",
-            Player_Rooms: "player/:username/rooms",
-            Player_LotterZee: "player/:username/lotterzee",
-          }).map(i => [
-            i[0],
-            {
-              path: i[1],
-              parse: {
-                username: (value: any) => (value === "_" ? mainUser.value : value),
-              },
-              stringify: {
-                username: (value: any) => (value === mainUser.value ? "_" : value),
-              },
-            },
-          ])
-        ),
+        __root: {
+          path: "",
+          screens: {
+            ...Object.fromEntries(
+              Object.entries({
+                Player_Profile: "player/:username",
+                Player_Activity: "player/:username/activity/:date?",
+                Player_Inventory: "player/:username/inventory",
+                Player_ZeeOps: "player/:username/zeeops",
+                Player_Challenges: "player/:username/challenges/:date?",
+                Player_Challenge: "player/:username/challenge/:challenge/:date?",
+                Player_Captures: "player/:username/captures/:category?",
+                Player_Bouncers: "player/:username/bouncers",
+                Player_ClanProgress: "player/:username/clan",
+                Player_QRew: "player/:username/qrew",
+                Player_Cubimals: "player/:username/cubimals",
+                Player_QRates: "player/:username/qrates",
+                Player_Rooms: "player/:username/rooms",
+                Player_LotterZee: "player/:username/lotterzee",
+              }).map(i => [
+                i[0],
+                {
+                  path: i[1],
+                  parse: {
+                    username: (value: any) => (value === "_" ? mainUser.value : value),
+                  },
+                  stringify: {
+                    username: (value: any) => (value === mainUser.value ? "_" : value),
+                  },
+                },
+              ])
+            ),
 
-        Clan_Cuppa: "clanmanager",
-        Clan_Bookmarks: "clans/:group?/:month?/:year?",
-        Clan_Requirements: "clan/requirements/:month?/:year?",
-        Clan_Stats: "clan/:clanid/:month?/:year?",
+            Clan_Cuppa: "clanmanager",
+            Clan_Bookmarks: "clans/:group?/:month?/:year?",
+            Clan_Requirements: "clan/requirements/:month?/:year?",
+            Clan_Stats: "clan/:clanid/:month?/:year?",
 
-        Tools_Search: "search",
+            Tools_Search: "search",
 
-        Tools_Calendar: "tools/calendar",
-        Tools_EvoPlanner: "tools/evoplanner",
-        Tools_TestScan: "tools/testscan",
-        Tools_Universal: "tools/universal",
-        Tools_WidgetConfigureActivityWidget: "tools/widget_configure_activity_widget/:id",
+            Tools_Calendar: "tools/calendar",
+            Tools_EvoPlanner: "tools/evoplanner",
+            Tools_TestScan: "tools/testscan",
+            Tools_Universal: "tools/universal",
+            Tools_WidgetConfigureActivityWidget: "tools/widget_configure_activity_widget/:id",
 
-        Tools_Bouncers: "bouncers/overview",
-        Tools_BouncersExpiring: "bouncers/expiring",
-        Tools_Nearby: "bouncers/nearby",
-        Tools_BouncersMap: "bouncers/:type",
+            Tools_Bouncers: "bouncers/overview",
+            Tools_BouncersExpiring: "bouncers/expiring",
+            Tools_Nearby: "bouncers/nearby",
+            Tools_BouncersMap: "bouncers/:type",
 
-        Tools_Blast: "planner/blast",
-        Tools_POIPlanner: "planner/poi",
-        Tools_DestinationPlanner: "planner/destination",
+            Tools_Blast: "planner/blast",
+            Tools_POIPlanner: "planner/poi",
+            Tools_DestinationPlanner: "planner/destination",
 
-        Tools_Munzee: "munzee/:a/:b?",
+            Tools_Munzee: "munzee/:a/:b?",
 
-        Tools_TypeCategory: "db/:category",
-        Tools_TypeMunzee: "db/type/:type?",
+            Tools_TypeCategory: "db/:category",
+            Tools_TypeMunzee: "db/type/:type?",
 
-        Tools_Credits: "about/credits",
-        Tools_Donate: "about/donate",
-        Tools_OpenSource: "about/opensource",
+            Tools_Credits: "about/credits",
+            Tools_Donate: "about/donate",
+            Tools_OpenSource: "about/opensource",
 
-        Settings_Personalisation: "settings/personalisation",
-        Settings_Accounts: "settings/accounts",
-        Settings_Notifications: "settings/notifications",
-        Settings_Bookmarks: "settings/bookmarks",
-        Welcome: "welcome",
-        somewherewithoutcoffee: "*",
+            Settings_Personalisation: "settings/personalisation",
+            Settings_Accounts: "settings/accounts",
+            Settings_Notifications: "settings/notifications",
+            Settings_Bookmarks: "settings/bookmarks",
+            Welcome: "welcome",
+            somewherewithoutcoffee: "*",
+          },
+        },
       },
     },
     async getInitialURL() {

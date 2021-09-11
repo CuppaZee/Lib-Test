@@ -19,7 +19,7 @@ export default function PlayerLotterZeeScreen() {
   const nav = useNavigation<NavProp>();
   const [size, onLayout] = useComponentSize();
   const route = useRoute<RouteProp<RootStackParamList, "Player_LotterZee">>();
-  useTitle(`☕ ${route.params.username} - LotterZee`);
+  useTitle(`${route.params.username} - LotterZee`);
   const user = useMunzeeRequest(
     "user",
     { username: route.params?.username },

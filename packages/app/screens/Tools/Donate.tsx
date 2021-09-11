@@ -75,7 +75,7 @@ function DevScreen() {
 
 export default function DonateScreen() {
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:tools_donate")}`);
+  useTitle(`${t("pages:tools_donate")}`);
   const [count, setCount] = React.useState(0);
   if (count > 4) {
     return <DevScreen />;

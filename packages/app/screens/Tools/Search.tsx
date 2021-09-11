@@ -16,7 +16,7 @@ import { Item } from "../../components/Common/Item";
 export default function SearchScreen() {
   const db = useDB();
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:tools_search")}`);
+  useTitle(`${t("pages:tools_search")}`);
   const [value, search, onValue] = useSearch(500);
   const users = useMunzeeRequest("user/find", { text: search }, true, undefined, true, {keepPreviousData: true});
   const clans = useCuppaZeeRequest("clan/list", { format: "list" }, true, undefined, true, {
@@ -41,7 +41,7 @@ export default function SearchScreen() {
   const results = React.useMemo(() => fuse.search(search, {limit: 50}), [fuse, search]);
 
   return (
-    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} p={1} flex={1}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} p={1} flex={1}>
       <Box style={{ margin: 4, width: 400, maxWidth: "100%", alignSelf: "center" }}>
         <Heading fontSize="md">{t("search:search")}</Heading>
         <Input

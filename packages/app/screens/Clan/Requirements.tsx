@@ -17,7 +17,7 @@ import { ClanPersonalisationModal } from "../Settings/Personalisation";
 
 export default function ClanStatsScreen2() {
   const { t } = useTranslation();
-  useTitle(`☕ ${t("pages:clan_requirements")}`);
+  useTitle(`${t("pages:clan_requirements")}`);
   const route = useRoute<RouteProp<RootStackParamList, "Clan_Requirements">>();
   const nav = useNavigation<NavProp>();
   const game_id = route.params?.year
@@ -27,7 +27,7 @@ export default function ClanStatsScreen2() {
       ).game_id
     : new GameID().game_id;
   return (
-    <Box bg="coolGray.100" _dark={{ bg: "coolGray.900" }} style={{ flex: 1 }}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} style={{ flex: 1 }}>
       <ClanPersonalisationModal />
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 4 }}>
         <Tip
