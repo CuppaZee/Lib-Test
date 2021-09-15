@@ -2,7 +2,7 @@ import React from "react";
 import { Image } from "react-native";
 import { useQuery } from "react-query";
 import useSearch from "../../hooks/useSearch";
-import { Box, Column, FlatList, Heading, HStack, Input, List } from "native-base";
+import { Box, Column, FlatList, Heading, HStack, Input, Text, Pressable } from "native-base";
 
 interface MapSearchModalProps {
   select: (location: { latitude: number; longitude: number; bbox?: [number, number, number, number] }) => void;
@@ -38,21 +38,25 @@ export function MapSearchModal({ select }: MapSearchModalProps) {
             flexShrink: 1,
           }}
           data={query.data?.features ?? []}
-          renderItem={
-            ({ item }) => null
-            // <HStack
-            //   style={{ paddingVertical: 4 }}
-            //   title={item.text}
-            //   description={item.context?.map((i: any)=>i.text).join(", ")}
-            //   onPress={() =>
-            //     select({
-            //       latitude: item.center[1],
-            //       longitude: item.center[0],
-            //       bbox: item.bbox,
-            //     })
-            //   }
-            // />
-          }
+          renderItem={({ item }) => (
+            <Pressable
+              onPress={() =>
+                select({
+                  latitude: item.center[1],
+                  longitude: item.center[0],
+                  bbox: item.bbox,
+                })
+              }>
+              <HStack p={1}>
+                <Box flex={1}>
+                  <Heading fontSize="md">{item.text}</Heading>
+                  <Text fontSize="sm">
+                    {item.context?.map((i: any) => i.text).join(", ")}
+                  </Text>
+                </Box>
+              </HStack>
+            </Pressable>
+          )}
         />
       </Column>
     </Box>

@@ -97,12 +97,13 @@
     "react-native-svg": "12.1.1",
     "react-native-unimodules": "~0.14.5",
     "react-native-web": "~0.13.12",
-    "react-query": "^3.19.6",
+    "react-query": "^3.23.2",
     "sentry-expo": "^4.0.1",
     "styled-components": "^5.3.0",
     "styled-system": "^5.1.5",
     "type-fest": "^2.0.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "zipson": "^0.2.12"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

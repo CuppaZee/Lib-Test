@@ -10,10 +10,10 @@ import ClanStatsTable from "../../components/Clan/Stats";
 import { useSyncScrollViewController } from "../../components/Clan/SyncScrollView";
 import Select from "../../components/Common/Select";
 import Tip from "../../components/Common/Tip";
-import { useClanBookmarks } from "../../hooks/useBookmarks";
 import useComponentSize from "../../hooks/useComponentSize";
 import useSetting, { ClanPersonalisationAtom } from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
+import { useUserSetting } from "../../hooks/useUserSettings";
 import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 import { ClanPersonalisationModal } from "../Settings/Personalisation";
@@ -30,7 +30,7 @@ export default function ClanBookmarksScreen() {
     route.params?.month ? Number(route.params.month) - 1 : dayjs.mhqNow().month(),
   ).game_id : new GameID().game_id;
   const [style] = useSetting(ClanPersonalisationAtom);
-  const [clans] = useClanBookmarks();
+  const clans = useUserSetting("clans");
   const isFocused = useIsFocused();
   if(!isFocused || !size) return <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} onLayout={onLayout} style={{ flex: 1 }} />
   return (

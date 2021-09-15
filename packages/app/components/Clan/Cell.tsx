@@ -20,7 +20,6 @@ import { ClanV2 } from "@cuppazee/api/clan/main";
 import { Dayjs } from "dayjs";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
-import { useUserBookmarks } from "../../hooks/useBookmarks";
 import useSetting, { ClanPersonalisationAtom, ClansAtom } from "../../hooks/useSetting";
 import Icon, { IconName } from "../Common/Icon";
 import useDB from "../../hooks/useDB";
@@ -29,14 +28,9 @@ import {
   Box,
   Text
 } from "native-base";
+import { useUserSetting } from "../../hooks/useUserSettings";
 
 const textColorCache = new Map<string, boolean>();
-
-let cellCount = 0;
-
-setInterval(() => {
-  console.log(cellCount);
-}, 10000);
 
 export function pickTextColor(
   bgColor: string,
@@ -99,8 +93,6 @@ function colorStyles(color: string) {
 export const CommonCell = function (props: CommonCellProps) {
   const [styleValue] = useSetting(ClanPersonalisationAtom);
   const style = props.clanStyle ?? styleValue;
-
-  cellCount++;
 
   const fontScale = PixelRatio.getFontScale();
 
@@ -274,7 +266,7 @@ export interface DataCellProps {
 }
 
 export function DataCell(props: DataCellProps) {
-  const [users] = useUserBookmarks();
+  const users = useUserSetting("users");
   const [options] = useSetting(ClansAtom);
   const [style] = useSetting(ClanPersonalisationAtom);
   const { t } = useTranslation();
@@ -336,9 +328,9 @@ export function DataCell(props: DataCellProps) {
               ? props.user.username ?? ""
               : t("clan:group_total")
           }
-          titleBold={users.some(i =>
+          titleBold={users?.some(i =>
             props.user && "user_id" in props.user
-              ? i.user_id === props.user?.user_id.toString()
+              ? i.user_id.toString() === props.user?.user_id.toString()
               : false
           )}
           subtitle={text}
@@ -352,8 +344,8 @@ export function DataCell(props: DataCellProps) {
       type="data"
       color={level}
       title={text}
-      titleBold={users.some(i =>
-        props.user && "user_id" in props.user ? i.user_id === props.user?.user_id.toString() : false
+      titleBold={users?.some(i =>
+        props.user && "user_id" in props.user ? i.user_id.toString() === props.user?.user_id.toString() : false
       )}
     />
   ), [level, text, users, props.user, 0, 0, 0]);

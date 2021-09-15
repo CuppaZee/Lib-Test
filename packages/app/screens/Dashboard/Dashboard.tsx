@@ -15,7 +15,6 @@ import {
 } from "react-native";
 import builds from "../../builds";
 import Icon from "../../components/Common/Icon";
-import { useClanBookmarks, useUserBookmarks } from "../../hooks/useBookmarks";
 import useComponentSize from "../../hooks/useComponentSize";
 import useSetting, {
   BuildAtom,

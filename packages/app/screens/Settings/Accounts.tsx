@@ -1,5 +1,4 @@
 import { Button, Layout, Text } from "@ui-kitten/components";
-import { useAtom } from "jotai";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { Image, ScrollView, View } from "react-native";
@@ -7,22 +6,20 @@ import Icon from "../../components/Common/Icon";
 import useLogin from "../../hooks/useLogin";
 import useSetting, { ReadyAtom } from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
-import { teakensAtom, useTeakens } from "../../hooks/useToken";
+import { useAccounts } from "../../hooks/useToken";
 
 export default function AccountsScreen() {
   const { t } = useTranslation();
   useTitle(`${t("pages:settings")} - ${t("pages:settings_accounts")}`);
   const [, login, ready] = useLogin("settings/accounts");
-  useTeakens();
-  const [teakens] = useAtom(teakensAtom);
-  const setTeakens: any = () => { };
+  const accounts = useAccounts();
   const [, setReady] = useSetting(ReadyAtom);
   return (
     <Layout style={{ flex: 1 }}>
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ alignSelf: "center", width: 400, maxWidth: "100%", padding: 4 }}>
-        {Object.entries(teakens.data).map(i => (
+        {accounts.map(i => (
           <Layout
             level="3"
             style={{
@@ -39,11 +36,11 @@ export default function AccountsScreen() {
                 style={{ height: 32, width: 32, borderRadius: 16, marginRight: 8 }}
                 source={{
                   uri: `https://munzee.global.ssl.fastly.net/images/avatars/ua${Number(
-                    i[0]
+                    i.user_id
                   ).toString(36)}.png`,
                 }}
               />
-              <Text category="h6">{i[1].username}</Text>
+              <Text category="h6">{i.username}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Button
@@ -61,15 +58,15 @@ export default function AccountsScreen() {
                 status="danger"
                 appearance="ghost"
                 onPress={() => {
-                  setTeakens({
-                    ...teakens,
-                    data: Object.fromEntries(
-                      Object.entries(teakens.data).filter(t => t[0] !== i[0])
-                    ),
-                  });
-                  if (Object.entries(teakens.data).filter(t => t[0] !== i[0]).length === 0) {
-                    setReady(false);
-                  }
+                  // setTeakens({
+                  //   ...teakens,
+                  //   data: Object.fromEntries(
+                  //     Object.entries(teakens.data).filter(t => t[0] !== i[0])
+                  //   ),
+                  // });
+                  // if (Object.entries(teakens.data).filter(t => t[0] !== i[0]).length === 0) {
+                  //   setReady(false);
+                  // }
                 }}
                 accessoryLeft={props => <Icon {...props} name="logout" />}>
                 {t("settings_accounts:logout")}

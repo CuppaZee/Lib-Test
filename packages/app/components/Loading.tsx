@@ -1,8 +1,5 @@
 import {
-  useLinkBuilder,
-  useLinkProps,
   useRoute,
-  useNavigationContainerRef,
 } from "@react-navigation/native";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -10,7 +7,7 @@ import { ActivityIndicator, Image, Platform, View } from "react-native";
 import { QueryObserverResult } from "react-query";
 import useComponentSize from "../hooks/useComponentSize";
 import useLogin from "../hooks/useLogin";
-import { useTeakens } from "../hooks/useToken";
+import { useAccounts } from "../hooks/useToken";
 import Icon from "./Common/Icon";
 import baseURL from "../baseURL";
 import { Box, Button, Heading, Text, useColorMode, useTheme } from "native-base";
@@ -30,7 +27,7 @@ export default function Loading({
   data?: (QueryObserverResult & {
     tokenStatus?: {
       status: string;
-      user_id: string | number;
+      user_id: string | number | undefined;
       token?: any;
     };
   })[];
@@ -47,7 +44,7 @@ export default function Loading({
   const { t } = useTranslation();
   const [size, onLayout] = useComponentSize();
   const route = useRoute();
-  const teakens = useTeakens();
+  const accounts = useAccounts();
   const [sentReport, setSentReport] = React.useState(false);
   const { colorMode } = useColorMode();
   const theme = useTheme();
@@ -154,9 +151,9 @@ export default function Loading({
         <Heading fontSize="xl">
           {t("error:user_expired_title", {
             username:
-              teakens.data[
-                data.find(i => i.tokenStatus?.status === "expired")?.tokenStatus?.user_id || ""
-              ]?.username || "you",
+              accounts.find(acct => 
+                acct.user_id.toString() === data.find(i => i.tokenStatus?.status === "expired")?.tokenStatus?.user_id?.toString() || ""
+              )?.username || "you",
           })}
         </Heading>
         <Heading fontSize="md">{t("error:user_expired_description")}</Heading>

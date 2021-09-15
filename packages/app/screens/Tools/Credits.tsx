@@ -3,11 +3,12 @@ import { Pack, hierarchy } from "@visx/hierarchy";
 import useComponentSize from "../../hooks/useComponentSize";
 import { Image, Pressable } from "react-native";
 import credits from "./credits.json";
-import { Layout } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import useTitle from "../../hooks/useTitle";
 import { useTranslation } from "react-i18next";
 import { NavProp } from "../../navigation";
+import { Box } from "native-base";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export type Datum = {
   username: string;
@@ -56,8 +57,9 @@ function CreditsCircles({ width, height }: PackProps) {
       {(packData) => {
         const circles = packData.descendants().slice(1); // skip outer hierarchies
         return circles.map((circle, i) => (
-          <Layout
-            level="4"
+          <Box
+            bg="regularGray.300"
+            _dark={{ bg: "regularGray.700" }}
             style={{
               height: circle.r * 1.8,
               width: circle.r * 1.8,
@@ -86,7 +88,7 @@ function CreditsCircles({ width, height }: PackProps) {
                 }}
               />
             </Pressable>
-          </Layout>
+          </Box>
         ));
       }}
     </Pack>
@@ -96,10 +98,17 @@ function CreditsCircles({ width, height }: PackProps) {
 export default function CreditsScreen() {
   const [size, onLayout] = useComponentSize();
   const { t } = useTranslation();
+  const headerHeight = useHeaderHeight();
   useTitle(`${t("pages:tools_credits")}`);
   return (
-    <Layout style={{ flex: 1 }} onLayout={onLayout}>
-      {size && <CreditsCircles width={size.width} height={size.height} />}
-    </Layout>
+    <Box
+      bg="regularGray.100"
+      _dark={{ bg: "regularGray.900" }}
+      style={{ flex: 1, paddingTop: headerHeight }}
+      onLayout={onLayout}>
+      <Box flex={1}>
+        {size && <CreditsCircles width={size.width} height={size.height - headerHeight} />}
+      </Box>
+    </Box>
   );
 }

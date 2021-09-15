@@ -285,7 +285,7 @@ export function Icons(props: IconsProps) {
     for (const icon of props.icons) {
       if (!context.map.hasImage(db.strip(icon))) {
         context.map.loadImage(
-          `https://images.cuppazee.app/types/64/${db.strip(icon)}.png`,
+          `https://images.cuppazee.app/types/64/${encodeURIComponent(icon)}.png`,
           (error: any, image: any) => {
             if (error) return;
             context.map.addImage(db.strip(icon), image);

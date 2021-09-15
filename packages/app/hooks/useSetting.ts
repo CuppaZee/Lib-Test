@@ -1,5 +1,5 @@
 import { MMKV } from "./mmkv/index";
-import {PrimitiveAtom, useAtom} from "jotai";
+import {useAtom} from "jotai";
 import builds from "../builds";
 import {CuppaZeeDB} from "@cuppazee/db";
 import {atomWithStorage} from "jotai/utils";
@@ -10,49 +10,52 @@ const MergeStorage = (initialData: any) => ({
   getItem: (key: string) => {
     console.log(key);
     const jsonString = store.getString(key);
-    if (!jsonString) return {data: initialData, loaded: true};
+    if (!jsonString) return initialData;
     try {
       const data = JSON.parse(jsonString);
-      return {data: {...initialData, ...data}, loaded: true};
+      return {...initialData, ...data};
     } catch {
-      return {data: initialData, loaded: true};
+      return initialData;
     }
   },
   setItem: (key: string, data: any) => {
-    store.set(key, JSON.stringify(data.data))
+    const stringified = JSON.stringify(data);
+    if (stringified !== undefined) {
+      store.set(key, stringified);
+    } else {
+      store.delete(stringified);
+    }
   },
   delayInit: true,
 });
 
 const ReplaceStorage = (initialData: any) => ({
   getItem: (key: string) => {
-    console.log(key);
     const jsonString = store.getString(key);
-    if (!jsonString) return {data: initialData, loaded: true};
+    if (!jsonString) return initialData;
     try {
       const data = JSON.parse(jsonString);
-      return {data: data, loaded: true};
+      return data;
     } catch {
-      return {data: initialData, loaded: true};
+      return initialData;
     }
   },
   setItem: (key: string, data: any) => {
-    store.set(key, JSON.stringify(data.data))
+    const stringified = JSON.stringify(data);
+    if (stringified !== undefined) {
+      store.set(key, stringified);
+    } else {
+      store.delete(stringified);
+    }
   },
   delayInit: true,
 });
 
 export function settingAtom<T>(key: string, initialData: T, loadMethod?: "merge" | "replace") {
   const method = loadMethod ?? ((typeof initialData === "object" && !Array.isArray(initialData)) ? "merge" : "replace");
-  return atomWithStorage<{
-    data: T;
-    loaded: boolean;
-  }>(
+  return atomWithStorage<T>(
     key,
-    {
-      data: initialData,
-      loaded: false,
-    },
+    initialData,
     (method === "merge" ? MergeStorage : ReplaceStorage)(initialData),
   )
 }
@@ -153,6 +156,7 @@ export const MapStyleAtom = settingAtom<"monochrome" | "streets" | "satellite">(
   "@cz3/personalisation/maps",
   "monochrome"
 );
+
 export const CumulativeRewardsAtom = settingAtom<boolean>(
   "@cz3/clan/cumulative_rewards",
   false
@@ -163,13 +167,4 @@ export const SkipDashboardAtom = settingAtom<boolean>(
   false
 );
 
-export default function useSetting<T>(atom: PrimitiveAtom<Setting<T>>) {
-  const [value, setValue] = useAtom(atom);
-  return [
-    value.data,
-    (data: T) => {
-      setValue({...value, data});
-    },
-    value.loaded,
-  ] as const;
-}
+export default useAtom;

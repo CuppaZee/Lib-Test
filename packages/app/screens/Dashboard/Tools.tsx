@@ -6,8 +6,8 @@ import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, ScrollView, View, Platform } from "react-native";
 import Icon from "../../components/Common/Icon";
 import Tip from "../../components/Common/Tip";
-import { useClanBookmarks } from "../../hooks/useBookmarks";
 import useTitle from "../../hooks/useTitle";
+import { useUserSetting } from "../../hooks/useUserSettings";
 import { NavProp } from "../../navigation";
 import { DashCardProps } from "./Dashboard";
 
@@ -123,12 +123,12 @@ export const ToolsPagesOther = [
 export default React.memo(function ToolsDashCard(props: DashCardProps<unknown>) {
   const { t } = useTranslation();
   const nav = useNavigation<NavProp>();
-  const [clans] = useClanBookmarks();
+  const clans = useUserSetting("clans");
   return (
     <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} style={[styles.card, { flex: 1 }]}>
       <ScrollView onLayout={props.onOuterLayout} style={{ flex: 1 }}>
         <View onLayout={props.onInnerLayout} style={{ padding: 4 }}>
-          {clans.length <= 2 && (
+          {(clans?.length ?? 0) <= 2 && (
             <>
               <Heading style={{ marginLeft: 4 }} fontSize="xl">
                 {t("dashboard:clans")}

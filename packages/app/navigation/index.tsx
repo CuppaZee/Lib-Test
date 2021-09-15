@@ -6,7 +6,7 @@ import {
 } from "@react-navigation/native";
 import * as React from "react";
 import * as Notifications from "expo-notifications";
-import { ColorSchemeName } from "react-native";
+import { ColorSchemeName, Platform } from "react-native";
 
 import SomewhereWithoutCoffeeScreen from "../screens/SomewhereWithoutCoffee";
 import { RootStackParamList, WrapperStackParamList } from "../types";
@@ -125,7 +125,7 @@ function RootNavigator() {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: token + "88",
+          backgroundColor: token + (Platform.OS === "ios" ? "88" : ""),
           // @ts-ignore
           height: 48,
         },

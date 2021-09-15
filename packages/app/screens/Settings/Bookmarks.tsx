@@ -1,7 +1,6 @@
 import { Button, Input, Layout, List, ListItem, Modal, Text, useTheme } from "@ui-kitten/components";
 import * as React from "react";
 import { Image, ScrollView, View } from "react-native";
-import { useClanBookmarks, useUserBookmarks } from "../../hooks/useBookmarks";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
 import useTitle from "../../hooks/useTitle";
 import { UpdateWrapper, UserSearchModal } from "./Notifications";
@@ -9,6 +8,7 @@ import Fuse from "fuse.js";
 import useSearch from "../../hooks/useSearch";
 import { useTranslation } from "react-i18next";
 import Icon from "../../components/Common/Icon";
+import { useUserSettingMutation } from "../../hooks/useUserSettings";
 
 interface ClanSearchModalProps {
   close: (data: { clan_id: number; name: string; tagline: string }) => void;
@@ -71,8 +71,8 @@ function ClanSearchModal({ close }: ClanSearchModalProps) {
 export default function AccountsScreen() {
   const { t } = useTranslation();
   useTitle(`${t("pages:settings")} - ${t("pages:settings_bookmarks")}`);
-  const [userBookmarks, setUserBookmarks] = useUserBookmarks();
-  const [clanBookmarks, setClanBookmarks] = useClanBookmarks();
+  const [userBookmarks, setUserBookmarks] = useUserSettingMutation("users");
+  const [clanBookmarks, setClanBookmarks] = useUserSettingMutation("clans");
   const [addUserModal, setAddUserModal] = React.useState(false);
   const [addClanModal, setAddClanModal] = React.useState(false);
   const [saved, setSaved] = React.useState(false);
@@ -85,7 +85,7 @@ export default function AccountsScreen() {
         onBackdropPress={() => setAddUserModal(false)}>
         <UserSearchModal
           close={data => {
-            userBookmarks.push({ user_id: data.user_id.toString(), username: data.username });
+            userBookmarks?.push({ user_id: Number(data.user_id), username: data.username });
             setAddUserModal(false);
           }}
         />
@@ -119,7 +119,7 @@ export default function AccountsScreen() {
             <UpdateWrapper>
               {update => (
                 <>
-                  {userBookmarks.map((i, index) => (
+                  {userBookmarks?.map((i, index) => (
                     <Layout
                       key={i.user_id}
                       level="3"

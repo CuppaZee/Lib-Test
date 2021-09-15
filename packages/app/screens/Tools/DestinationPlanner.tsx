@@ -1,5 +1,4 @@
 import { MapBoundingboxV4 } from "@cuppazee/api/map/v4";
-import { Button, Layout, Text } from "@ui-kitten/components";
 import * as React from "react";
 import { Pressable, View } from "react-native";
 import TypeImage from "../../components/Common/TypeImage";
@@ -14,6 +13,8 @@ import { point } from "@turf/helpers";
 import { getCoord } from "@turf/invariant";
 import destination from "@turf/destination";
 import useDB from "../../hooks/useDB";
+import { Box, Button, Heading } from "native-base";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export function getExpandedBounds(bounds: number[][], expansion: number) {
   const topLeft = getCoord(
@@ -204,10 +205,12 @@ export default function BouncersMapScreen() {
       .replace(/treehouse[0-9]/, "treehouse"),
   }));
 
+  const headerHeight = useHeaderHeight();
+
   return (
-    <Layout style={{ flex: 1 }}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} flex={1} style={{ paddingTop: headerHeight}}>
       {!location && (
-        <Layout
+        <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }}
           style={{
             padding: 4,
             flexDirection: "row",
@@ -215,8 +218,8 @@ export default function BouncersMapScreen() {
             flexWrap: "wrap",
             alignItems: "center",
           }}>
-          <Text category="h5">Zoom in to load Munzees</Text>
-        </Layout>
+          <Heading fontSize="md">Zoom in to load Munzees</Heading>
+        </Box>
       )}
 
       <AutoMap
@@ -406,7 +409,7 @@ export default function BouncersMapScreen() {
         ))}
       </AutoMap>
       {selectedMarker !== undefined && markers[selectedMarker] && (
-        <Layout
+        <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }}
           style={{
             padding: 4,
             flexDirection: "row",
@@ -415,24 +418,24 @@ export default function BouncersMapScreen() {
             alignItems: "center",
           }}>
           <Button
-            appearance="ghost"
-            accessoryLeft={props => <Icon name="close" {...props} />}
-            status="danger"
+            variant="ghost"
+            startIcon={<Icon name="close" style={{ height: 24, width: 24 }} />}
+            color="danger.500"
             onPress={() => setMarkers(value => value.filter((_, n) => n !== selectedMarker))}
           />
-          <Text category="s1" style={{ flex: 1 }}>
+          <Heading fontSize="sm" style={{ flex: 1 }}>
             {markers[selectedMarker].lat} {markers[selectedMarker].lng}
-          </Text>
+          </Heading>
           <Button
-            appearance="ghost"
-            accessoryLeft={props => <Icon name="content-copy" {...props} />}
+            variant="ghost"
+            startIcon={<Icon name="content-copy" style={{ height: 24, width: 24 }} />}
             onPress={() =>
               Clipboard.setString(`${markers[selectedMarker].lat} ${markers[selectedMarker].lng}`)
             }
           />
-        </Layout>
+        </Box>
       )}
-      <Layout
+      <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }}
         style={{
           padding: 4,
           flexDirection: "row",
@@ -458,8 +461,9 @@ export default function BouncersMapScreen() {
                   setSelected(i.icon);
                 }
               }}>
-              <Layout
-                level={selected === i.icon ? "3" : "1"}
+              <Box
+                bg={selected === i.icon ? "regularGray.300" : "regularGray.200"}
+                _dark={{ bg: selected === i.icon ? "regularGray.700" : "regularGray.800" }}
                 style={{ borderRadius: 8, padding: 4 }}>
                 <TypeImage
                   icon={i.icon}
@@ -468,7 +472,7 @@ export default function BouncersMapScreen() {
                     opacity: munzees?.some(m => m.icon === i.icon) ? 1 : 0.4,
                   }}
                 />
-              </Layout>
+              </Box>
             </Pressable>
           ))}
         </View>
@@ -485,11 +489,10 @@ export default function BouncersMapScreen() {
                 type: selected,
               },
             ]);
-          }}
-          appearance="outline">
+          }}>
           Add Marker
         </Button>
-      </Layout>
-    </Layout>
+      </Box>
+    </Box>
   );
 }

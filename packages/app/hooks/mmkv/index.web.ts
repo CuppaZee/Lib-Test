@@ -14,7 +14,7 @@ export class MMKV implements MMKVInterface {
   private id: string;
   private hash: string;
   private generateLocalStorageKey(key: string) {
-    return `${this.id}__${key}__${this.hash}`;
+    return `${this.id}~~${key}~~${this.hash}`;
   }
   
   constructor(configuration?: MMKVConfiguration) {

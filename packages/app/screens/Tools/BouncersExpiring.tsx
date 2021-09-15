@@ -1,4 +1,3 @@
-import { Input, Layout, ListItem, Text } from "@ui-kitten/components";
 import * as React from "react";
 import { FlatList } from "react-native";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
@@ -8,6 +7,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import useDB from "../../hooks/useDB";
 import { NavProp } from "../../navigation";
+import { Box, Text, Input, Heading, HStack, VStack, Pressable } from "native-base";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export default function BouncersExpiringScreen() {
   const { t } = useTranslation();
@@ -32,15 +33,17 @@ export default function BouncersExpiringScreen() {
   const nav = useNavigation<NavProp>();
   const typeS = type.toLowerCase().replace(/\s/g, "");
   const playerS = player.toLowerCase().replace(/\s/g, "");
+  const headerHeight = useHeaderHeight();
 
   return (
-    <Layout style={{ padding: 4, flex: 1 }}>
+    <Box bg="regularGray.100" _dark={{ bg: "regularGray.900" }} style={{ padding: 4, paddingTop: 4 + headerHeight, flex: 1 }}>
       {bouncers.data?.endpointsDown
         .filter(i => i.endpoint.startsWith("/munzee/specials"))
         .map(endpoint => (
-          <Layout style={{ margin: 4, width: "100%" }}>
-            <Layout
-              level="2"
+          <Box style={{ margin: 4, width: "100%" }}>
+            <Box
+              bg="regularGray.200"
+              _dark={{ bg: "regularGray.800" }}
               style={{
                 padding: 4,
                 borderRadius: 8,
@@ -48,25 +51,27 @@ export default function BouncersExpiringScreen() {
                 alignItems: "center",
                 justifyContent: "center",
               }}>
-              <Text category="h6" style={{ textAlign: "center", maxWidth: "100%" }}>
+              <Heading fontSize="md" style={{ textAlign: "center", maxWidth: "100%" }}>
                 CuppaZee is currently unable to get data for {endpoint.label} from Munzee. These
                 bouncers may not show on this page.
-              </Text>
-            </Layout>
-          </Layout>
+              </Heading>
+            </Box>
+          </Box>
         ))}
-      <Input
-        style={{ margin: 4, width: 400, maxWidth: "100%", alignSelf: "center" }}
-        label={t("search:player")}
-        value={player}
-        onChangeText={value => setPlayer(value)}
-      />
-      <Input
-        style={{ margin: 4, width: 400, maxWidth: "100%", alignSelf: "center" }}
-        label={t("search:type")}
-        value={type}
-        onChangeText={value => setType(value)}
-      />
+      <VStack p={2} space={1} style={{ width: 400, maxWidth: "100%", alignSelf: "center" }}>
+        <Heading fontSize="md">{t("search:player")}</Heading>
+        <Input
+          value={player}
+          onChangeText={value => setPlayer(value)}
+        />
+      </VStack>
+      <VStack p={2} space={1} style={{ width: 400, maxWidth: "100%", alignSelf: "center" }}>
+        <Heading fontSize="md">{t("search:type")}</Heading>
+        <Input
+          value={type}
+          onChangeText={value => setType(value)}
+        />
+      </VStack>
       <FlatList
         style={{
           flex: 1,
@@ -86,22 +91,28 @@ export default function BouncersExpiringScreen() {
         }
         keyExtractor={i => i[4].toString()}
         renderItem={({ item, index }) => (
-          <ListItem
-            accessoryLeft={() => <TypeImage style={{ size: 32 }} icon={item[1]} />}
-            title={item[5] ? `${item[5]} by ${item[6]}` : db.getType(item[1])?.name ?? item[1]}
-            description={`${Math.floor((item[2] - now / 1000) / 60)}:${(
-              Math.floor(item[2] - now / 1000) % 60
-            )
-              .toString()
-              .padStart(2, "0")}`}
+          <Pressable
             onPress={() => {
               nav.navigate("Tools_Munzee", {
                 a: item[3],
               });
-            }}
-          />
+            }}>
+            <HStack space={2} p={2}>
+              <TypeImage style={{ size: 32 }} icon={item[1]} />
+              <VStack>
+                <Heading fontSize="md">
+                  {item[5] ? `${item[5]} by ${item[6]}` : db.getType(item[1])?.name ?? item[1]}
+                </Heading>
+                <Text fontSize="sm">{`${Math.floor((item[2] - now / 1000) / 60)}:${(
+                  Math.floor(item[2] - now / 1000) % 60
+                )
+                  .toString()
+                  .padStart(2, "0")}`}</Text>
+              </VStack>
+            </HStack>
+          </Pressable>
         )}
       />
-    </Layout>
+    </Box>
   );
 }

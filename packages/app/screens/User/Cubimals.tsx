@@ -19,7 +19,7 @@ export default function PlayerCubimalsScreen() {
     route.params?.username !== undefined
   );
   const data = useMunzeeRequest(
-    "user/cubimals",
+    "user/cubimals" as any,
     {
       method: "get"
     },
@@ -55,7 +55,7 @@ export default function PlayerCubimalsScreen() {
                 justifyContent: "center",
               }}>
               {data.data?.data
-                ?.map(t => (
+                ?.map((t: any) => (
                   <CubimalsIcon name={t.name} count={t.collected} icon={t.logo.slice(53, -4)} />
                 ))}
             </View>

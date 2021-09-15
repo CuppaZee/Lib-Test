@@ -2,11 +2,9 @@ import * as React from "react";
 import { Alert, AppState, Linking, Platform } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import { useAtom } from "jotai";
-import { teakensAtom, useTeakens } from "../hooks/useToken";
-import { useNavigation } from "@react-navigation/native";
-import { useUserBookmarks } from "./useBookmarks";
 import * as ExpoClipboard from "expo-clipboard";
-import { NavProp } from "../navigation";
+import { otherAccountsAtom, primaryAccountAtom } from "./useToken";
+import { UserSettingsUser, useUserSettingMutation } from "./useUserSettings";
 const configs = {
   main: {
     redirect_uri: "https://server.cuppazee.app/auth/auth/v1",
@@ -32,29 +30,59 @@ WebBrowser.maybeCompleteAuthSession({
 
 export default function useLogin(
   path: string,
-  shouldRedirect?: boolean,
   application: keyof typeof configs = "main"
 ) {
   const redirectUri =
     Platform.OS === "web"
       ? [window.location.origin, path].filter(Boolean).join("/").replace(/\/\//g, "/")
       : `uk.cuppazee.paper://${path}`;
-  console.log(redirectUri);
 
   var config = configs[application];
-  const { loaded } = useTeakens();
-  const [teakens, setTeakens] = useAtom(teakensAtom);
-  const nav = useNavigation<NavProp>();
-  const [users, setUsers] = useUserBookmarks();
+  const [primaryAccount, setPrimaryAccount] = useAtom(primaryAccountAtom);
+  const [otherAccounts, setOtherAccounts] = useAtom(otherAccountsAtom);
+
+  const [users, setUsers] = useUserSettingMutation("users");
+  const [queuedAccounts, setQueuedAccounts] = React.useState<UserSettingsUser[]>([]);
+
+
+  React.useEffect(() => {
+    if (queuedAccounts.length > 0 && users) {
+      const updatedUsers = users.slice();
+      for (const account of queuedAccounts) {
+        if (!updatedUsers.find(i => i.user_id === account.user_id)) {
+          updatedUsers.push(account);
+        }
+      }
+      if (updatedUsers.length !== users.length) {
+        setUsers(updatedUsers);
+      }
+      setQueuedAccounts([]);
+    }
+  }, [queuedAccounts, users]);
 
   const [loading, setLoading] = React.useState<boolean>(Platform.OS === "android");
-  const [shouldUseAlternative, setShouldUseAlternative] = React.useState<boolean>(Platform.OS === "android");
-  const [redirect, setRedirect] = React.useState<string | null>(null);
+  const [mode, setMode] = React.useState<"loading" | "authSession" | "browserClipboard">(
+    Platform.OS === "android" ? "loading" : "authSession"
+  );
 
-  
+  React.useEffect(() => {
+    if (mode === "loading") {
+      WebBrowser.getCustomTabsSupportingBrowsersAsync()
+        .then(i => {
+          if (i.browserPackages.length > 0) {
+            setMode("authSession");
+          }
+          setMode("browserClipboard");
+        })
+        .catch(() => {
+          setMode("browserClipboard");
+        });
+    }
+  }, [mode]);
+
   React.useEffect(() => {
     async function checkClipboard() {
-      if(Platform.OS === "android") {
+      if (Platform.OS === "android") {
         const string = await ExpoClipboard.getStringAsync();
         if (string?.startsWith("czlogin:")) {
           const s = string.split(":");
@@ -73,44 +101,39 @@ export default function useLogin(
     };
   }, []);
 
-  React.useEffect(() => {
-    if (Platform.OS === "android") {
-      WebBrowser.getCustomTabsSupportingBrowsersAsync()
-        .then(i => {
-          if (i.browserPackages.length > 0) {
-            setShouldUseAlternative(false);
-          }
-          setLoading(false);
-        })
-        .catch(() => {
-          setLoading(false);
-        });
-    }
-  }, []);
-
   async function handleLogin(params: any) {
-      if (!params?.teaken) return setLoading(false);
-      setTeakens({
-        ...teakens,
-        data: {
-          ...teakens.data,
-          [params.user_id]: {
-            username: params.username,
-            teaken: params.teaken,
-          },
+    if (!params?.teaken) return setLoading(false);
+
+    if (primaryAccount) {
+      setOtherAccounts([
+        ...otherAccounts.filter(i => i.username !== params.username),
+        {
+          user_id: Number(params.user_id),
+          username: params.username,
+          cuppazee_token: params.teaken,
         },
+      ]);
+    } else {
+      setPrimaryAccount({
+        user_id: Number(params.user_id),
+        username: params.username,
+        cuppazee_token: params.teaken,
       });
+    }
 
-      if (!users.some(i => i.user_id === params.user_id)) {
-        setUsers([...users, { user_id: params.user_id, username: params.username }]);
-      }
+    setQueuedAccounts(i => [
+      ...i,
+      {
+        username: params.username,
+        user_id: Number(params.user_id),
+      },
+    ]);
 
-      setRedirect(params.username);
-      setLoading(false);
+    setLoading(false);
   }
 
   async function login() {
-    if (shouldUseAlternative) {
+    if (mode === "browserClipboard") {
       const string = await ExpoClipboard.getStringAsync();
       if (string?.startsWith("czlogin:")) {
         const s = string.split(":");
@@ -133,48 +156,43 @@ export default function useLogin(
           })
         )}`
       );
-    } else {
-      setLoading(true);
-      const response = await WebBrowser.openAuthSessionAsync(
-        `https://api.munzee.com/oauth?client_id=${encodeURIComponent(
-          config.client_id
-        )}&redirect_uri=${encodeURIComponent(
-          config.redirect_uri
-        )}&response_type=code&scope=read&state=${encodeURIComponent(
-          JSON.stringify({
-            redirect: redirectUri,
-            platform: Platform.OS,
-          })
-        )}`,
-        redirectUri
-      );
-      if (response.type !== "success") {
-        setLoading(false);
-      } else {
-        console.log(response);
-        const params = Object.fromEntries(
-          response.url
-            .split("?")?.[1]
-            .split("&")
-            .map(i => i.split("=").map(i => decodeURIComponent(i))) ?? []
+    } else if (mode === "authSession") {
+      try {
+        setLoading(true);
+        const response = await WebBrowser.openAuthSessionAsync(
+          `https://api.munzee.com/oauth?client_id=${encodeURIComponent(
+            config.client_id
+          )}&redirect_uri=${encodeURIComponent(
+            config.redirect_uri
+          )}&response_type=code&scope=read&state=${encodeURIComponent(
+            JSON.stringify({
+              redirect: redirectUri,
+              platform: Platform.OS,
+            })
+          )}`,
+          redirectUri
         );
-        try {
-          await handleLogin(params);
-        } catch (e) {
+        if (response.type !== "success") {
           setLoading(false);
-          if (Platform.OS === "web") {
-            alert("Something went wrong when logging in.");
-          } else {
-            Alert.alert("Something went wrong when logging in.");
-          }
+        } else {
+          const params = Object.fromEntries(
+            response.url
+              .split("?")?.[1]
+              .split("&")
+              .map(i => i.split("=").map(i => decodeURIComponent(i))) ?? []
+          );
+          await handleLogin(params);
+        }
+      } catch (e) {
+        setLoading(false);
+        if (Platform.OS === "web") {
+          alert("Something went wrong when logging in.");
+        } else {
+          Alert.alert("Something went wrong when logging in.");
         }
       }
     }
   }
-  if (shouldRedirect && redirect && Object.keys(teakens.data).length > 0) {
-    setRedirect("");
-    nav.navigate("Player_Profile", { username: redirect });
-  }
 
-  return [loading, login, loaded && !loading, shouldUseAlternative, handleLogin] as const;
+  return [loading, login, !loading, mode, handleLogin] as const;
 }

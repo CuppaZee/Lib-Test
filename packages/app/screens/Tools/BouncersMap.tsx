@@ -1,12 +1,13 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useHeaderHeight } from "@react-navigation/elements";
 import { Layout } from "@ui-kitten/components";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import Icon from "../../components/Common/Icon";
 import Select from "../../components/Common/Select";
 import Loading from "../../components/Loading";
 import { AutoMap, Icons, Layer, Source } from "../../components/Map/Map";
 import useCuppaZeeRequest from "../../hooks/useCuppaZeeRequest";
+import useDB from "../../hooks/useDB";
 import useTitle from "../../hooks/useTitle";
 import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
@@ -26,6 +27,8 @@ export default function BouncersMapScreen() {
   const data = useCuppaZeeRequest<{ data: BouncerListData }>("bouncers/list", {
     list: route.params.type,
   });
+  const db = useDB();
+  const headerHeight = useHeaderHeight();
 
   if (!data.data) {
     return (
@@ -35,7 +38,7 @@ export default function BouncersMapScreen() {
     );
   }
   return (
-    <Layout style={{ flex: 1 }}>
+    <Layout style={{ flex: 1, paddingTop: headerHeight }}>
       <AutoMap
         onPress={point => {
           const munzee = point.features?.find(i => i.source?.startsWith("bouncers"));
@@ -45,7 +48,9 @@ export default function BouncersMapScreen() {
         }}
         controls={
           <Select
-            style={{ margin: 4 }}
+            m={1}
+            p={1}
+            px={2}
             // accessoryLeft={({ style, ...props }: any) => (
             //   <Icon
             //     {...props}
@@ -54,7 +59,6 @@ export default function BouncersMapScreen() {
             //   />
             // )}
             // accessoryRight={() => null as any}
-            size="small"
             value={view}
             onValueChange={(value: any) => setView(value)}
             options={[
@@ -82,7 +86,7 @@ export default function BouncersMapScreen() {
               },
               id: i[3].toString(),
               properties: {
-                icon: data.data.data.list[i[2]],
+                icon: db.strip(data.data.data.list[i[2]]),
                 munzee_id: i[3].toString(),
               },
             })),

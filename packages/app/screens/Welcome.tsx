@@ -5,13 +5,13 @@ import useLogin from "../hooks/useLogin";
 import { ScrollView } from "react-native-gesture-handler";
 import useTitle from "../hooks/useTitle";
 import * as themes from "../themes";
-import { useTeakens } from "../hooks/useToken";
 import useSetting, { ReadyAtom, ThemeAtom } from "../hooks/useSetting";
 import { Trans, useTranslation } from "react-i18next";
 import Select from "../components/Common/Select";
 import { LANGS } from "../lang/i18n";
 import Icon from "../components/Common/Icon";
 import * as Updates from "expo-updates";
+import { useAccounts } from "../hooks/useToken";
 
 export default function WelcomeScreen() {
   const { t, i18n } = useTranslation();
@@ -26,7 +26,7 @@ export default function WelcomeScreen() {
   const [loading, setLoading] = React.useState(false);
   const [, login, ready] = useLogin("");
   const updatesStatusRef = React.useRef<Promise<boolean>>();
-  const { data: teakens } = useTeakens();
+  const accounts = useAccounts();
   
   React.useEffect(() => {
     updatesStatusRef.current = (async function () {
@@ -145,7 +145,7 @@ export default function WelcomeScreen() {
             <Heading fontSize="lg" style={{ textAlign: "center", marginTop: 16 }}>
               {t("welcome:accounts")}
             </Heading>
-            {Object.entries(teakens).map(i => (
+            {accounts.map(i => (
               <Box
                 bg="regularGray.200"
                 _dark={{ bg: "regularGray.800" }}
@@ -163,11 +163,11 @@ export default function WelcomeScreen() {
                     style={{ height: 32, width: 32, borderRadius: 16, marginRight: 8 }}
                     source={{
                       uri: `https://munzee.global.ssl.fastly.net/images/avatars/ua${Number(
-                        i[0]
+                        i.user_id
                       ).toString(36)}.png`,
                     }}
                   />
-                  <Text fontSize="md">{i[1].username}</Text>
+                  <Text fontSize="md">{i.username}</Text>
                 </View>
               </Box>
             ))}
@@ -176,11 +176,11 @@ export default function WelcomeScreen() {
               startIcon={<Icon colorBlank style={{ height: 24 }} name="account-plus" />}
               disabled={!ready}
               onPress={login}>
-              {Object.keys(teakens).length > 0
+              {accounts.length > 0
                 ? t("welcome:add_extra_account")
                 : t("welcome:add_account")}
             </Button>
-            {Object.keys(teakens).length > -0 && (
+            {accounts.length > 0 && (
               <Button
                 style={{ margin: 4 }}
                 startIcon={<Icon colorBlank style={{height: 24 }} name="home" />}

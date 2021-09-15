@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, ScrollView, View } from "react-native";
 import Icon from "../../components/Common/Icon";
 import Tip from "../../components/Common/Tip";
-import { useClanBookmarks } from "../../hooks/useBookmarks";
+import { useUserSetting } from "../../hooks/useUserSettings";
 import { NavProp } from "../../navigation";
 import { DashCardProps } from "./Dashboard";
 
@@ -14,7 +14,7 @@ export default React.memo(
   function ClansDashCard(props: DashCardProps<unknown>) {
     const { t } = useTranslation();
     const nav = useNavigation<NavProp>();
-    const [clans] = useClanBookmarks();
+    const clans = useUserSetting("clans");
     return (
       <Box bg="regularGray.200" _dark={{ bg: "regularGray.800" }} style={[styles.card, { flex: 1 }]}>
         <ScrollView onLayout={props.onOuterLayout} style={{ flex: 1 }}>

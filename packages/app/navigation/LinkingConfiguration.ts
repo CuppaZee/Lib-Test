@@ -73,7 +73,7 @@ export default function getConfig(notification?: NotificationResponse): LinkingO
             Tools_TypeCategory: "db/:category",
             Tools_TypeMunzee: "db/type/:type?",
 
-            Tools_Credits: "about/credits",
+            Tools_Credits: "about/supporters",
             Tools_Donate: "about/donate",
             Tools_OpenSource: "about/opensource",
 

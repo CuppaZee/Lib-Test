@@ -2,18 +2,21 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useMemo } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import * as zipson from "zipson";
+
 import "./polyfill";
 
 import { useColorScheme } from "react-native";
 import Navigation from "./navigation";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { persistQueryClient } from "react-query/persistQueryClient-experimental";
 import { Provider as JotaiProvider } from "jotai";
 
 import "./lang/i18n";
 
 import CheckStatus from "./BackgroundLocation";
 import useSetting, {
-  LiveLocationErrorAtom,
+  LiveLocationErrorAtom, store,
 } from "./hooks/useSetting";
 import { useTranslation } from "react-i18next";
 import "expo-firebase-analytics";
@@ -36,6 +39,29 @@ const queryClient = new QueryClient({
   },
 });
 
+
+persistQueryClient({
+  queryClient,
+  persistor: {
+    persistClient(client) {
+      try {
+        client.clientState.queries.forEach(query => {
+          query.state.isFetching = false;
+        });
+        return store.set("@cz3/querycache", zipson.stringify(client));
+      } catch {
+        return store.set("@cz3/querycache", zipson.stringify(client));
+      }
+    },
+    restoreClient() {
+      return zipson.parse(store.getString("@cz3/querycache") ?? "null");
+    },
+    removeClient() {
+      return store.delete("@cz3/querycache");
+    },
+  },
+});
+
 function ColorModeHandler() {
   const colorScheme = useColorScheme();
   const colorMode = useColorMode();
@@ -47,15 +73,15 @@ function ColorModeHandler() {
 
 function AppBase() {
   const colorScheme = useColorScheme();
-  const [liveLocationError, setLiveLocationError, liveLocationErrorLoaded] = useSetting(
+  const [liveLocationError, setLiveLocationError] = useSetting(
     LiveLocationErrorAtom
   );
 
   React.useEffect(() => {
-    if (liveLocationErrorLoaded && !liveLocationError) {
+    if (!liveLocationError) {
       CheckStatus().then(value => setLiveLocationError(value));
     }
-  }, [liveLocationErrorLoaded]);
+  }, [liveLocationError]);
   const { i18n } = useTranslation();
   const theme = useMemo(() => {
     const defaultTheme = extendTheme({});

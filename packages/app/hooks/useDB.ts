@@ -1,6 +1,7 @@
 import { loadFromCache, loadFromLzwJson, CuppaZeeDB } from "@cuppazee/db";
 import { useEffect, useState } from "react";
 import { store } from "./useSetting";
+import * as zipson from "zipson";
 
 const dbCache: { value: CuppaZeeDB; onLoad: Set<() => void>; running: boolean } = {
   value: new CuppaZeeDB([], [], []),
@@ -28,7 +29,7 @@ async function loadDB2(cacheVersion: number) {
       dbLoadLog.push("Parsed from lzw, Succeeded.");
       dbCache.value = db;
       dbCache.onLoad.forEach(i => i());
-      store.set("@cz3/dbcache", JSON.stringify(cache));
+      store.set("@cz3/dbcache", zipson.stringify(cache));
     } else {
       dbLoadLog.push("Nothing to load from lzw, Suspended.");
     }
@@ -45,7 +46,7 @@ async function loadDBBase() {
     const cacheData = store.getString("@cz3/dbcache");
     if (cacheData) {
       dbLoadLog.push("Loaded from cache, Continuing.");
-      const data = JSON.parse(cacheData);
+      const data = zipson.parse(cacheData);
       cacheVersion = data.version;
       dbCache.value = loadFromCache(data);
       dbCache.onLoad.forEach(i => i());

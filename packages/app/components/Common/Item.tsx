@@ -1,12 +1,18 @@
-import { useLinkBuilder, useNavigation, useNavigationState } from "@react-navigation/native";
-import {Box, Heading, HStack, Image, Link, Pressable, VStack} from "native-base";
+import {
+  useLinkBuilder,
+  useLinkProps,
+  useLinkTo,
+  useNavigation,
+  useNavigationState,
+} from "@react-navigation/native";
+import { Box, Heading, HStack, Image, Link, Pressable, VStack } from "native-base";
 import React, { useCallback, useMemo } from "react";
 import { NavProp } from "../../navigation";
 import { RootStackParamList } from "../../types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "./Icon";
 import TypeImage from "./TypeImage";
-import {Platform} from "react-native";
+import { Platform } from "react-native";
 
 export interface ItemProps {
   title: string;
@@ -22,7 +28,8 @@ export interface ItemProps {
   collapsed?: boolean;
 }
 
-function checkMatch([a, [name, params]]: [any, [name: any, params?: any]]) {
+function checkMatch([aa, [name, params]]: [any, [name: any, params?: any]]) {
+  const a = aa?.state?.routes?.[aa?.state?.index ?? 0] ?? aa;
   let x = a.name === name;
   for (const key in params ?? {}) {
     x = x && a.params?.[key] === params[key];
@@ -72,7 +79,7 @@ export function Item(props: ItemProps) {
         _hover={{ opacity: 0.8 }}
         bg={matches ? "blue.500" : undefined}
         borderRadius={4}
-        href={Platform.OS === "web" ? link : undefined}>
+        href={Platform.OS === "web" ? (props.link as any) : undefined}>
         <HStack w="100%" alignItems="center" space={3} p={2}>
           {!!props.icon && (
             <Icon
@@ -103,17 +110,19 @@ export function Item(props: ItemProps) {
               }}
             />
           )}
-          {!props.collapsed && <Box flex={1}>
-            <Heading color={matches ? "white" : undefined} fontSize="md">
-              {props.title}
-            </Heading>
-            {!!props.subtitle && (
-              <Heading color={matches ? "white" : undefined} fontSize="sm">
-                {props.subtitle}
+          {!props.collapsed && (
+            <Box flex={1}>
+              <Heading numberOfLines={1} color={matches ? "white" : undefined} fontSize="md">
+                {props.title}
               </Heading>
-            )}
-          </Box>}
-          {(!!props.chevron && !props.collapsed) && (
+              {!!props.subtitle && (
+                <Heading numberOfLines={1} color={matches ? "white" : undefined} fontSize="sm">
+                  {props.subtitle}
+                </Heading>
+              )}
+            </Box>
+          )}
+          {!!props.chevron && !props.collapsed && (
             <Icon
               name="chevron-right"
               style={[{ height: 24, width: 24 }, matches ? { color: "white" } : undefined]}
@@ -142,13 +151,13 @@ export function TabItem(props: ItemProps) {
               routes: [
                 {
                   name: props.link[0],
-                  params: props.link[1]
-                }
-              ]
-            }
-          }
-        ]
-      })
+                  params: props.link[1],
+                },
+              ],
+            },
+          },
+        ],
+      });
     } else {
       nav.navigate(props.link[0], props.link[1]);
     }

@@ -15,16 +15,16 @@ export type BouncerIconProps = {
 export function BouncerIcon({ type, count, icon }: BouncerIconProps) {
   const nav = useNavigation<NavProp>()
   return (
-    <Pressable onPress={type ? (() => nav.navigate("Tools_BouncersMap",
+    <Pressable onPress={(() => nav.navigate("Tools_BouncersMap",
       {
-        type: type.icon
-      })) : null}>
+        type: type?.icon ?? icon?.slice(49, -4) ?? ""
+      }))}>
       <Box bg="regularGray.200" _dark={{bg: "regularGray.800"}} style={[styles.card, { opacity: count > 0 ? 1 : 0.2 }]}>
         <TypeImage icon={type?.icon ?? icon ?? ""} style={{ size: 32 }} />
-        <Heading numberOfLines={1} ellipsizeMode="tail" fontSize="sm">
-          {type?.name ?? icon ?? ""}
+        <Heading numberOfLines={1} ellipsizeMode="tail" fontSize="xs">
+          {type?.name ?? icon?.slice(49, -4) ?? ""}
         </Heading>
-        <Text fontSize="md">{count}</Text>
+        <Text fontSize="sm">{count}</Text>
       </Box>
     </Pressable>
   );
