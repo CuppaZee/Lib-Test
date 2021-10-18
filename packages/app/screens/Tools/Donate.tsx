@@ -1,4 +1,4 @@
-import { Button, Layout, Text } from "@ui-kitten/components";
+import { Button, Input, Layout, Text } from "@ui-kitten/components";
 import { getTaskOptionsAsync } from "expo-task-manager";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -7,24 +7,36 @@ import Icon from "../../components/Common/Icon";
 import useSetting, { LiveLocationErrorAtom } from "../../hooks/useSetting";
 import useTitle from "../../hooks/useTitle";
 import { getBackgroundPermissionsAsync } from "expo-location"
+import { teakensAtom, useTeakens } from "../../hooks/useToken";
+import { useAtom } from "jotai";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function DevScreen() {
   const [data, setData] = React.useState("");
+  const teakensData = useTeakens();
+  const [_, updateTeakens] = useAtom(teakensAtom);
+  const [teakens, setTeakens] = React.useState("");
+  React.useEffect(() => {
+    console.log(teakensData);
+    setTeakens(JSON.stringify(teakensData.data));
+  }, [teakensData])
   const [liveLocationError] = useSetting(LiveLocationErrorAtom);
   React.useEffect(() => {
     (async function () {
-      setData(
-        JSON.stringify(
-          [await getTaskOptionsAsync("BACKGROUND_LOCATION"), await getBackgroundPermissionsAsync()],
-          null,
-          2
-        )
-      );
+      try {
+        setData(
+          JSON.stringify(
+            [await getTaskOptionsAsync("BACKGROUND_LOCATION"), await getBackgroundPermissionsAsync()],
+            null,
+            2
+          )
+        );
+      } catch { }
     })();
   }, []);
   return (
     <Layout style={{ flex: 1 }}>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 800 }}>
         <Text>{data}</Text>
         <Text>Hey!</Text>
         <Text>{JSON.stringify(liveLocationError)}</Text>
@@ -32,7 +44,9 @@ function DevScreen() {
           style={{ margin: 4 }}
           appearance="outline"
           onPress={() => {
-            NativeModules.LiveLocation.setExpoPushToken("ExponentPushToken[8YOVYvLHKPSQpK72ytSkPy]");
+            NativeModules.LiveLocation.setExpoPushToken(
+              "ExponentPushToken[8YOVYvLHKPSQpK72ytSkPy]"
+            );
           }}>
           Set Expo Push Token
         </Button>
@@ -67,6 +81,16 @@ function DevScreen() {
             setData(JSON.stringify(await NativeModules.LiveLocation.getLocationUpdatesStatus()));
           }}>
           Get Location Updates Status
+        </Button>
+        <Input multiline numberOfLines={10} value={teakens} onChangeText={v => setTeakens(v)} />
+        <Button
+          style={{ margin: 4 }}
+          appearance="outline"
+          onPress={async () => {
+            updateTeakens(JSON.parse(teakens));
+            AsyncStorage.setItem("CUPPAZEE_TEAKENS", JSON.stringify(JSON.parse(teakens)));
+          }}>
+          Update Stuff
         </Button>
       </ScrollView>
     </Layout>
